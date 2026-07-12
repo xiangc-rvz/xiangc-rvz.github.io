@@ -1,28 +1,15 @@
 {
-  "name": "ai-website-clone-template",
-  "version": "0.3.1",
+  "name": "xiangc-rvz.github.io",
+  "version": "1.0.0",
   "private": true,
-  "description": "Clone any website into a clean, modern Next.js codebase using AI coding agents",
-  "author": "JCodesMore",
+  "description": "Xiang Chen's personal website",
+  "author": "Xiang Chen",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/JCodesMore/ai-website-cloner-template.git"
+    "url": "https://github.com/xiangc-rvz/xiangc-rvz.github.io.git"
   },
-  "homepage": "https://github.com/JCodesMore/ai-website-cloner-template",
-  "bugs": {
-    "url": "https://github.com/JCodesMore/ai-website-cloner-template/issues"
-  },
-  "keywords": [
-    "claude-code",
-    "website-clone",
-    "reverse-engineering",
-    "nextjs",
-    "ai",
-    "template",
-    "tailwindcss",
-    "shadcn-ui"
-  ],
+  "homepage": "https://xiangc-rvz.github.io",
   "engines": {
     "node": ">=24"
   },
