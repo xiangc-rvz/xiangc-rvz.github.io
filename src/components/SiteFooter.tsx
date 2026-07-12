@@ -1,13 +1,5 @@
-"use client";
-
-import { useState, useEffect } from "react";
-
 export function SiteFooter() {
-  const [year, setYear] = useState(new Date().getFullYear());
-
-  useEffect(() => {
-    setYear(new Date().getFullYear());
-  }, []);
+  const year = new Date().getFullYear();
 
   return (
     <>
@@ -22,13 +14,7 @@ export function SiteFooter() {
           }}
         >
           <span>
-            Copyright &copy; {year} Helena Zhang
-          </span>
-          <span>
-            Built by{" "}
-            <a href="https://tobiasfried.com" className="highlight">
-              Toby Fried
-            </a>
+            Copyright &copy; {year} Xiang Chen
           </span>
         </footer>
       </section>
