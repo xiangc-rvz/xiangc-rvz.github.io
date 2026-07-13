@@ -96,22 +96,12 @@ export function SiteHeader() {
             style={{ padding: "0 0 0 12px", display: "flex", alignItems: "center" }}
           >
             <p className="profile-text">
-              Helena is a designer, director, and writer with 15+ years experience
-              building products, brands, and teams. Most recently, she managed the
-              design team at{" "}
-              <a href="https://medium.com/" className="highlight">
-                Medium
-              </a>
-              . She&apos;s passionate about bridging brand and product, and
-              crafting primitives (like{" "}
-              <a href="https://phosphoricons.com/" className="highlight">
-                icons
-              </a>{" "}
-              and{" "}
-              <a href="https://departuremono.com/" className="highlight">
-                fonts
-              </a>
-              ) for the industry.
+              Xiang is a product designer, builder and thinker who goes deep
+              where design meets AI. Trained in computational design at Carnegie
+              Mellon, Xiang designs and ships AI products end-to-end — the kind
+              that actually run in the real world. On a mission to make AI
+              products that are genuinely useful, quietly delightful, and worth
+              building in the first place.
             </p>
           </div>
         </div>
