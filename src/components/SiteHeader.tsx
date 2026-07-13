@@ -8,6 +8,7 @@ type Lang = "en" | "cn";
 const EN = {
   name: "Xiang Chen",
   leaveNote: "Leave a note",
+  resumeLabel: "Resume",
   social: { label: "Medium", href: "https://medium.com/@xccxrvz" },
   resume: "/resume.pdf",
   bio: (
@@ -25,6 +26,7 @@ const EN = {
 const CN = {
   name: "陈想",
   leaveNote: "留言",
+  resumeLabel: "简历",
   // TODO: replace "#" with your WeChat public account URL (公众号：管中试窥天地间)
   social: { label: "公众号", href: "#" },
   resume: "/resume-cn.pdf",
@@ -123,7 +125,7 @@ export function SiteHeader() {
                     (e.currentTarget as HTMLAnchorElement).style.color = "white";
                   }}
                 >
-                  Resume
+                  {t.resumeLabel}
                 </a>
               </span>
             </div>

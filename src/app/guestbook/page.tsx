@@ -69,8 +69,15 @@ export default function GuestbookPage() {
           <hr className="thick" style={{ margin: "16px 0" }} />
         </header>
 
-        {/* Form */}
-        <div style={{ maxWidth: 560, paddingTop: 24, paddingBottom: 64 }}>
+        {/* Form — centered */}
+        <div
+          style={{
+            maxWidth: 560,
+            margin: "0 auto",
+            paddingTop: 24,
+            paddingBottom: 64,
+          }}
+        >
           {status === "sent" ? (
             <p style={{ fontFamily: "CooperBTLight, Cambria, serif", fontSize: 28, lineHeight: "36px" }}>
               Thanks for leaving a note.{" "}
