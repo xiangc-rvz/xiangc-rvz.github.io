@@ -1,57 +1,61 @@
+"use client";
+
 import Image from "next/image";
+import Link from "next/link";
+import { useLang } from "@/lib/lang";
+import { projectHref } from "@/lib/projects";
 
 export function DesignSection() {
+  const { lang } = useLang();
+  const heading = lang === "en" ? "Research Projects" : "研究项目";
+  const viewProject = lang === "en" ? "View project" : "查看项目";
+  const fthHref = projectHref(lang, "fourth-trimester-health");
+  const fth = lang === "en"
+    ? {
+        title: "Fourth Trimester Health",
+        body: "Developing a wearable and environmental sensor system for the postpartum period. Built in Rapid Prototyping of Computer Systems, Spring 2025, in collaboration with Carnegie Mellon University.",
+      }
+    : {
+        title: "Fourth Trimester Health",
+        body: "为产后阶段开发可穿戴与环境传感系统。完成于 Rapid Prototyping of Computer Systems，2025 春，与卡内基梅隆大学合作。",
+      };
+
   return (
-    <section style={{ padding: "0 16px" }}>
+    <section className="research-home-section" style={{ padding: "0 16px" }}>
       <hr className="double" />
 
       {/* Section heading */}
       <div className="section-heading">
-        <figure style={{ width: 24, height: 24, flexShrink: 0 }}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/icons/pen-nib.svg" alt="" style={{ width: 24, height: 24 }} />
-        </figure>
-        <h2>Design</h2>
+        <span className="research-section-square" aria-hidden="true" />
+        <h2>{heading}</h2>
       </div>
 
-      {/* ── Phosphor Icons: text (4/12) | image (8/12) ── */}
+      {/* ── Fourth Trimester Health: text (4/12) | image (8/12) ── */}
       <div className="columns reverse-mobile" style={{ alignItems: "stretch" }}>
         {/* Text summary — left 1/3 */}
         <div className="column is-4" style={{ padding: "0 12px 0 0" }}>
-          <h3 className="article-title">Phosphor Icons</h3>
-          <p>
-            A spin-off of a sister Android project, Phosphor Icons is a flexible
-            icon family for interfaces and more. I collaborated with{" "}
-            <a href="https://tobiasfried.com" className="highlight">
-              Toby Fried
-            </a>{" "}
-            to build the icon library we always wanted to use.
-          </p>
-          <ul style={{ paddingLeft: 16, marginBottom: 0 }}>
-            <li>9,072 icons and counting</li>
-            <li>6 weights: Thin, Light, Regular, Bold, Fill, and Duotone</li>
-            <li>Designed at 16 × 16px to read well small and scale up big</li>
-            <li>Raw stroke information retained to fine-tune the style</li>
-            <li>Available for direct download, Figma, React, Vue, and vanilla JS</li>
-          </ul>
+          <h3 className="article-title">{fth.title}</h3>
+          <p>{fth.body}</p>
           <div className="external-link">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/icons/arrow-circle-up-right-fill.svg" alt="" className="icon-24" />
-            <a href="https://phosphoricons.com/" className="highlight">
-              Phosphor Icons
-            </a>
+            <Link href={fthHref} className="highlight">
+              {viewProject}
+            </Link>
           </div>
         </div>
 
         {/* Image — right 2/3 */}
         <div className="column grayscale-hover" style={{ padding: "0 0 0 12px" }}>
-          <Image
-            src="/images/design-phosphor-2-1@2x.png"
-            alt="An arrangement of Phosphor Icons in 6 weights"
-            width={980}
-            height={490}
-            style={{ width: "100%", height: "auto", display: "block" }}
-          />
+          <Link href={fthHref} style={{ display: "block" }}>
+            <Image
+              src="/images/fourth-trimester-health-cover.png"
+              alt="Fourth Trimester Health research project cover"
+              width={980}
+              height={490}
+              style={{ width: "100%", height: "auto", display: "block" }}
+            />
+          </Link>
         </div>
       </div>
 
