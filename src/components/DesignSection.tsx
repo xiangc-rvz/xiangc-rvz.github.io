@@ -13,11 +13,11 @@ export function DesignSection() {
   const fth = lang === "en"
     ? {
         title: "Fourth Trimester Health",
-        body: "Developing a wearable and environmental sensor system for the postpartum period. Built in Rapid Prototyping of Computer Systems, Spring 2025, in collaboration with Carnegie Mellon University.",
+        body: "Developing a wearable and environmental sensor system for the postpartum period. In collaboration with Honda Research Institute.",
       }
     : {
         title: "Fourth Trimester Health",
-        body: "为产后阶段开发可穿戴与环境传感系统。完成于 Rapid Prototyping of Computer Systems，2025 春，与卡内基梅隆大学合作。",
+        body: "为产后阶段开发可穿戴与环境传感系统。与 Honda Research Institute 合作。",
       };
 
   return (

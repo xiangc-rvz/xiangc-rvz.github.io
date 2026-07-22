@@ -18,6 +18,8 @@ export type ContentBlock =
       height: number;
       /** Constrain tall media (e.g. phone screenshots) to match landscape figure height */
       layout?: "phone" | "medium";
+      controls?: boolean;
+      loop?: boolean;
     }
   | {
       type: "mediaRow";
@@ -27,6 +29,7 @@ export type ContentBlock =
         width: number;
         height: number;
       }[];
+      caption?: string;
     }
   | {
       type: "table";
@@ -1114,6 +1117,375 @@ export const projects: Project[] = [
     showInHomeGrid: false,
     en: fourthTrimesterHealthEn,
     cn: fourthTrimesterHealthCn,
+  },
+  {
+    slug: "vr-chord",
+    image: "/images/vr-chord-cover.png",
+    imageAlt: "VR Chord — reimagining typing in virtual reality",
+    showInHomeGrid: false,
+    en: {
+      title: "VR Chord",
+      description: "Reimagining typing in virtual reality",
+      tags: ["XR / VR", "Interaction Design", "Rapid Prototyping"],
+      sections: [
+        {
+          id: "overview",
+          level: 1,
+          number: "1.",
+          title: "Overview",
+          blocks: [
+            {
+              type: "paragraph",
+              text: "VR Chord is an interaction prototype exploring how to type better in virtual reality. Existing VR input has three common pain points — tiring (hands floating to tap, shoulders and arms fatigue quickly), slow (controller pointing is inefficient), and difficult (keyboards float in space and are hard to locate quickly). This project tries several approaches to answer the question: how should VR input methods be designed?",
+            },
+            {
+              type: "image",
+              src: "/images/vr-chord-problem-definition.png",
+              alt: "VR Chord problem definition — problem, pain points, and potential solutions",
+              width: 1024,
+              height: 494,
+            },
+          ],
+        },
+        {
+          id: "three-approaches",
+          level: 1,
+          number: "2.",
+          title: "Three Approaches",
+          blocks: [],
+        },
+        {
+          id: "split-keyboard",
+          level: 2,
+          number: "2.1",
+          title: "Split Keyboard",
+          blocks: [
+            {
+              type: "paragraph",
+              text: 'Inspired by CHI 2019 "Typing on Split Keyboards with Peripheral Vision" (Lu et al.) and peripheral typing: once the keyboard is split in two, visual focus can stay on the output text while the keyboard recedes into peripheral vision — eliminating the attention switching of scanning back and forth between the two halves. On touchscreen, the original paper found this mode about 28% faster than "staring at the keyboard" (reaching 27 WPM). In VR, the split layout also narrows the angular offset between the hands and the center of the headset\'s field of view, and reduces arm abduction — directly targeting VR typing\'s main source of fatigue: static load from elevated arms.',
+            },
+            {
+              type: "image",
+              src: "/images/vr-chord-split-keyboard.png",
+              alt: "Split keyboard peripheral typing — eyes-on, peripheral, and no-keyboard conditions",
+              caption:
+                "[Lu et al., Typing on Split Keyboards with Peripheral Vision, CHI 2019. DOI: 10.1145/3290605.3300472]",
+              width: 1024,
+              height: 911,
+            },
+            {
+              type: "image",
+              src: "/images/vr-chord-split-keyboard-demo.gif",
+              alt: "Split Keyboard VR demo",
+              width: 720,
+              height: 468,
+            },
+          ],
+        },
+        {
+          id: "piano-keyboard",
+          level: 2,
+          number: "2.2",
+          title: "Piano Keyboard",
+          blocks: [
+            {
+              type: "paragraph",
+              text: "Inspired by Feit & Oulasvirta's PianoText (DIS 2014): the study argues that piano performance achieves extremely high keypress rates thanks to high parallelism from alternating hands and chords. Accordingly, letter-to-key mapping is treated as an optimization problem — key positions are rearranged based on letter bigram statistics in the corpus, so high-frequency letter sequences fall in positions that hands or multiple fingers can flow through or press simultaneously.",
+            },
+            {
+              type: "numbered",
+              items: [
+                {
+                  title: "Frequency-optimized layout",
+                  body: "The 55 keys are rearranged by English letter frequency. High-frequency letters (e.g. E, about 12.7% of English text) sit in the most reachable center; low-frequency letters (e.g. Z, X) are pushed to the edges, reducing average finger travel cost — approximating targeting cost under Fitts's law.",
+                },
+              ],
+            },
+            {
+              type: "mediaRow",
+              items: [
+                {
+                  src: "/images/vr-chord-letter-frequency.png",
+                  alt: "Letter frequencies in the English language",
+                  width: 500,
+                  height: 400,
+                },
+                {
+                  src: "/images/vr-chord-piano-layout.png",
+                  alt: "Piano keyboard layout with frequency-optimized letter mapping",
+                  width: 1024,
+                  height: 467,
+                },
+              ],
+              caption: "[Letter frequency and keyboard layout mapping. Source: Wikipedia]",
+            },
+            {
+              type: "numbered",
+              start: 2,
+              items: [
+                {
+                  title: "Chorded input",
+                  body: 'For the most frequent letter clusters in English, multiple fingers press at once — two fingers for the bigram th, three for the trigram ing. This turns "letter-by-letter tapping" into chunk input: fewer actions encode more characters, like playing chords rather than individual notes.',
+                },
+              ],
+            },
+            {
+              type: "image",
+              src: "/images/vr-chord-piano-demo.gif",
+              alt: "Piano Keyboard VR demo",
+              width: 720,
+              height: 468,
+            },
+          ],
+        },
+        {
+          id: "drum-keyboard",
+          level: 2,
+          number: "2.3",
+          title: "Drum Keyboard",
+          blocks: [
+            {
+              type: "paragraph",
+              text: 'Inspired by "Text Input in VR: A Preliminary Evaluation of the Drum-Like VR Keyboard" (Technologies, 2019) and its drum-kit metaphor: controllers become drumsticks, striking keys in space with downward hits — leveraging proprioception and spatial memory to reduce the burden of locating "where is the keyboard" (the original paper reports ~24.61 WPM and 7.2% error rate). On top of this, a real-time language model assists with N-Gram prediction of the next word and Levenshtein edit distance for spelling correction; candidate words appear as bubbles above the keyboard for tap-to-select — suited to lightweight input like social chat.',
+            },
+            {
+              type: "image",
+              src: "/images/vr-chord-drum-ngram.png",
+              alt: "Diagram of Levenshtein distance and N-Gram word segmentation",
+              caption:
+                "[Diagram of Levenshtein distance and N-Gram word segmentation]",
+              width: 1024,
+              height: 438,
+            },
+            {
+              type: "image",
+              src: "/images/vr-chord-drum-demo.gif",
+              alt: "Drum Keyboard VR demo",
+              width: 720,
+              height: 468,
+            },
+          ],
+        },
+        {
+          id: "full-demo",
+          level: 1,
+          number: "3.",
+          title: "Full Demo",
+          blocks: [
+            {
+              type: "paragraph",
+              text: "Build: Built on Unity + OpenXR, running on Meta Quest. The piano-style mode relies on hand tracking for multi-finger chord strikes; the drum-style mode uses controllers as drumsticks. Prediction and correction use N-Gram + Levenshtein algorithms.",
+            },
+            {
+              type: "image",
+              src: "/images/vr-chord-full-demo.mp4",
+              alt: "VR Chord full demo",
+              width: 720,
+              height: 468,
+              controls: true,
+              loop: false,
+            },
+          ],
+        },
+        {
+          id: "references",
+          level: 1,
+          number: "4.",
+          title: "References",
+          blocks: [
+            {
+              type: "bullets",
+              items: [
+                "Feit & Oulasvirta, PianoText: Redesigning the Piano Keyboard for Text Entry, DIS 2014. DOI: 10.1145/2598510.2598540",
+                "Lu et al., Typing on Split Keyboards with Peripheral Vision, CHI 2019. DOI: 10.1145/3290605.3300472",
+                "Text Input in Virtual Reality: A Preliminary Evaluation of the Drum-Like VR Keyboard, Technologies 2019, 7(2), 31. https://doi.org/10.3390/technologies7020031",
+              ],
+            },
+          ],
+        },
+      ],
+    },
+    cn: {
+      title: "VR Chord",
+      description: "重新设计 VR 里的打字方式",
+      tags: ["XR / VR", "交互设计", "快速原型"],
+      sections: [
+        {
+          id: "overview",
+          level: 1,
+          number: "1.",
+          title: "概述",
+          blocks: [
+            {
+              type: "paragraph",
+              text: "VR Chord 是一个探索「在虚拟现实里怎么打字更好」的交互原型。现有 VR 输入普遍有三个痛点——累（手悬空敲击，肩臂很快酸痛）、慢（手柄指点效率低）、难（键盘漂浮在空中，难以快速定位）。这个项目尝试了几套方案，去回答「VR 输入法到底该被怎么设计」这个问题。",
+            },
+            {
+              type: "image",
+              src: "/images/vr-chord-problem-definition.png",
+              alt: "VR Chord 问题定义——问题、痛点与潜在方案",
+              width: 1024,
+              height: 494,
+            },
+          ],
+        },
+        {
+          id: "three-approaches",
+          level: 1,
+          number: "2.",
+          title: "三种方案",
+          blocks: [],
+        },
+        {
+          id: "split-keyboard",
+          level: 2,
+          number: "2.1",
+          title: "Split Keyboard（分体式）",
+          blocks: [
+            {
+              type: "paragraph",
+              text: "借鉴 CHI 2019《Typing on Split Keyboards with Peripheral Vision》（Lu et al.）提出的外周视觉打字（peripheral typing）：键盘一分为二后，视觉焦点可以留在输出文本上，让键盘退居外周视野，从而消除在键盘两半间来回扫视的注意力切换（attention switching）。原论文在触屏上验证该模式比「盯着键盘打」快约 28%（达 27 WPM）。迁移到 VR 后，分体布局同时缩小了双手与头显视野中心的角度差、压缩了手臂外展幅度——直接针对 VR 打字最主要的疲劳来源：悬空手臂的静态负荷。",
+            },
+            {
+              type: "image",
+              src: "/images/vr-chord-split-keyboard.png",
+              alt: "分体式键盘外周视觉打字——直视、外周与无键盘三种条件",
+              caption:
+                "[Lu et al., Typing on Split Keyboards with Peripheral Vision, CHI 2019. DOI: 10.1145/3290605.3300472]",
+              width: 1024,
+              height: 911,
+            },
+            {
+              type: "image",
+              src: "/images/vr-chord-split-keyboard-demo.gif",
+              alt: "分体式键盘 VR 演示",
+              width: 720,
+              height: 468,
+            },
+          ],
+        },
+        {
+          id: "piano-keyboard",
+          level: 2,
+          number: "2.2",
+          title: "Piano Keyboard（钢琴式）",
+          blocks: [
+            {
+              type: "paragraph",
+              text: "借鉴 Feit & Oulasvirta 的 PianoText（DIS 2014）：该研究指出，钢琴演奏之所以能达到极高的按键速率，源于双手交替与和弦带来的高并行度。据此把「字母到琴键的映射」当作一个优化问题，依据语料中的字母共现（二元组）统计重排键位，让高频字母序列尽量落在能被双手/多指流畅衔接或同时按下的位置。",
+            },
+            {
+              type: "numbered",
+              items: [
+                {
+                  title: "频率优化布局（frequency-optimized layout）",
+                  body: "55 键的字母位置按英文字母出现频率重排，高频字母（如 E，约占英文文本 12.7%）置于最易触达的中心区，低频字母（如 Z、X）推向边缘，以降低平均手指移动成本（近似费茨（Fitts）定律下的触达代价）。",
+                },
+              ],
+            },
+            {
+              type: "mediaRow",
+              items: [
+                {
+                  src: "/images/vr-chord-letter-frequency.png",
+                  alt: "英文字母频率分布",
+                  width: 500,
+                  height: 400,
+                },
+                {
+                  src: "/images/vr-chord-piano-layout.png",
+                  alt: "钢琴式键盘频率优化字母映射",
+                  width: 1024,
+                  height: 467,
+                },
+              ],
+              caption: "[字母频率与键盘排布映射 来源维基百科]",
+            },
+            {
+              type: "numbered",
+              start: 2,
+              items: [
+                {
+                  title: "和弦/组合键输入（chorded input）",
+                  body: "对英文中最高频的字母簇，用多指一次性按下成词——双指同时按输入最常见的二元组 th，三指同时按输入高频三元组 ing。这把「逐字母敲击」变成「按块输入」，用更少的动作数编码更多字符，如同弹奏和弦而非逐个音符。",
+                },
+              ],
+            },
+            {
+              type: "image",
+              src: "/images/vr-chord-piano-demo.gif",
+              alt: "钢琴式键盘 VR 演示",
+              width: 720,
+              height: 468,
+            },
+          ],
+        },
+        {
+          id: "drum-keyboard",
+          level: 2,
+          number: "2.3",
+          title: "Drum Keyboard（鼓式）",
+          blocks: [
+            {
+              type: "paragraph",
+              text: "借鉴《Text Input in VR: A Preliminary Evaluation of the Drum-Like VR Keyboard》（Technologies, 2019）的鼓组隐喻：手柄化作鼓槌，以向下敲击「击打」空间中的键位，借助人对空间位置本体感觉与空间记忆（proprioception / spatial memory）降低「键盘在哪」的定位负担（原论文报告约 24.61 WPM、7.2% 错误率）。在此之上叠加一层实时语言模型辅助——N-Gram 模型预测下一个词、Levenshtein 编辑距离做拼写纠错，候选词以气泡浮现于键盘上方即点即选，适合社交聊天等轻量输入。",
+            },
+            {
+              type: "image",
+              src: "/images/vr-chord-drum-ngram.png",
+              alt: "Levenshtein 距离与 N-Gram 词分割示意图",
+              caption: "[Levenshtein距离和N-Gram词分割的示意图]",
+              width: 1024,
+              height: 438,
+            },
+            {
+              type: "image",
+              src: "/images/vr-chord-drum-demo.gif",
+              alt: "鼓式键盘 VR 演示",
+              width: 720,
+              height: 468,
+            },
+          ],
+        },
+        {
+          id: "full-demo",
+          level: 1,
+          number: "3.",
+          title: "完整展示",
+          blocks: [
+            {
+              type: "paragraph",
+              text: "构成：基于 Unity + OpenXR，运行于 Meta Quest。钢琴式依赖手部追踪实现多指和弦敲击，鼓式以手柄作为鼓槌；预测与纠错基于 N-Gram + Levenshtein 算法。",
+            },
+            {
+              type: "image",
+              src: "/images/vr-chord-full-demo.mp4",
+              alt: "VR Chord 完整展示",
+              width: 720,
+              height: 468,
+              controls: true,
+              loop: false,
+            },
+          ],
+        },
+        {
+          id: "references",
+          level: 1,
+          number: "4.",
+          title: "参考文献",
+          blocks: [
+            {
+              type: "bullets",
+              items: [
+                "Feit & Oulasvirta, PianoText: Redesigning the Piano Keyboard for Text Entry, DIS 2014. DOI: 10.1145/2598510.2598540",
+                "Lu et al., Typing on Split Keyboards with Peripheral Vision, CHI 2019. DOI: 10.1145/3290605.3300472",
+                "Text Input in Virtual Reality: A Preliminary Evaluation of the Drum-Like VR Keyboard, Technologies 2019, 7(2), 31. https://doi.org/10.3390/technologies7020031",
+              ],
+            },
+          ],
+        },
+      ],
+    },
   },
   {
     slug: "crazy-baby-alarm",

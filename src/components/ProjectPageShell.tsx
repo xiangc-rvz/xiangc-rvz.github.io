@@ -69,9 +69,10 @@ function ContentBlocks({ blocks }: { blocks: ContentBlock[] }) {
                   src={block.src}
                   width={block.width}
                   height={block.height}
-                  autoPlay
-                  loop
-                  muted
+                  autoPlay={!block.controls}
+                  loop={block.loop ?? !block.controls}
+                  muted={!block.controls}
+                  controls={block.controls}
                   playsInline
                   aria-label={block.alt}
                 />
@@ -93,36 +94,41 @@ function ContentBlocks({ blocks }: { blocks: ContentBlock[] }) {
 
         if (block.type === "mediaRow") {
           return (
-            <div key={i} className="project-media-row">
-              {block.items.map((item, j) => {
-                const isAnimated = item.src.endsWith(".gif");
-                const isVideo = /\.(mp4|webm|mov)(\?|$)/i.test(item.src);
-                return (
-                  <figure key={j} className="project-media-row-item">
-                    {isVideo ? (
-                      <video
-                        src={item.src}
-                        width={item.width}
-                        height={item.height}
-                        autoPlay
-                        loop
-                        muted
-                        playsInline
-                        aria-label={item.alt}
-                      />
-                    ) : (
-                      <Image
-                        src={item.src}
-                        alt={item.alt}
-                        width={item.width}
-                        height={item.height}
-                        unoptimized={isAnimated}
-                      />
-                    )}
-                  </figure>
-                );
-              })}
-            </div>
+            <figure key={i} className="project-media-row-wrap">
+              <div className="project-media-row">
+                {block.items.map((item, j) => {
+                  const isAnimated = item.src.endsWith(".gif");
+                  const isVideo = /\.(mp4|webm|mov)(\?|$)/i.test(item.src);
+                  return (
+                    <div key={j} className="project-media-row-item">
+                      {isVideo ? (
+                        <video
+                          src={item.src}
+                          width={item.width}
+                          height={item.height}
+                          autoPlay
+                          loop
+                          muted
+                          playsInline
+                          aria-label={item.alt}
+                        />
+                      ) : (
+                        <Image
+                          src={item.src}
+                          alt={item.alt}
+                          width={item.width}
+                          height={item.height}
+                          unoptimized={isAnimated}
+                        />
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+              {block.caption ? (
+                <figcaption className="project-inline-caption">{block.caption}</figcaption>
+              ) : null}
+            </figure>
           );
         }
 

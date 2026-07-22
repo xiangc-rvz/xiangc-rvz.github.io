@@ -27,14 +27,13 @@ type Shot =
 
 const shots: Shot[] = [
   {
-    kind: "external",
-    title: "Pop-Up Shop Live",
-    image: "/images/dribbble-stop-asian-hate-16-9@2x.png",
-    imageAlt:
-      "Vector illustration of discarded bowl of chicken wings and rice left on the sidewalk",
-    link: "https://dribbble.com/shots/15518575-Pop-Up-Shop-Live",
-    ctaEn: "View on Dribbble",
-    ctaCn: "在 Dribbble 查看",
+    kind: "project",
+    slug: "vr-chord",
+    title: "VR Chord",
+    image: "/images/vr-chord-cover.png",
+    imageAlt: "VR Chord — reimagining typing in virtual reality",
+    ctaEn: "View project",
+    ctaCn: "查看项目",
   },
   {
     kind: "external",
