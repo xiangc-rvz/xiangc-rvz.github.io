@@ -36,13 +36,14 @@ const shots: Shot[] = [
     ctaCn: "查看项目",
   },
   {
-    kind: "external",
-    title: "Numbers",
-    image: "/images/dribbble-numbers-16-9@2x.png",
-    imageAlt: "Digits zero through nine in a bubbly but slim font",
-    link: "https://dribbble.com/shots/10869796-Numbers",
-    ctaEn: "View on Dribbble",
-    ctaCn: "在 Dribbble 查看",
+    kind: "project",
+    slug: "pass-that-there",
+    title: "Pass That There",
+    image: "/images/pass-that-there-cover.png",
+    imageAlt:
+      "Pass That There — collaborative XR interaction techniques for handing objects between users",
+    ctaEn: "View project",
+    ctaCn: "查看项目",
   },
   {
     kind: "project",

@@ -54,6 +54,7 @@ export type ProjectCopy = {
   title: string;
   description: string;
   tags?: string[];
+  advisor?: string;
   sections: ProjectSection[];
 };
 
@@ -1480,6 +1481,445 @@ export const projects: Project[] = [
                 "Feit & Oulasvirta, PianoText: Redesigning the Piano Keyboard for Text Entry, DIS 2014. DOI: 10.1145/2598510.2598540",
                 "Lu et al., Typing on Split Keyboards with Peripheral Vision, CHI 2019. DOI: 10.1145/3290605.3300472",
                 "Text Input in Virtual Reality: A Preliminary Evaluation of the Drum-Like VR Keyboard, Technologies 2019, 7(2), 31. https://doi.org/10.3390/technologies7020031",
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    slug: "pass-that-there",
+    image: "/images/pass-that-there-cover.png",
+    imageAlt:
+      "Pass That There — collaborative XR interaction techniques for handing objects between users",
+    showInHomeGrid: false,
+    en: {
+      title: "Pass That There",
+      description:
+        "Designing intuitive, low-fatigue interaction techniques for collaborative XR",
+      tags: ["XR", "HCI Research", "Interaction Technique Design"],
+      advisor:
+        "Prof. Brad Myers (Director, CMU HCII · SIGCHI Lifetime Achievement Award)",
+      sections: [
+        {
+          id: "overview",
+          level: 1,
+          number: "1.",
+          title: "Overview",
+          blocks: [
+            {
+              type: "paragraph",
+              text: 'This project asks how collaborative interaction in XR should work. Focusing on multi-user tasks in shared virtual space, we proposed and prototyped two original interaction techniques — gesture and speech — and evaluated them through a user study on intuitiveness, efficiency, and fatigue.',
+            },
+          ],
+        },
+        {
+          id: "background",
+          level: 1,
+          number: "2.",
+          title: "Background",
+          blocks: [
+            {
+              type: "paragraph",
+              text: "Collaboration is becoming a core XR scenario. From team workspaces (such as multiplayer modeling in Arkio) to multiplayer games (such as Cards & Tankards), XR is increasingly used for people sharing one virtual space and operating together. Yet the interaction techniques that support this collaboration still largely carry over from single-user designs.",
+            },
+            {
+              type: "paragraph",
+              text: "Existing techniques and their limits. Object interaction in XR today mainly falls into two camps: natural gestures such as pinch & drag, and laser-pointer selection with controllers. Both work reasonably for solo use, but for collaborative actions like handing an object to a partner, they feel unnatural and quickly induce fatigue.",
+            },
+            {
+              type: "paragraph",
+              text: "Core pain point: gorilla arm. Holding the arms out to point and reach for long periods quickly tires the shoulders and arms — a well-known fatigue source in XR. Sustained mid-air operation is exactly the most frequent motion in collaborative scenarios.",
+            },
+            {
+              type: "image",
+              src: "/images/pass-that-there-gorilla-arm.png",
+              alt: "Arm posture changes in VR — bent vs stretched arm",
+              caption:
+                "[Lou et al., Arm Posture Changes in VR, Applied Sciences 2022. DOI: 10.3390/app12052585]",
+              width: 885,
+              height: 431,
+            },
+            {
+              type: "paragraph",
+              text: "Research question: For collaborative tasks in XR, which interaction techniques feel natural and intuitive while also minimizing fatigue?",
+            },
+          ],
+        },
+        {
+          id: "approach",
+          level: 1,
+          number: "3.",
+          title: "Approach & Lineage",
+          blocks: [
+            {
+              type: "paragraph",
+              text: "Our stance: rather than further optimizing a single mid-air gesture, introduce multimodal interaction (speech + micro-gestures), assigning different responsibilities to different modalities and reducing continuous mid-air load.",
+            },
+            {
+              type: "paragraph",
+              text: 'This idea traces directly to a foundational multimodal system: MIT\'s "Put That There" (Bolt, 1980). The insight of that speak-and-point system was to let speech carry intent and pointing resolve reference (saying "put that there," with "that/there" grounded by pointing coordinates). The two modalities complement each other — reducing ambiguity while feeling more natural than either alone.',
+            },
+            {
+              type: "paragraph",
+              text: 'We migrate that classic paradigm into today\'s collaborative XR: speech expresses "I want to share," while gesture/selection determines what to share and with whom — bringing collaborative actions closer to how people communicate in the real world.',
+            },
+          ],
+        },
+        {
+          id: "technique",
+          level: 1,
+          number: "4.",
+          title: "The Invented Technique",
+          blocks: [
+            {
+              type: "paragraph",
+              text: "We narrowed broad \"collaboration\" to one concrete, high-frequency action: passing an object from one person to another in VR (scenario: Alex and Joe assembling a VR LEGO model together). Around it we designed two techniques that share one principle — a lightweight UI confirmation step that prevents accidental triggers and separates expressing intent from actually executing:",
+            },
+            {
+              type: "numbered",
+              items: [
+                {
+                  title: "Gesture pass (Gesture → UI)",
+                  body: 'After selecting an object, the user raises an open palm toward a collaborator — a simple action with clear intent. The system recognizes a "share" intention and shows a confirmation UI; interacting with the UI completes the pass, and the object appears in the partner\'s hand.',
+                },
+              ],
+            },
+            {
+              type: "image",
+              src: "/images/pass-that-there-gesture-storyboard-transparent.png",
+              alt: "Gesture pass scenario storyboard",
+              caption: "[Scenario]",
+              width: 1024,
+              height: 832,
+            },
+            {
+              type: "image",
+              src: "/images/pass-that-there-gesture.mp4",
+              alt: "Gesture pass demo",
+              caption: "[Demo]",
+              width: 720,
+              height: 720,
+              controls: true,
+              loop: false,
+            },
+            {
+              type: "numbered",
+              start: 2,
+              items: [
+                {
+                  title: "Speech pass (Natural Language → UI)",
+                  body: 'After selecting an object, the user speaks a natural phrase ("Want this?" "Share this cube" "Here, take it"). The system detects sharing intent, triggers the corresponding confirmation UI, and completes the pass; the receiver gets visual/auditory feedback that it arrived.',
+                },
+              ],
+            },
+            {
+              type: "image",
+              src: "/images/pass-that-there-voice-storyboard-transparent.png",
+              alt: "Speech pass scenario storyboard",
+              caption: "[Scenario]",
+              width: 1024,
+              height: 867,
+            },
+            {
+              type: "image",
+              src: "/images/pass-that-there-voice.mp4",
+              alt: "Speech pass demo",
+              caption: "[Demo]",
+              width: 720,
+              height: 720,
+              controls: true,
+              loop: false,
+            },
+            {
+              type: "paragraph",
+              text: 'Both designs deliberately keep the confirmation step: in a shared multi-user space, accidental triggers cost more. One confirmation is how we balance "natural" with "controllable."',
+            },
+          ],
+        },
+        {
+          id: "build",
+          level: 1,
+          number: "5.",
+          title: "Build",
+          blocks: [
+            {
+              type: "paragraph",
+              text: "Unity + OpenXR + Meta All-in-One SDK, running on Meta Quest 2 / Pro; multiplayer sync via Unity Netcode for GameObjects (NGO); gesture recognition via XR Hands; speech intent recognition via Wit.AI (Meta Voice SDK), mapping utterance to intent.",
+            },
+          ],
+        },
+        {
+          id: "study",
+          level: 1,
+          number: "6.",
+          title: "Study & Findings",
+          blocks: [
+            {
+              type: "paragraph",
+              text: "Method. A comparative evaluation with 5 participants of varying XR experience: each watched prototype videos of both techniques in randomized order, then rated five dimensions on a 7-point Likert scale — intuitiveness, cognitive load, physical comfort, control & feedback, and preference — plus open-ended feedback.",
+            },
+            {
+              type: "paragraph",
+              text: "Quantitative findings.",
+            },
+            {
+              type: "bullets",
+              items: [
+                "Gesture felt more intuitive for spatial tasks (6.6/7), with stronger control, precision, immersion, and low latency — but weak visual feedback left users unsure whether gestures were recognized, and comfort dropped with prolonged use.",
+                "Speech scored highest on collaborative efficiency (6.6/7): natural, conversational, and hands-free — but only suited clear interaction regions, and physical comfort was lowest for prolonged use (4.6/7).",
+              ],
+            },
+            {
+              type: "paragraph",
+              text: 'Qualitative findings. Participant quotes capture the tradeoff: gesture was "more intuitive — I can control the whole process better"; speech "makes collaboration feel natural and fast, like being in a room with someone, not just wearing a headset."',
+            },
+            {
+              type: "paragraph",
+              text: "Preference split clearly: 2 favored gesture / 1 favored speech / 2 had no preference — 40% saw value in both.",
+            },
+            {
+              type: "image",
+              src: "/images/pass-that-there-study-results-1.png",
+              alt: "Quantitative comparison and overall preference from the user study",
+              caption: "[Study Results]",
+              width: 1024,
+              height: 439,
+            },
+            {
+              type: "image",
+              src: "/images/pass-that-there-study-results-2.png",
+              alt: "Gesture-based and voice-based participant quotes from the user study",
+              caption: "[Study Results]",
+              width: 1024,
+              height: 413,
+            },
+            {
+              type: "paragraph",
+              text: "Implications for design:",
+            },
+            {
+              type: "bullets",
+              items: [
+                "No single best technique — design a context-adaptive hybrid so users can switch between speech and gesture by task and environment.",
+                "Gesture needs stronger visual feedback (highlights, ripples, color changes) to confirm that the system understood in the moment.",
+                "Next: more complex collaborative tasks closer to real workflows (e.g., co-designing a room interior), larger samples, and validation on Meta Quest 3.",
+              ],
+            },
+          ],
+        },
+      ],
+    },
+    cn: {
+      title: "Pass That There",
+      description: "为 XR 协作任务设计更自然、更省力的交互方式",
+      tags: ["XR", "HCI 研究", "交互技术设计"],
+      advisor: "Prof. Brad Myers（CMU HCII 主任 · SIGCHI 终身成就奖）",
+      sections: [
+        {
+          id: "overview",
+          level: 1,
+          number: "1.",
+          title: "概述",
+          blocks: [
+            {
+              type: "paragraph",
+              text: "这是一个研究「XR 协作交互该怎么做」的项目：围绕「多人在 XR 里一起完成任务」这一场景，我们提出并原型化了两套自创的交互技术（手势 / 语音），并通过用户研究评估它们在直觉性、效率与疲劳上的表现。",
+            },
+          ],
+        },
+        {
+          id: "background",
+          level: 1,
+          number: "2.",
+          title: "研究背景",
+          blocks: [
+            {
+              type: "paragraph",
+              text: "协作正在成为 XR 的核心场景。从团队协作工作空间（如 Arkio 的多人建模）到多人游戏（如 Cards & Tankards），XR 越来越多地被用于「多人同处一个虚拟空间共同操作」。但支撑这些协作的交互技术，大多还沿用单人时代的方案。",
+            },
+            {
+              type: "paragraph",
+              text: "现有交互技术及其局限。目前 XR 里操作物体主要靠两类方式：一是捏取拖拽（pinch & drag）等自然手势，二是手柄激光笔（laser pointer）指向选取。它们在单人操作里够用，但放到「把东西递给协作者」这类协作动作上，既不够自然，也很快带来疲劳。",
+            },
+            {
+              type: "paragraph",
+              text: "核心痛点：大猩猩手臂（Gorilla Arm）。手长时间悬空指点、伸展，肩臂会迅速酸痛——这是 XR 交互公认的疲劳来源。持续的悬空操作，恰恰是协作场景里最频繁的动作。",
+            },
+            {
+              type: "image",
+              src: "/images/pass-that-there-gorilla-arm.png",
+              alt: "VR 中手臂姿势变化——弯臂 vs 伸臂",
+              caption:
+                "[Lou et al., Arm Posture Changes in VR, Applied Sciences 2022. DOI: 10.3390/app12052585]",
+              width: 885,
+              height: 431,
+            },
+            {
+              type: "paragraph",
+              text: "研究问题：在 XR 里做协作任务时，哪种交互方式既能让人觉得自然直觉，又能尽量减少疲劳？",
+            },
+          ],
+        },
+        {
+          id: "approach",
+          level: 1,
+          number: "3.",
+          title: "设计思路：多模态交互及其谱系",
+          blocks: [
+            {
+              type: "paragraph",
+              text: "我们的判断是：与其优化单一的悬空手势，不如引入多模态交互（语音 + 微手势），用不同模态分担不同职责，减少持续悬空的负荷。",
+            },
+            {
+              type: "paragraph",
+              text: "这一思路可以直接上溯到多模态交互的开山之作：MIT 的 \"Put That There\"（Bolt, 1980）。那套 speak-and-point 系统的洞见是：让语音承载「意图」，让指向手势解决「指代」（说 \"put that there\"，\"that/there\" 由指向的坐标来确定），两种模态互补，既消除歧义，又比任何单一模态都更自然。",
+            },
+            {
+              type: "paragraph",
+              text: "我们把这个经典范式迁移到今天的 XR 协作：语音表达「我想分享」，手势 / 选择确定「分享哪个、给谁」，让协作动作回到接近现实的交流方式。",
+            },
+          ],
+        },
+        {
+          id: "technique",
+          level: 1,
+          number: "4.",
+          title: "自创的交互技术",
+          blocks: [
+            {
+              type: "paragraph",
+              text: "我们把宽泛的「协作」收敛到一个具体而高频的动作：在 VR 里把一个物体从一个人传递给另一个人（场景：Alex 和 Joe 一起搭一个 VR 乐高模型）。围绕它设计了两套技术，共享同一条设计原则——用一步轻量的 UI 确认来防止误触，让「表达意图」和「真正执行」分开：",
+            },
+            {
+              type: "numbered",
+              items: [
+                {
+                  title: "手势传递（Gesture → UI）",
+                  body: "用户选中物体后，朝协作者抬起手掌——一个简单而有明确意图的动作；系统识别为「分享」意图并弹出确认，用户与 UI 交互即完成传递，物体出现在对方手中。",
+                },
+              ],
+            },
+            {
+              type: "image",
+              src: "/images/pass-that-there-gesture-storyboard-transparent.png",
+              alt: "手势传递场景构想分镜",
+              caption: "[场景构想]",
+              width: 1024,
+              height: 832,
+            },
+            {
+              type: "image",
+              src: "/images/pass-that-there-gesture.mp4",
+              alt: "手势传递演示",
+              caption: "[演示 Demo]",
+              width: 720,
+              height: 720,
+              controls: true,
+              loop: false,
+            },
+            {
+              type: "numbered",
+              start: 2,
+              items: [
+                {
+                  title: "语音传递（Natural Language → UI）",
+                  body: "用户选中物体后说出自然语句（\"Want this?\" \"Share this cube\" \"Here, take it\"）；系统识别其中的分享意图，触发对应 UI 确认后完成传递，接收方以视觉 / 听觉反馈确认收到。",
+                },
+              ],
+            },
+            {
+              type: "image",
+              src: "/images/pass-that-there-voice-storyboard-transparent.png",
+              alt: "语音传递场景构想分镜",
+              caption: "[场景构想]",
+              width: 1024,
+              height: 867,
+            },
+            {
+              type: "image",
+              src: "/images/pass-that-there-voice.mp4",
+              alt: "语音传递演示",
+              caption: "[演示 Demo]",
+              width: 720,
+              height: 720,
+              controls: true,
+              loop: false,
+            },
+            {
+              type: "paragraph",
+              text: "两套方案都刻意保留「确认」这一步：在多人共享的空间里，误触的代价更高，一步确认是把「自然」和「可控」平衡起来的关键。",
+            },
+          ],
+        },
+        {
+          id: "build",
+          level: 1,
+          number: "5.",
+          title: "原型构成",
+          blocks: [
+            {
+              type: "paragraph",
+              text: "Unity + OpenXR + Meta All-in-One SDK，运行于 Meta Quest 2 / Pro；多人实时同步用 Unity Netcode for GameObjects（NGO）；手势识别用 XR Hands；语音意图识别用 Wit.AI（Meta Voice SDK，把「话语」映射到「意图」）。",
+            },
+          ],
+        },
+        {
+          id: "study",
+          level: 1,
+          number: "6.",
+          title: "用户研究与发现",
+          blocks: [
+            {
+              type: "paragraph",
+              text: "方法。对 5 位有不同 XR 经验的用户做对照评测：每人以随机顺序观看两种技术的原型视频，再用 7 点李克特量表从五个维度打分——直觉性、认知负荷、身体舒适度、控制与反馈、偏好，并附开放式反馈。",
+            },
+            {
+              type: "paragraph",
+              text: "定量发现。",
+            },
+            {
+              type: "bullets",
+              items: [
+                "手势在空间任务上更直觉（6.6/7），控制感与精度更强、更沉浸，延迟低；但视觉反馈偏弱——用户常不确定手势有没有被识别，长时间使用舒适度下降。",
+                "语音在协作效率上最高（6.6/7），自然、像真人对话、可解放双手；但只适用于清晰的交互区域，且长时间使用的身体舒适度最低（4.6/7）。",
+              ],
+            },
+            {
+              type: "paragraph",
+              text: "定性发现。用户原话很能说明问题：手势「更直觉、我能更好地控制整个过程」；语音「让协作感觉自然、快速、像真的和人在一个房间里，而不只是戴着头显」。",
+            },
+            {
+              type: "paragraph",
+              text: "偏好呈明显分裂：2 人偏手势 / 1 人偏语音 / 2 人无偏好——40% 的人认为两者各有价值。",
+            },
+            {
+              type: "image",
+              src: "/images/pass-that-there-study-results-1.png",
+              alt: "用户研究中的定量对比与总体偏好",
+              caption: "[用户研究结果]",
+              width: 1024,
+              height: 439,
+            },
+            {
+              type: "image",
+              src: "/images/pass-that-there-study-results-2.png",
+              alt: "用户研究中的手势与语音访谈摘录",
+              caption: "[用户研究结果]",
+              width: 1024,
+              height: 413,
+            },
+            {
+              type: "paragraph",
+              text: "结论（对设计的启示）：",
+            },
+            {
+              type: "bullets",
+              items: [
+                "没有单一最优解，应做成情境自适应的混合方案——让用户按任务与环境在语音 / 手势间切换。",
+                "手势交互亟需更强的视觉反馈（高亮、涟漪、颜色变化）来即时确认「系统听懂了」。",
+                "下一步：引入更贴近真实工作流的复杂协作任务（如共同设计一个房间的室内）、扩大样本、并迁移到 Meta Quest 3 上继续验证。",
               ],
             },
           ],

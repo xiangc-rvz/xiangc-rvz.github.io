@@ -309,6 +309,14 @@ export function ProjectPageShell({ lang, slug }: Props) {
               </ul>
             </div>
           )}
+          {copy.advisor ? (
+            <p className="project-advisor">
+              <span className="project-tags-label">
+                {lang === "en" ? "Advisor:" : "指导老师："}
+              </span>{" "}
+              {copy.advisor}
+            </p>
+          ) : null}
           <hr className="double" />
           <figure className="project-cover">
             <Image

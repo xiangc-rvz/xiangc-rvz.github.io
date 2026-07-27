@@ -553,6 +553,16 @@ footer {
   margin: 0 0 24px;
 }
 
+.project-advisor {
+  margin: -12px 0 24px;
+  max-width: 640px;
+  font-family: 'MaisonNeue', 'Courier', monospace;
+  font-size: 13px;
+  letter-spacing: -0.2px;
+  line-height: 20px;
+  color: rgba(0, 0, 0, 0.72);
+}
+
 .project-tags-label {
   font-family: 'MaisonNeue', 'Courier', monospace;
   font-size: 13px;
@@ -667,6 +677,7 @@ footer {
 
 .project-inline-caption {
   margin-top: 10px;
+  margin-bottom: 24px;
   text-align: center;
   font-family: 'MaisonNeue', 'Courier', monospace;
   font-size: 12px;
