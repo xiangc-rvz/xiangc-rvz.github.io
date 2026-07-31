@@ -20,22 +20,11 @@ export function ProjectSection() {
       </div>
 
       <div className="columns" style={{ alignItems: "flex-start" }}>
-        {homeProjects.map((project, i) => {
+        {homeProjects.map((project) => {
           const copy = project[lang];
           const href = projectHref(lang, project.slug);
           return (
-            <article
-              key={project.slug}
-              className="column grayscale-hover"
-              style={{
-                padding:
-                  i === 0
-                    ? "0 12px 0 0"
-                    : i === homeProjects.length - 1
-                      ? "0 0 0 12px"
-                      : "0 12px",
-              }}
-            >
+            <article key={project.slug} className="column grayscale-hover">
               <Link href={href} style={{ display: "block", color: "inherit", textDecoration: "none" }}>
                 <Image
                   src={project.image}

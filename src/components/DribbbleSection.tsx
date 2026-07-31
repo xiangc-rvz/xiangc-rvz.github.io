@@ -73,19 +73,13 @@ export function DribbbleSection() {
 
       {/* 3-column grid */}
       <div className="columns" style={{ alignItems: "flex-start" }}>
-        {shots.map((shot, i) => {
+        {shots.map((shot) => {
           const href =
             shot.kind === "project" ? projectHref(lang, shot.slug) : shot.link;
           const cta = lang === "en" ? shot.ctaEn : shot.ctaCn;
-          const padding =
-            i === 0 ? "0 12px 0 0" : i === shots.length - 1 ? "0 0 0 12px" : "0 12px";
 
           return (
-            <article
-              key={shot.title}
-              className="column grayscale-hover"
-              style={{ padding }}
-            >
+            <article key={shot.title} className="column grayscale-hover">
               {shot.kind === "project" ? (
                 <Link
                   href={href}

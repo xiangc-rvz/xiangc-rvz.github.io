@@ -33,7 +33,7 @@ export function DesignSection() {
       {/* ── Fourth Trimester Health: text (4/12) | image (8/12) ── */}
       <div className="columns reverse-mobile" style={{ alignItems: "stretch" }}>
         {/* Text summary — left 1/3 */}
-        <div className="column is-4" style={{ padding: "0 12px 0 0" }}>
+        <div className="column is-4">
           <h3 className="article-title">{fth.title}</h3>
           <p>{fth.body}</p>
           <div className="external-link">
@@ -46,7 +46,7 @@ export function DesignSection() {
         </div>
 
         {/* Image — right 2/3 */}
-        <div className="column grayscale-hover" style={{ padding: "0 0 0 12px" }}>
+        <div className="column grayscale-hover">
           <Link href={fthHref} style={{ display: "block" }}>
             <Image
               src="/images/fourth-trimester-health-cover.png"
@@ -64,7 +64,7 @@ export function DesignSection() {
       {/* ── Row 2: TRI (half) | Waze | PayPal ── */}
       <div className="columns" style={{ alignItems: "flex-start" }}>
         {/* TRI — half width */}
-        <article className="column is-half grayscale-hover" style={{ padding: "0 12px 0 0" }}>
+        <article className="column is-half grayscale-hover">
           <Image
             src="/images/design-tri-2-1@2x.png"
             alt="Prototype design for the user interface of an autonomous car"
@@ -100,7 +100,7 @@ export function DesignSection() {
         <hr className="col-divider" />
 
         {/* Waze */}
-        <article className="column grayscale-hover" style={{ padding: "0 12px" }}>
+        <article className="column grayscale-hover">
           <Image
             src="/images/design-waze-3-2@2x.png"
             alt="Two illustrated Wazers laughing and winking at each other"
@@ -136,7 +136,7 @@ export function DesignSection() {
         <hr className="col-divider" />
 
         {/* PayPal */}
-        <article className="column grayscale-hover" style={{ padding: "0 0 0 12px" }}>
+        <article className="column grayscale-hover">
           <Image
             src="/images/design-paypal-3-2@2x.png"
             alt="A table view of recent payments made through the PayPal app"
@@ -170,7 +170,7 @@ export function DesignSection() {
       {/* ── Row 3: SoulCycle | Phosphor Android (half) | Prolific ── */}
       <div className="columns" style={{ alignItems: "flex-start" }}>
         {/* SoulCycle */}
-        <article className="column grayscale-hover" style={{ padding: "0 12px 0 0" }}>
+        <article className="column grayscale-hover">
           <Image
             src="/images/design-soulcycle-1-1@2x.png"
             alt="Booking screen of the SoulCycle mobile app"
@@ -198,7 +198,7 @@ export function DesignSection() {
         <hr className="col-divider" />
 
         {/* Phosphor for Android — half width */}
-        <article className="column is-half grayscale-hover" style={{ padding: "0 12px" }}>
+        <article className="column is-half grayscale-hover">
           <Image
             src="/images/design-phosphor-android-2-1@2x.png"
             alt="Composition of icons from the Phosphor Cadmium icon pack for Android, on a flat-style phone frame"
@@ -264,7 +264,7 @@ export function DesignSection() {
         <hr className="col-divider" />
 
         {/* Prolific Interactive */}
-        <article className="column" style={{ padding: "0 0 0 12px" }}>
+        <article className="column">
           <Image
             src="/images/design-prolific-1-1@2x.png"
             alt="Team page of the Prolific Interactive website, with profile photos of several employees"
