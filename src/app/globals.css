@@ -290,6 +290,7 @@ hr.col-divider {
   .column.is-narrow {
     flex: 0 0 100%;
     max-width: 100%;
+    width: 100%;
     padding: 0;
     margin-bottom: 24px;
   }
