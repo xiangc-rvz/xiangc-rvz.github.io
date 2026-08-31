@@ -2,6 +2,7 @@ export type ProjectLang = "en" | "cn";
 
 export type ContentBlock =
   | { type: "paragraph"; text: string }
+  | { type: "heading"; text: string }
   | { type: "quote"; text: string }
   | {
       type: "numbered";
@@ -40,6 +41,28 @@ export type ContentBlock =
       type: "code";
       label?: string;
       text: string;
+    }
+  | {
+      type: "infoCards";
+      cards: {
+        title: string;
+        items: string[];
+        footer: string;
+      }[];
+    }
+  | {
+      type: "architectureFlow";
+      caption: string;
+      realWorld: string;
+      inputs: { title: string; subtitle?: string; emphasize?: boolean }[];
+      /** Label on the arrow after AI Understanding — not a boxed step. */
+      transferLabel: string;
+      stages: { title: string; subtitle?: string; emphasize?: boolean }[];
+      branch: {
+        left: { title: string; subtitle?: string; emphasize?: boolean }[];
+        right: { title: string; subtitle?: string; emphasize?: boolean };
+      };
+      loopNote: string;
     };
 
 export type ProjectSection = {
@@ -55,6 +78,8 @@ export type ProjectCopy = {
   description: string;
   tags?: string[];
   advisor?: string;
+  /** Optional project timeline lines shown under tags (e.g. year · context). */
+  timeline?: string[];
   sections: ProjectSection[];
 };
 
@@ -178,7 +203,7 @@ const redditGrowthOsEn: ProjectCopy = {
   title: "Reddit Growth OS",
   description:
     "Turn demand expressions on Reddit into executable acquisition actions",
-  tags: ["AI Products", "0-to-1 Growth", "Vibecoding"],
+  tags: ["AI Product", "0-to-1 Growth", "Vibecoding"],
   sections: [
     {
       id: "product-definition",
@@ -2156,15 +2181,755 @@ export const projects: Project[] = [
     ),
   },
   {
-    slug: "foundations-of-iconography",
-    image: "/images/article-foundations-16-9@2x.png",
-    imageAlt: "Specimens of an email icon, a globe icon, and a fingerprint icon",
-    ...blankCopy(
-      "Foundations of Iconography",
-      "What are icons? What are their benefits and what are they used to achieve?",
-      "图标学基础",
-      "什么是图标？它们有什么价值，又用来达成什么目标？",
-    ),
+    slug: "mwow-tunnel",
+    image: "/images/mwow-tunnel-cover.png",
+    imageAlt:
+      "MWOW TUNNEL — modular cat furniture with pipe frame, platforms, tunnels, and cats",
+    en: {
+      title: "MWOW TUNNEL",
+      description:
+        "A modular product system that turns room dimensions, structural rules, and cat behaviors into configurable furniture.",
+      tags: [
+        "Computational Design",
+        "Product Design",
+        "Physical Prototyping",
+      ],
+      timeline: [
+        "2022 · Undergraduate entrepreneurship project",
+        "2026 · AI retrospective exploration",
+      ],
+      sections: [
+        {
+          id: "overview",
+          level: 1,
+          number: "1.",
+          title: "Overview",
+          blocks: [
+            {
+              type: "paragraph",
+              text: "This is a digital cat furniture project from an undergraduate entrepreneurship course. Rather than designing a single model, we set out to build a cat tree product system that can adapt to different living spaces and use needs. The team delivered a product concept built from standardized tubing, swappable function modules, a generative algorithm, and a digital configuration interface: users enter room dimensions and functional requirements; the system generates candidate forms under structural rules; then function, material, and color configuration produce a final scheme that maps to physical components for fabrication and installation.",
+            },
+            {
+              type: "architectureFlow",
+              caption: "[System Architecture]",
+              realWorld: "Real World",
+              inputs: [
+                { title: "Spatial Scan", subtitle: "LiDAR / AR" },
+                { title: "Natural Language", subtitle: "Voice / Text" },
+                { title: "Cat Profile", subtitle: "Behavior" },
+              ],
+              transferLabel: "Structured Design Constraints",
+              stages: [
+                {
+                  title: "AI Understanding",
+                  subtitle: "Multimodal AI",
+                  emphasize: true,
+                },
+                {
+                  title: "Generative Design Engine",
+                  subtitle: "Voxelization → Rules → Optimization",
+                  emphasize: true,
+                },
+                { title: "Candidate Structures" },
+                {
+                  title: "Product Configuration",
+                  subtitle: "Structure + Functional Modules + Material",
+                },
+                { title: "Final Configuration" },
+              ],
+              branch: {
+                left: [
+                  { title: "BOM / Supply" },
+                  { title: "Standard Components" },
+                  { title: "AI Assembly Guide" },
+                  { title: "Physical Product" },
+                  { title: "AI Maintenance" },
+                  { title: "Usage / Material Data" },
+                ],
+                right: { title: "AR Preview" },
+              },
+              loopNote:
+                "↺ Usage / material data feeds back into AI Understanding for ongoing product and material optimization.",
+            },
+          ],
+        },
+        {
+          id: "problem-definition",
+          level: 1,
+          number: "2.",
+          title: "Problem definition: Fixed furniture, changing homes",
+          blocks: [
+            {
+              type: "paragraph",
+              text: "As the pet economy continues to grow, cat furniture has been shifting from basic pet supplies toward home products tied to living space, pet behavior, and household lifestyle. But in early market and user research, we found that most existing cat trees are sold as fixed-size, fixed-structure, fixed-function combinations. Users have to hunt for a “relatively suitable” option among finished products, while the products themselves rarely change with the real environment of use.",
+            },
+            {
+              type: "paragraph",
+              text: "On one hand, households differ in the space dimensions and layout conditions they can give to cat furniture: the same cat tree may fit a spacious living room but fail to enter a narrow windowsill, corner, or other constrained space.",
+            },
+            {
+              type: "paragraph",
+              text: "On the other hand, how cats interact with furniture also varies. Climbing, jumping, resting, hiding, scratching, and playing call for different heights, paths, and function modules; the number of cats, their ages, and activity levels further reshape those needs.",
+            },
+            {
+              type: "paragraph",
+              text: "So we asked:",
+            },
+            {
+              type: "quote",
+              text: "Can cat furniture generate different structural and functional configurations according to different spatial constraints and use needs?",
+            },
+          ],
+        },
+        {
+          id: "from-observation-to-rules",
+          level: 1,
+          number: "3.",
+          title: "From observation to rules",
+          blocks: [
+            {
+              type: "paragraph",
+              text: "A generative system cannot simply produce more shapes. It needs to understand what makes a shape useful. We translated observations from cat cafés, existing products, material research, and physical builds into four sets of design constraints.",
+            },
+            {
+              type: "infoCards",
+              cards: [
+                {
+                  title: "Cat Behavior",
+                  items: ["Climb", "Perch", "Hide", "Scratch", "Rest"],
+                  footer:
+                    "These behaviors informed the placement and type of functional modules.",
+                },
+                {
+                  title: "Spatial Constraints",
+                  items: ["Width", "Depth", "Height", "Available footprint"],
+                  footer:
+                    "These defined the boundary within which a configuration could grow.",
+                },
+                {
+                  title: "Structural Constraints",
+                  items: [
+                    "Support points",
+                    "Span length",
+                    "Cantilever",
+                    "Load distribution",
+                    "Connectivity",
+                  ],
+                  footer:
+                    "These determined whether a generated geometry could become a stable physical structure.",
+                },
+                {
+                  title: "Fabrication Constraints",
+                  items: [
+                    "Standard pipe dimensions",
+                    "Available connectors",
+                    "Replaceable modules",
+                    "Assembly complexity",
+                    "Material cost",
+                  ],
+                  footer:
+                    "These connected computational geometry with components that could actually be sourced and assembled.",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          id: "product-architecture",
+          level: 1,
+          number: "4.",
+          title: "Designing the product architecture",
+          blocks: [
+            {
+              type: "paragraph",
+              text: "The architecture separates the structural frame from functional modules, and evolves generation from free assembly to constraint-based search and optimization.",
+            },
+          ],
+        },
+        {
+          id: "separating-structure-and-function",
+          level: 2,
+          number: "4.1",
+          title: "Separating structure and function",
+          blocks: [
+            {
+              type: "paragraph",
+              text: "Our earliest design used larger-diameter pipes that were meant to carry structure, circulation space, and functional elements all at once. Physical experiments quickly exposed several problems: the parts were bulky, hard to transport, intolerant of assembly tolerances, and prone to instability in cantilevered configurations. So we chose a thinner pipe system as the structural frame, while larger components became attachable functional modules.",
+            },
+            {
+              type: "image",
+              src: "/images/mwow-tunnel-design-manuscript.png",
+              alt: "Design manuscript sketches for modular cat furniture forms and structure",
+              caption: "[Design Manuscript]",
+              width: 986,
+              height: 440,
+            },
+          ],
+        },
+        {
+          id: "building-generation-logic",
+          level: 2,
+          number: "4.2",
+          title: "Building the generation logic",
+          blocks: [
+            {
+              type: "paragraph",
+              text: "From form generation to constraint-based generation. We first voxelized the available space — discretizing continuous space into computable 3D cells — then explored how to generate tubular structures within those cells.",
+            },
+            {
+              type: "image",
+              src: "/images/mwow-tunnel-spatial-voxelization.png",
+              alt: "Spatial Voxelization — four steps from space scan to layered block data",
+              caption: "[Spatial Voxelization]",
+              width: 860,
+              height: 418,
+            },
+            {
+              type: "paragraph",
+              text: "The generation logic went through three iterations: first allowing users to freely assemble components in discrete space; then adding structural rules to constrain feasible forms; and finally introducing optimization algorithms so the system could automatically search for better structures among a large set of possible solutions.",
+            },
+          ],
+        },
+        {
+          id: "v1-free-form-assembly",
+          level: 2,
+          number: "",
+          title: "V1 — Free-form Assembly",
+          blocks: [
+            {
+              type: "paragraph",
+              text: "The first approach was inspired by LEGO-like modular systems.",
+            },
+            {
+              type: "image",
+              src: "/images/mwow-tunnel-v1-first-generation-logic.png",
+              alt: "First-generation logic — basic units, combinations, form generation, and evaluation",
+              caption: "[First-Generation Logic]",
+              width: 781,
+              height: 560,
+            },
+            {
+              type: "paragraph",
+              text: "We divided the design space into a discrete voxel grid and defined a set of base pipe parts that could connect along X, Y, and Z. By combining one, two, or three pipes, we built basic spatial units, then assembled those units into more complex 3D structures. Free combination produced a large number of forms, but it also exposed an important limitation:",
+            },
+            {
+              type: "quote",
+              text: "A product that is geometrically valid may still be structurally and assembly-wise unreasonable.",
+            },
+          ],
+        },
+        {
+          id: "v2-constraint-based-generation",
+          level: 2,
+          number: "",
+          title: "V2 — Constraint-based Generation",
+          blocks: [
+            {
+              type: "paragraph",
+              text: "In the second phase, we no longer started from “how pipes can be joined,” but from the opposite question: what conditions must a viable spatial structure satisfy? The voxelized space was further split into horizontal layers at different heights, and candidate nodes defined where structure could appear on each layer.",
+            },
+            {
+              type: "image",
+              src: "/images/mwow-tunnel-v2-second-generation-logic.png",
+              alt: "Second-generation logic — plane generation rules and structure generation candidates",
+              caption: "[Second-Generation Logic]",
+              width: 800,
+              height: 903,
+            },
+            {
+              type: "numbered",
+              items: [
+                {
+                  title: "Ground layer",
+                  body: "The ground layer carries most of the cat tree’s load-bearing and stability, so it needs more support nodes and a larger footprint on the floor.",
+                },
+                {
+                  title: "Intermediate layers",
+                  body: "Middle layers balance structural stability with room for activity, allowing more paths and connection patterns.",
+                },
+                {
+                  title: "Upper layers",
+                  body: "Closer to the top, fewer supports can be relied on, so node count and structural density decrease to avoid unstable cantilevers.",
+                },
+              ],
+            },
+            {
+              type: "paragraph",
+              text: "From spatial rules to candidate structures",
+            },
+            {
+              type: "paragraph",
+              text: "Once feasible node combinations were set for each floor, the system could combine different levels into a series of 3D skeletons that satisfy basic spatial constraints. Even then, the number of feasible solutions remained very large — and “meeting the rules” did not mean “a better structure.” That led to a third round of optimization.",
+            },
+          ],
+        },
+        {
+          id: "v3-optimization-based-generation",
+          level: 2,
+          number: "",
+          title: "V3 — Optimization-based Generation",
+          blocks: [
+            {
+              type: "paragraph",
+              text: "In the third version, the system no longer enumerates and displays every possible structure. Instead, under basic spatial and structural constraints, it searches and scores candidate schemes. Reducing redundant members became one of the optimization goals, while keeping connections that still meet structural and functional needs. I used a genetic algorithm and simulated annealing to search the candidate space continuously, filtering and iterating structures by fitness. After structural selection, I ran stability and mechanical analysis to finalize the generated schemes.",
+            },
+            {
+              type: "image",
+              src: "/images/mwow-tunnel-v3-algorithm-results.png",
+              alt: "Third-generation logic — algorithm results and structural application strategy",
+              caption: "[Third-Generation Logic]",
+              width: 804,
+              height: 649,
+            },
+          ],
+        },
+        {
+          id: "user-facing-product-experience",
+          level: 1,
+          number: "5.",
+          title: "User-facing product experience",
+          blocks: [
+            {
+              type: "paragraph",
+              text: "When the project was first completed, we took generative design further into a consumer-facing customization flow. Users could enter a customization area from the homepage, set generation conditions by entering available space size and primary functional needs; the system then offered different structural schemes. Users could further adjust functional components, materials, and colors, and preview the final result in real space through AR. After confirming a scheme, they could review product information, complete the purchase, and assemble from a digital manual.",
+            },
+            {
+              type: "image",
+              src: "/images/mwow-tunnel-user-flow-en.png",
+              alt: "User flow from homepage through customization, AR preview, purchase, and assembly manual",
+              caption: "[User Flow]",
+              width: 616,
+              height: 307,
+            },
+            {
+              type: "paragraph",
+              text: "Revisiting that flow, I found that while users could change product form, customization still mostly depended on preset parameters such as space dimensions and function choices. Users had to translate real-life needs into options the system could understand, while differences in cat behavior, household context, and how the product wore over time never really entered the design process.",
+            },
+            {
+              type: "paragraph",
+              text: "So I tried bringing in AI so the system could understand fuller, more natural use situations:",
+            },
+            {
+              type: "image",
+              src: "/images/mwow-tunnel-system-overview.jpg",
+              alt: "System overview from real-world needs to personalized cat furniture, including AI maintenance feedback loop",
+              caption: "[System Overview]",
+              width: 1024,
+              height: 728,
+            },
+            {
+              type: "numbered",
+              items: [
+                {
+                  title: "Before purchase",
+                  body: "Users can describe the home environment, the cat’s personality and habits, and their own needs through space photos plus natural language. AI turns that into design constraints, then hands them to the existing generation system to produce schemes.",
+                },
+                {
+                  title: "During purchase",
+                  body: "The final structure and BOM can further become a personalized assembly guide matched to that order.",
+                },
+                {
+                  title: "After use",
+                  body: "Users can keep logging how modules and materials are used and worn; AI helps with maintenance and replacement advice, and long-term feedback feeds future material and product optimization.",
+                },
+              ],
+            },
+            {
+              type: "image",
+              src: "/images/mwow-tunnel-wireframe.png",
+              alt: "Wireframe flow of the customization app from discovery to purchase",
+              caption: "[Wireframe]",
+              width: 1024,
+              height: 389,
+            },
+            {
+              type: "image",
+              src: "/images/mwow-tunnel-ui-design.png",
+              alt: "MWOW TUNNEL product UI — home, customization, AR preview, and installation instructions",
+              caption: "[Interface Design]",
+              width: 1024,
+              height: 463,
+            },
+            {
+              type: "image",
+              src: "/videos/mwow-tunnel-promo.mp4",
+              alt: "MWOW TUNNEL product trailer",
+              caption: "[Product Trailer]",
+              width: 1920,
+              height: 1080,
+              controls: true,
+              loop: false,
+            },
+          ],
+        },
+      ],
+    },
+    cn: {
+      title: "喵喵塔",
+      description:
+        "一套模块化产品系统，把房间尺寸、结构规则与猫咪行为转化为可配置的家具。",
+      tags: ["计算设计", "产品设计", "实体原型"],
+      timeline: [
+        "2022 年 · 本科生创业项目",
+        "2026 年 · 人工智能回顾性探索",
+      ],
+      sections: [
+        {
+          id: "overview",
+          level: 1,
+          number: "1.",
+          title: "项目概览",
+          blocks: [
+            {
+              type: "paragraph",
+              text: "这是一个本科创业课程中的数字化猫家具项目。我们希望建立一套可以适应不同居住空间和使用需求的猫爬架产品系统，而不是设计单一款式。最终，团队完成了一套由标准化管件、可替换功能模块、生成算法和数字化配置界面组成的产品方案：用户输入空间尺寸和功能需求后，系统在结构规则下生成候选形态，再通过功能、材质与颜色配置形成最终方案，并对应到实际构件进行制作与安装。",
+            },
+            {
+              type: "architectureFlow",
+              caption: "[系统架构]",
+              realWorld: "真实世界",
+              inputs: [
+                { title: "空间扫描", subtitle: "LiDAR / AR" },
+                { title: "自然语言", subtitle: "语音 / 文本" },
+                { title: "猫咪画像", subtitle: "行为" },
+              ],
+              transferLabel: "结构化设计约束",
+              stages: [
+                {
+                  title: "AI 理解",
+                  subtitle: "多模态 AI",
+                  emphasize: true,
+                },
+                {
+                  title: "生成式设计引擎",
+                  subtitle: "体素化 → 规则 → 优化",
+                  emphasize: true,
+                },
+                { title: "候选结构" },
+                {
+                  title: "产品配置",
+                  subtitle: "结构 + 功能模块 + 材质",
+                },
+                { title: "最终配置" },
+              ],
+              branch: {
+                left: [
+                  { title: "BOM / 供应链" },
+                  { title: "标准构件" },
+                  { title: "AI 组装指南" },
+                  { title: "实体产品" },
+                  { title: "AI 维护" },
+                  { title: "使用 / 材料数据" },
+                ],
+                right: { title: "AR 预览" },
+              },
+              loopNote:
+                "↺ 使用 / 材料数据回馈至 AI 理解，持续优化产品与材料。",
+            },
+          ],
+        },
+        {
+          id: "problem-definition",
+          level: 1,
+          number: "2.",
+          title: "问题定义：固定家具，多变居所",
+          blocks: [
+            {
+              type: "paragraph",
+              text: "随着宠物经济持续增长，猫家具逐渐从基础宠物用品转向与居住空间、宠物行为和家庭生活方式相关的家居产品。但在前期市场与用户调研中，我们发现，现有猫爬架大多以固定尺寸、固定结构和固定功能组合出售。用户需要从已有产品中寻找一个“相对合适”的选择，而产品本身很少能够根据真实使用环境发生变化。",
+            },
+            {
+              type: "paragraph",
+              text: "一方面，不同家庭能够提供给猫家具的空间尺寸和布局条件不同：同一款猫爬架可能适合宽敞客厅，却无法进入狭窄的窗边、墙角或其他有限空间。",
+            },
+            {
+              type: "paragraph",
+              text: "另一方面，猫与家具的互动方式也具有差异。攀爬、跳跃、休息、躲藏、磨爪和玩耍对应着不同的高度、路径和功能模块；猫的数量、年龄和活动能力也会进一步改变这些需求。",
+            },
+            {
+              type: "paragraph",
+              text: "因此，我们提出问题：",
+            },
+            {
+              type: "quote",
+              text: "能否让猫家具根据不同的空间限制与使用需求，产生不同的结构和功能配置？",
+            },
+          ],
+        },
+        {
+          id: "from-observation-to-rules",
+          level: 1,
+          number: "3.",
+          title: "从观察到规则",
+          blocks: [
+            {
+              type: "paragraph",
+              text: "生成系统不能简单地生成更多形状。它需要理解是什么使一种形状有用。我们将从猫咪咖啡馆、现有产品、材料研究和实体建造中获得的观察结果转化为四组设计约束。",
+            },
+            {
+              type: "infoCards",
+              cards: [
+                {
+                  title: "猫咪行为",
+                  items: ["攀爬", "栖息", "躲藏", "磨爪", "休息"],
+                  footer: "这些行为决定了功能模块的放置位置与类型。",
+                },
+                {
+                  title: "空间约束",
+                  items: ["宽度", "进深", "高度", "可用占地"],
+                  footer: "这些界定了配置可扩展的边界。",
+                },
+                {
+                  title: "结构约束",
+                  items: ["支撑点", "跨度", "悬挑", "荷载分布", "连接关系"],
+                  footer: "这些决定了生成几何能否成为稳定的实体结构。",
+                },
+                {
+                  title: "制造约束",
+                  items: [
+                    "标准管件尺寸",
+                    "可用连接件",
+                    "可替换模块",
+                    "组装复杂度",
+                    "材料成本",
+                  ],
+                  footer:
+                    "这些把计算几何与可采购、可组装的实际构件连接起来。",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          id: "product-architecture",
+          level: 1,
+          number: "4.",
+          title: "设计产品架构",
+          blocks: [
+            {
+              type: "paragraph",
+              text: "产品架构将结构框架与功能模块分离，生成逻辑则从自由组装走向基于约束的搜索与优化。",
+            },
+          ],
+        },
+        {
+          id: "separating-structure-and-function",
+          level: 2,
+          number: "4.1",
+          title: "结构与功能分离",
+          blocks: [
+            {
+              type: "paragraph",
+              text: "我们最初的设计方案选取直径较大的管道同时承担结构、流通空间和功能元件的功能。实际实验很快暴露出几个问题：这些组件笨重、难以运输、对装配公差要求高，而且悬臂式结构容易出现不稳定性。因此我们选择了更细的管道系统成为结构框架，而较大的组件则成为可连接的功能模块。",
+            },
+            {
+              type: "image",
+              src: "/images/mwow-tunnel-design-manuscript.png",
+              alt: "猫家具模块与结构探索的设计手稿",
+              caption: "[设计手稿]",
+              width: 986,
+              height: 440,
+            },
+          ],
+        },
+        {
+          id: "building-generation-logic",
+          level: 2,
+          number: "4.2",
+          title: "构建生成逻辑",
+          blocks: [
+            {
+              type: "paragraph",
+              text: "从表单生成到基于约束的生成。我们首先将可用空间体素化，把连续空间离散为可计算的三维单元，再探索如何在这些单元中生成管状结构。",
+            },
+            {
+              type: "image",
+              src: "/images/mwow-tunnel-spatial-voxelization.png",
+              alt: "空间体素化——从空间扫描到分层块体数据的四步流程",
+              caption: "[空间体素化]",
+              width: 860,
+              height: 418,
+            },
+            {
+              type: "paragraph",
+              text: "生成逻辑经历了三次迭代：最初允许用户在离散空间中自由组合构件；随后加入结构规则，对可行形态进行约束；最终引入优化算法，让系统能够在大量可能解中自动寻找更优结构。",
+            },
+          ],
+        },
+        {
+          id: "v1-free-form-assembly",
+          level: 2,
+          number: "",
+          title: "V1 — 自由式组装",
+          blocks: [
+            {
+              type: "paragraph",
+              text: "最初的思路来自类似 LEGO 的模块化系统。",
+            },
+            {
+              type: "image",
+              src: "/images/mwow-tunnel-v1-first-generation-logic.png",
+              alt: "第一代生成逻辑——基本单元、组合、形态生成与评估",
+              caption: "[第一代生成逻辑]",
+              width: 781,
+              height: 560,
+            },
+            {
+              type: "paragraph",
+              text: "我们将设计空间划分为离散的体素网格，并定义了一组可以沿 X、Y、Z 三个方向连接的基础管件。通过组合一根、两根或三根管道，建立基本空间单元，再将这些单元继续组合成更复杂的三维结构。自由组合可以产生大量形态，但也暴露出一个重要的局限性：",
+            },
+            {
+              type: "quote",
+              text: "几何形状有效的产品在结构方面和装配效率可能不合理。",
+            },
+          ],
+        },
+        {
+          id: "v2-constraint-based-generation",
+          level: 2,
+          number: "",
+          title: "V2 — 基于约束的生成",
+          blocks: [
+            {
+              type: "paragraph",
+              text: "第二阶段，我们不再从“管件可以怎么拼”出发，而是反过来从一个可成立的空间结构需要满足什么条件出发。体素化的空间被进一步拆分为不同高度的水平层，并通过候选节点定义每一层可能出现的结构。",
+            },
+            {
+              type: "image",
+              src: "/images/mwow-tunnel-v2-second-generation-logic.png",
+              alt: "第二代生成逻辑——平面生成规则与结构生成候选",
+              caption: "[第二代生成逻辑]",
+              width: 800,
+              height: 903,
+            },
+            {
+              type: "numbered",
+              items: [
+                {
+                  title: "底层",
+                  body: "底层承担整个猫爬架的主要承重和稳定作用，因此需要更多支撑节点和更大的接地范围。",
+                },
+                {
+                  title: "中层",
+                  body: "中层在结构稳定与活动空间之间取得平衡，可以产生更多路径和连接方式。",
+                },
+                {
+                  title: "顶层",
+                  body: "越靠近顶部，能够依赖的支撑结构越少，因此减少节点数量和结构密度，避免形成不稳定的悬挑。",
+                },
+              ],
+            },
+            {
+              type: "paragraph",
+              text: "从空间规则得到候选结构",
+            },
+            {
+              type: "paragraph",
+              text: "在确定每一层的可行节点组合后，系统可以将不同楼层进行组合，生成一系列满足基础空间约束的三维骨架。但即使这样，可行解的数量依然非常大，而且“满足规则”并不意味着“就是更好的结构”，因此我进行了第三次优化。",
+            },
+          ],
+        },
+        {
+          id: "v3-optimization-based-generation",
+          level: 2,
+          number: "",
+          title: "V3 — 基于优化的生成",
+          blocks: [
+            {
+              type: "paragraph",
+              text: "在第三个版本中，系统不再穷举并展示所有可能结构，而是在满足基本空间与结构约束的前提下，对候选方案进行搜索和评分。我将减少冗余杆件数量作为优化目标之一，同时保留满足结构与功能需求的连接关系。我分别使用遗传算法与模拟退火算法，在候选空间中持续搜索，并根据适应度对结构进行筛选与迭代。并在结构筛选完成后，进行了结构稳定性的分析和力学分析，最终确定生成方案。",
+            },
+            {
+              type: "image",
+              src: "/images/mwow-tunnel-v3-algorithm-results.png",
+              alt: "第三代生成逻辑——算法结果与结构应用策略",
+              caption: "[第三代生成逻辑]",
+              width: 804,
+              height: 649,
+            },
+          ],
+        },
+        {
+          id: "user-facing-product-experience",
+          level: 1,
+          number: "5.",
+          title: "用户端产品体验",
+          blocks: [
+            {
+              type: "paragraph",
+              text: "项目最初完成时，我们将生成式设计进一步转化为了一套面向消费者的定制流程。用户可以从首页进入定制专区，通过输入可用空间大小和主要功能需求确定生成条件；系统据此提供不同结构方案，用户可以进一步调整功能组件、材质和颜色，并通过 AR 在真实空间中预览最终效果。确认方案后，用户可以查看产品信息、完成购买，并根据数字说明书进行组装。",
+            },
+            {
+              type: "image",
+              src: "/images/mwow-tunnel-user-flow-cn.png",
+              alt: "从首页到定制、AR 预览、购买与说明书的用户流程图",
+              caption: "[用户流程]",
+              width: 589,
+              height: 300,
+            },
+            {
+              type: "paragraph",
+              text: "重新审视原有流程时，我发现它虽然允许用户改变产品形态，但定制仍主要依赖空间尺寸、功能选择等预设参数。用户需要自己把真实生活中的需求转化为系统能够理解的选项，而猫的行为差异、家庭环境以及产品长期使用状态并没有真正进入设计过程。",
+            },
+            {
+              type: "paragraph",
+              text: "因此，我尝试引入 AI，让系统能够理解更自然、更完整的使用情境：",
+            },
+            {
+              type: "image",
+              src: "/images/mwow-tunnel-system-overview.jpg",
+              alt: "从真实世界需求到个性化猫家具的系统概览，含 AI 维护与反馈循环",
+              caption: "[系统概览]",
+              width: 1024,
+              height: 728,
+            },
+            {
+              type: "numbered",
+              items: [
+                {
+                  title: "购买前",
+                  body: "用户可以通过空间照片 + 自然语言直接描述家庭环境、猫咪性格与行为习惯以及自己的需求，AI 将这些信息转化为设计约束，再交由原有生成系统产生方案。",
+                },
+                {
+                  title: "购买中",
+                  body: "最终生成的结构与 BOM 可以进一步转化为与该订单匹配的个性化组装指南。",
+                },
+                {
+                  title: "使用后",
+                  body: "用户可以持续记录模块和材料的使用、磨损情况，AI 辅助提供维护与更换建议，并将长期反馈用于未来的材料与产品优化。",
+                },
+              ],
+            },
+            {
+              type: "image",
+              src: "/images/mwow-tunnel-wireframe.png",
+              alt: "定制应用从浏览到购买的框架流程图",
+              caption: "[框架]",
+              width: 1024,
+              height: 389,
+            },
+            {
+              type: "image",
+              src: "/images/mwow-tunnel-ui-design.png",
+              alt: "喵喵塔产品界面——首页、定制、AR 预览与安装说明",
+              caption: "[界面设计]",
+              width: 1024,
+              height: 463,
+            },
+            {
+              type: "image",
+              src: "/videos/mwow-tunnel-promo.mp4",
+              alt: "喵喵塔产品宣传片",
+              caption: "[产品宣传片]",
+              width: 1920,
+              height: 1080,
+              controls: true,
+              loop: false,
+            },
+          ],
+        },
+      ],
+    },
   },
 ];
 

@@ -10,6 +10,7 @@ import {
   type ProjectLang,
   type ProjectSection,
 } from "@/lib/projects";
+import { ArchitectureFlowDiagram } from "@/components/ArchitectureFlowDiagram";
 
 type Props = {
   lang: ProjectLang;
@@ -25,6 +26,14 @@ function ContentBlocks({ blocks }: { blocks: ContentBlock[] }) {
             <p key={i} className="project-body-text">
               {block.text}
             </p>
+          );
+        }
+
+        if (block.type === "heading") {
+          return (
+            <h3 key={i} className="project-inline-heading">
+              {block.text}
+            </h3>
           );
         }
 
@@ -170,6 +179,28 @@ function ContentBlocks({ blocks }: { blocks: ContentBlock[] }) {
           );
         }
 
+        if (block.type === "infoCards") {
+          return (
+            <div key={i} className="project-info-cards">
+              {block.cards.map((card) => (
+                <article key={card.title} className="project-info-card">
+                  <h3 className="project-info-card-title">{card.title}</h3>
+                  <ul className="project-info-card-list">
+                    {card.items.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                  <p className="project-info-card-footer">{card.footer}</p>
+                </article>
+              ))}
+            </div>
+          );
+        }
+
+        if (block.type === "architectureFlow") {
+          return <ArchitectureFlowDiagram key={i} block={block} />;
+        }
+
         return (
           <ul key={i} className="project-bullet-list">
             {block.items.map((item, j) => (
@@ -183,15 +214,21 @@ function ContentBlocks({ blocks }: { blocks: ContentBlock[] }) {
 }
 
 function SectionBlock({ section }: { section: ProjectSection }) {
+  const isMarkedSub = section.level === 2 && section.number === "";
+
   return (
     <section
       id={section.id}
       className={`project-section-block${section.level === 2 ? " is-sub" : ""}`}
     >
       <h2
-        className={`project-section-title${
-          section.level === 2 ? " project-heading-level-2" : ""
-        }`}
+        className={
+          isMarkedSub
+            ? "project-inline-heading"
+            : `project-section-title${
+                section.level === 2 ? " project-heading-level-2" : ""
+              }`
+        }
       >
         {section.title}
       </h2>
@@ -281,7 +318,11 @@ export function ProjectPageShell({ lang, slug }: Props) {
               {copy.sections.map((section) => (
                 <li key={section.id} className={`project-toc-level-${section.level}`}>
                   <a href={`#${section.id}`}>
-                    <span className="project-toc-number">{section.number}</span>
+                    {section.number ? (
+                      <span className="project-toc-number">{section.number}</span>
+                    ) : (
+                      <span className="project-toc-marker" aria-hidden="true" />
+                    )}
                     {section.title}
                   </a>
                 </li>
@@ -316,6 +357,18 @@ export function ProjectPageShell({ lang, slug }: Props) {
               </span>{" "}
               {copy.advisor}
             </p>
+          ) : null}
+          {copy.timeline && copy.timeline.length > 0 ? (
+            <div className="project-timeline">
+              <span className="project-tags-label">
+                {lang === "en" ? "Timeline:" : "时间表："}
+              </span>
+              <ul className="project-timeline-list">
+                {copy.timeline.map((line) => (
+                  <li key={line}>{line}</li>
+                ))}
+              </ul>
+            </div>
           ) : null}
           <hr className="double" />
           <figure className="project-cover">
