@@ -2,14 +2,17 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { HomeProjectTags } from "@/components/HomeProjectTags";
 import { useLang } from "@/lib/lang";
-import { projectHref } from "@/lib/projects";
+import { getProject, projectHref } from "@/lib/projects";
 
 export function DesignSection() {
   const { lang } = useLang();
   const heading = lang === "en" ? "Research Projects" : "研究项目";
   const viewProject = lang === "en" ? "View project" : "查看项目";
   const fthHref = projectHref(lang, "fourth-trimester-health");
+  const fthProject = getProject("fourth-trimester-health");
+  const fthTags = fthProject?.[lang].tags;
   const fth = lang === "en"
     ? {
         title: "Fourth Trimester Health",
@@ -34,7 +37,8 @@ export function DesignSection() {
       <div className="columns reverse-mobile" style={{ alignItems: "stretch" }}>
         <div className="column is-4">
           <h3 className="article-title">{fth.title}</h3>
-          <p>{fth.body}</p>
+          <p style={{ marginBottom: 0 }}>{fth.body}</p>
+          <HomeProjectTags tags={fthTags} />
           <div className="external-link">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/icons/arrow-circle-up-right-fill.svg" alt="" className="icon-24" />

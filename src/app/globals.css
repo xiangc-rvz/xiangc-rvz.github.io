@@ -209,6 +209,10 @@ article > .external-link {
   margin-top: 8px;
 }
 
+.home-project-tags {
+  margin: 12px 0 0;
+}
+
 .external-link a {
   padding-top: 1px;
 }
@@ -711,8 +715,188 @@ footer {
 }
 
 .project-table-wrap {
-  margin: 20px 0 0;
+  margin: 20px 0 24px;
   overflow-x: auto;
+}
+
+.seed-tree-wrap {
+  margin: 24px 0 0;
+}
+
+.seed-tree {
+  border: 1px solid black;
+  padding: 16px 14px;
+  background: white;
+}
+
+.seed-tree-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.seed-tree-node {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 10px 8px;
+  border: 1px solid black;
+  text-align: center;
+  font-family: 'MaisonNeue', 'Courier', monospace;
+  font-size: 12px;
+  letter-spacing: -0.2px;
+  line-height: 16px;
+  color: black;
+  background: white;
+}
+
+.seed-tree-top,
+.seed-tree-root {
+  max-width: 280px;
+  margin: 0 auto;
+}
+
+.seed-tree-root {
+  background: black;
+  color: white;
+}
+
+.seed-tree-emoji {
+  font-size: 14px;
+  line-height: 1;
+}
+
+.seed-tree-join {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 6px 0;
+  font-family: 'MaisonNeue', 'Courier', monospace;
+  font-size: 14px;
+  line-height: 18px;
+  color: black;
+  text-align: center;
+}
+
+.seed-tree-flow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 18px;
+  font-family: 'MaisonNeue', 'Courier', monospace;
+  font-size: 13px;
+  letter-spacing: -0.2px;
+  line-height: 20px;
+  color: rgba(0, 0, 0, 0.72);
+}
+
+.seed-tree-flow-arrow {
+  color: black;
+}
+
+@media (max-width: 848px) {
+  .seed-tree-row {
+    grid-template-columns: 1fr;
+  }
+
+  .seed-tree-join {
+    grid-template-columns: 1fr;
+  }
+
+  .seed-tree-join span:not(:nth-child(2)) {
+    display: none;
+  }
+}
+
+.workflow-strip-wrap {
+  margin: 24px 0 0;
+  width: 100%;
+  max-width: 100%;
+}
+
+.workflow-strip-scroll {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+.workflow-strip {
+  display: flex;
+  align-items: stretch;
+  width: max-content;
+  padding: 2px 0 8px;
+}
+
+.workflow-strip-unit {
+  display: flex;
+  align-items: stretch;
+  flex: 0 0 auto;
+}
+
+.workflow-strip-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 148px;
+  padding: 12px 10px;
+  border: 1px solid black;
+  background: white;
+  box-sizing: border-box;
+}
+
+.workflow-strip-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  font-family: 'MaisonNeue', 'Courier', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+  line-height: 18px;
+  color: black;
+}
+
+.workflow-strip-index {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+  border: 1px solid black;
+  font-size: 10px;
+  line-height: 1;
+  font-weight: 700;
+}
+
+.workflow-strip-name {
+  min-width: 0;
+}
+
+.workflow-strip-body {
+  margin: 0;
+  font-family: 'MaisonNeue', 'Courier', monospace;
+  font-size: 12px;
+  letter-spacing: -0.2px;
+  line-height: 17px;
+  color: rgba(0, 0, 0, 0.72);
+}
+
+.workflow-strip-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 26px;
+  width: 26px;
+  font-family: 'MaisonNeue', 'Courier', monospace;
+  font-size: 18px;
+  line-height: 1;
+  color: black;
+  user-select: none;
 }
 
 .project-table {
@@ -1075,6 +1259,20 @@ footer {
   line-height: 24px;
   font-style: italic;
   max-width: 620px;
+}
+
+.project-intro-quote.is-plain {
+  border-left: none;
+  padding-left: 0;
+  font-style: normal;
+}
+
+.project-intro-quote.is-spaced {
+  line-height: 32px;
+}
+
+.project-intro-quote.is-spaced p {
+  line-height: 32px;
 }
 
 .project-body-text {

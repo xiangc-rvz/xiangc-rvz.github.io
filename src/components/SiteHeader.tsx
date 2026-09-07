@@ -18,7 +18,7 @@ const copy: Record<
     name: "Xiang Chen",
     leaveNote: "Leave a note",
     resumeLabel: "Resume",
-    social: { label: "Medium", href: "https://medium.com/@xccxrvz" },
+    social: { label: "GitHub", href: "https://github.com/xiangc-rvz" },
     resume: "/resume.pdf",
     bio: (
       <>
@@ -35,8 +35,7 @@ const copy: Record<
     name: "陈想",
     leaveNote: "留言",
     resumeLabel: "简历",
-    // TODO: replace "#" with your WeChat public account URL (公众号：管中试窥天地间)
-    social: { label: "公众号", href: "#" },
+    social: { label: "GitHub", href: "https://github.com/xiangc-rvz" },
     resume: "/resume-cn.pdf",
     bio: (
       <>

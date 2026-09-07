@@ -3,7 +3,7 @@ export type ProjectLang = "en" | "cn";
 export type ContentBlock =
   | { type: "paragraph"; text: string }
   | { type: "heading"; text: string }
-  | { type: "quote"; text: string }
+  | { type: "quote"; text: string; plain?: boolean; spaced?: boolean }
   | {
       type: "numbered";
       items: { title: string; body: string }[];
@@ -63,6 +63,21 @@ export type ContentBlock =
         right: { title: string; subtitle?: string; emphasize?: boolean };
       };
       loopNote: string;
+    }
+  | {
+      type: "seedTree";
+      caption: string;
+      root: string;
+      midLeft: string;
+      midCenter: string;
+      midRight: string;
+      queriesLabel: string;
+      top: string;
+    }
+  | {
+      type: "workflowStrip";
+      caption: string;
+      steps: { title: string; body: string }[];
     };
 
 export type ProjectSection = {
@@ -96,7 +111,7 @@ export type Project = {
 const redditGrowthOsCn: ProjectCopy = {
   title: "Reddit Growth OS",
   description: "把 Reddit 上的需求表达转化为可执行的获客动作",
-  tags: ["AI 产品", "0→1 增长", "Vibecoding"],
+  tags: ["产品设计", "AI 工作流设计", "全栈开发"],
   sections: [
     {
       id: "product-definition",
@@ -106,7 +121,7 @@ const redditGrowthOsCn: ProjectCopy = {
       blocks: [
         {
           type: "paragraph",
-          text: "Reddit Growth OS 是一个面向 0→1 产品的 Reddit 获客研究与复盘工作台。它帮助用户从模糊产品描述出发，自动派生潜在用户的情境表达，在 Reddit 全平台寻找真实需求帖子，并把机会转化为可执行的互动、发帖和复盘资产。",
+          text: "Reddit Growth OS 是一个基于真实 Reddit 内容证据的 AI 增长研究工具。我将自己在 Reddit 冷启动中的工作方法抽象成一套 AI 增强工作流，帮助早期产品从模糊的产品想法出发，发现潜在用户正在表达需求的场景，并将这些信号转化为可执行、可复盘的增长行动。",
         },
       ],
     },
@@ -114,17 +129,17 @@ const redditGrowthOsCn: ProjectCopy = {
       id: "project-background",
       level: 1,
       number: "2.",
-      title: "项目背景",
+      title: "项目背景：从一次真实的 Reddit 增长实践开始",
       blocks: [
         {
           type: "paragraph",
-          text: "我在一家美国 AI startup 做 Reddit 增长时，曾通过运营在一周内带来 200+ 用户和 30K+ 自然流量。这个过程中我发现，Reddit 对海外产品冷启动很重要，但对 0→1 产品尤其难：平台由几百万个兴趣社区组成，每个社区都有自己的语言、规则和隐性边界。运营者真正困难的不是“发帖”，而是两件事：",
+          text: "我在一家美国 AI startup 做 Reddit 增长时，曾通过运营在一周内带来 200+ 用户和 30K+ 自然流量。这个过程中我发现真正花费我最多时间的，并不是写帖子，而是不断判断：我应该去哪里找到真正可能需要这个产品的人？以及做完之后，我怎么知道什么真的有效？Reddit 的增长逻辑和传统渠道很不一样。用户分散在大量高度自治的社区中，每个 subreddit 都有自己的语言、规则和对推广内容的容忍边界。对于用户画像尚未稳定的 0→1 产品，这带来了两个反复出现的问题。",
         },
         {
           type: "numbered",
           items: [
             {
-              title: "找不到对的人",
+              title: "找到“相关社区”，不等于找到“有需求的人”",
               body: "早期产品用户画像不清晰，团队容易从产品品类出发找社区，结果进入看似相关、实则低转化的 subreddit。",
             },
             {
@@ -135,64 +150,549 @@ const redditGrowthOsCn: ProjectCopy = {
         },
         {
           type: "paragraph",
-          text: "因此我把问题拆成两层：先解决“如何找到真实需求发生的地方”，再解决“如何把 Reddit 运营变成可复盘资产”。",
+          text: "因此，我把问题拆成两个闭环。",
+        },
+        {
+          type: "quote",
+          text: "发现 — 如何从一个尚不成熟的产品想法出发，发现真实需求可能发生在哪里？",
+        },
+        {
+          type: "quote",
+          text: "学习 — 如何让每一次 Reddit 运营，都成为下一次增长决策可以复用的证据？",
+        },
+      ],
+    },
+    {
+      id: "competitive-analysis",
+      level: 1,
+      number: "3.",
+      title: "竞品分析",
+      blocks: [
+        {
+          type: "paragraph",
+          text: "我把主流 Reddit 获客/监听工具按“匹配逻辑”进行了分析和匹配。",
+        },
+        {
+          type: "table",
+          headers: [
+            "产品名称",
+            "现有方法",
+            "从什么开始",
+            "适合",
+            "对 0→1 的限制",
+          ],
+          rows: [
+            [
+              "F5Bot",
+              "关键词监听",
+              "已知关键词",
+              "品牌监听 / SEO",
+              "必须已经知道搜什么",
+            ],
+            [
+              "Syften",
+              "社区研究",
+              "已知子版块",
+              "用户研究",
+              "必须已经知道用户在哪",
+            ],
+            [
+              "ReplyGuy / Devi AI",
+              "AI 外联",
+              "品牌 + 关键词",
+              "规模化互动",
+              "容易产生低相关回复与平台风险",
+            ],
+          ],
+        },
+        {
+          type: "paragraph",
+          text: "这些产品各有特点，但现实的问题是 Reddit 不缺少搜索工具，而是现有的工具都是从“已知答案”开始。它们要求运营者先知道关键词、竞品或目标社区，再帮助扩大搜索。但我自己的增长实践恰恰发生在这些答案还不存在的时候。因此，我没有继续优化“如何搜得更多”，而是重新设计了搜索之前发生的那一步。",
         },
       ],
     },
     {
       id: "core-insight",
       level: 1,
-      number: "3.",
-      title: "核心洞察",
+      number: "4.",
+      title: "核心洞察：不要从产品开始，从“用户正在经历的瞬间”开始",
       blocks: [
         {
-          type: "bullets",
+          type: "paragraph",
+          text: "对于成熟产品，我们可以从品类、竞品和关键词开始寻找用户。但 0→1 产品的开发者往往连“我的核心用户是谁”“产品最大的卖点是什么”都还没有答案。相比抽象的产品定义，一个具体的使用场景反而更容易描述。此外我发现，真实用户很少按照产品团队定义的品类来描述自己的问题，他们描述的是自己正在经历的情境。例如，一个 AI 陪伴产品如果从产品类别出发：",
+        },
+        {
+          type: "quote",
+          text: "AI Companion → AI → Chatbot → AI Tools → AI Girlfriend",
+        },
+        {
+          type: "paragraph",
+          text: "最终很容易进入大量看似相关、实际需求并不强的技术社区。但真实的潜在用户可能正在另一个完全不同的地方说：“一个人打游戏越来越没意思了。” 他没有搜索 “AI companion”，甚至可能从未想过自己需要一个 AI 产品。但他已经表达了产品所解决的需求。",
+        },
+        {
+          type: "paragraph",
+          text: "所以我把原来的搜索逻辑：",
+        },
+        {
+          type: "quote",
+          text: "Product → Category → Keywords → Communities",
+        },
+        {
+          type: "paragraph",
+          text: "重新定义为：",
+        },
+        {
+          type: "quote",
+          text: "Product → User Situation → Need Expression → Reddit Evidence",
+        },
+      ],
+    },
+    {
+      id: "method-seed-to-tree",
+      level: 1,
+      number: "5.",
+      title: "方法｜从种子到树",
+      blocks: [
+        {
+          type: "paragraph",
+          text: "我把“从一个模糊想法，逐层展开成真实需求证据”这套方法称为「从种子到树」。系统不要求用户先定义完整的目标用户、产品类别或核心卖点。一个具体的使用场景就可以成为搜索的种子。",
+        },
+        {
+          type: "paragraph",
+          text: "举个例子：",
+        },
+        {
+          type: "heading",
+          text: "种子 — 体验瞬间",
+        },
+        {
+          type: "paragraph",
+          text: "“周六早上，22 岁的 Mary 坐在沙发上打开这个游戏。她想放松一下，安静地消磨周末时间。”",
+        },
+        {
+          type: "paragraph",
+          text: "→ ① 体验信号",
+        },
+        {
+          type: "paragraph",
+          text: "AI 首先从场景中识别可能影响需求的信号：",
+        },
+        {
+          type: "numbered",
           items: [
-            "现有 Reddit 获客工具大多基于关键词、竞品或 SEO 匹配：输入产品和竞品，系统找相似社区和相似帖子。这对成熟产品有效，因为成熟产品有明确品类、竞品和关键词。",
-            "但 0→1 产品的问题不同。早期产品往往只有一个模糊想法，用户画像本身尚未稳定；更关键的是，真实用户不一定聚集在产品品类社区里，而是分散在需求发生的情境社区中。",
-            "以 AI 陪伴产品为例，常规工具会推荐 AI、chatbot 类 subreddit，但实际转化很弱。真实需求反而出现在看似无关的场景里：例如游戏玩家讨论“一个人打游戏很空，希望有人陪”。这类信号无法通过“产品品类 → subreddit”找到，只能通过“用户情境 → 需求表达”倒推。",
+            {
+              title: "情境",
+              body: "周末 / 早晨 / 在家",
+            },
+            {
+              title: "情绪",
+              body: "放松 / cozy / 无压力",
+            },
+            {
+              title: "动机",
+              body: "消磨时间 / escape / recharge",
+            },
+            {
+              title: "行为",
+              body: "casual gaming / scrolling / solo activity",
+            },
           ],
         },
         {
           type: "paragraph",
-          text: "因此系统的设计起点是：",
+          text: "→ ② 需求表达",
         },
         {
-          type: "quote",
-          text: "从产品匹配，转向情境倒推",
+          type: "paragraph",
+          text: "然后不再围绕产品名称扩展，而是推测这些人在 Reddit 上可能如何表达自己的状态：",
+        },
+        {
+          type: "bullets",
+          items: [
+            "“looking for something relaxing to play”",
+            "“games I can play while lying on the couch”",
+            "“what do you guys do on a lazy weekend?”",
+            "“cozy games that don't require much thinking”",
+          ],
+        },
+        {
+          type: "paragraph",
+          text: "→ ③ Reddit 原生查询",
+        },
+        {
+          type: "paragraph",
+          text: "系统把这些表达组合、扩展成不同搜索方向。",
+        },
+        {
+          type: "paragraph",
+          text: "→ ④ 真实 Reddit 证据",
+        },
+        {
+          type: "paragraph",
+          text: "跨 subreddit 搜索真实讨论。",
+        },
+        {
+          type: "paragraph",
+          text: "→ ⑤ 机会地图",
+        },
+        {
+          type: "paragraph",
+          text: "最后才从真实帖子反向回答：",
+        },
+        {
+          type: "numbered",
+          items: [
+            {
+              title: "谁",
+              body: "哪些人正在表达类似需求？",
+            },
+            {
+              title: "哪里",
+              body: "这些讨论发生在哪些社区？",
+            },
+            {
+              title: "为什么",
+              body: "哪种需求与产品体验最相关？",
+            },
+            {
+              title: "如何",
+              body: "应该评论、发帖，还是继续观察？",
+            },
+          ],
+        },
+        {
+          type: "seedTree",
+          caption: "[从种子到树]",
+          root: "用户瞬间",
+          midLeft: "需求表达",
+          midCenter: "情绪信号",
+          midRight: "行为信号",
+          queriesLabel: "查询",
+          top: "真实 Reddit 帖子",
+        },
+      ],
+    },
+    {
+      id: "workflow-ai-enhanced",
+      level: 1,
+      number: "6.",
+      title: "工作流｜把方法变成 AI 增强工作流",
+      blocks: [
+        {
+          type: "paragraph",
+          text: "过去，这些判断主要存在于我的个人经验里：理解产品、想象用户场景、不断尝试搜索词、浏览大量帖子，再凭经验判断哪些帖子值得参与。我把这个过程拆解成了一条 AI 与真实数据协作的工作流：",
+        },
+        {
+          type: "workflowStrip",
+          caption: "[AI 增强工作流]",
+          steps: [
+            {
+              title: "理解",
+              body: "AI 通过追问，把一句模糊的产品描述补全为可研究的产品语境。",
+            },
+            {
+              title: "扩展",
+              body: "从产品功能向外派生用户情境、情绪状态和自然需求表达。",
+            },
+            {
+              title: "检索",
+              body: "将这些表达转化为 Reddit 原生查询，并跨社区检索真实帖子。",
+            },
+            {
+              title: "排序",
+              body: "根据相关性、需求强度、时效性与互动活跃度对证据帖子排序。",
+            },
+            {
+              title: "行动",
+              body: "结合帖子内容和社区语境，生成回复角度、内容结构或草稿。",
+            },
+            {
+              title: "学习",
+              body: "记录发布表现、社区表现和互动用户，让真实结果反过来影响下一轮增长判断。",
+            },
+          ],
         },
       ],
     },
     {
       id: "product-architecture",
       level: 1,
-      number: "4.",
+      number: "7.",
       title: "产品架构",
       blocks: [
         {
           type: "paragraph",
-          text: "产品分为四个模块：",
+          text: "整个产品最终形成两个相互连接的工作闭环：机会发现负责从模糊的使用情境中发现潜在需求，增长学习则负责记录真实运营结果，并把这些结果沉淀为下一轮增长判断的依据。",
+        },
+        {
+          type: "image",
+          src: "/images/reddit-growth-os-architecture.jpg",
+          alt: "Reddit Growth OS 产品架构：机会发现与增长学习双闭环",
+          caption: "[产品架构]",
+          width: 1024,
+          height: 512,
+        },
+      ],
+    },
+    {
+      id: "opportunity-discovery",
+      level: 2,
+      number: "7.1",
+      title: "机会发现 — 找到需求正在发生的地方",
+      blocks: [
+        {
+          type: "paragraph",
+          text: "第一个闭环解决的是：我的潜在用户可能在哪里，以及我应该如何接近他们？前文已经对方法进行了叙述，在实际编写过程中把增长研究拆成三个相互约束的阶段：规划 → 检索 → 评估。",
+        },
+        {
+          type: "heading",
+          text: "01｜规划 — 把模糊描述转化为搜索假设",
+        },
+        {
+          type: "paragraph",
+          text: "用户提供产品描述后，系统首先调用 AI 生成一个查询计划，将输入整理为产品概要、潜在目标用户、需求表达、竞品假设，并允许 AI 进行有限的语义联想，再筛选出在 Reddit 上用于搜索验证的搜索查询。为了避免语义扩展无限发散，候选方向需要同时满足两个条件：保留原始场景中的核心需求，并对应真实用户可能自然表达的具体情境。过于宽泛、已经改变原始需求性质，或只描述产品类别的方向会被过滤。",
+        },
+        {
+          type: "image",
+          src: "/images/reddit-growth-os-product-brief.png",
+          alt: "Product Brief 输入界面：产品描述与生成调研计划",
+          caption: "[产品概要输入]",
+          width: 1024,
+          height: 705,
+        },
+        {
+          type: "image",
+          src: "/images/reddit-growth-os-research-plan.jpg",
+          alt: "Research Plan 界面：目标用户、痛点、搜索查询与竞品假设",
+          caption: "[调研计划]",
+          width: 643,
+          height: 1024,
+          layout: "medium",
+        },
+        {
+          type: "heading",
+          text: "02｜检索 — 让真实 Reddit 内容验证搜索假设",
+        },
+        {
+          type: "paragraph",
+          text: "查询计划生成后，系统首先对筛选后的搜索查询做查询扇出：最多并行执行 8 个不同搜索方向，每个查询获取一组候选帖子。这里刻意保留多个语义相邻但表达不同的查询，因为同一个需求在 Reddit 上可能以完全不同的语言出现。",
+        },
+        {
+          type: "paragraph",
+          text: "检索结果随后经过三层收敛：",
         },
         {
           type: "numbered",
           items: [
             {
-              title: "Product Brief：把模糊想法变成可研究的产品语境",
-              body: "用户输入产品描述、目标用户、竞品或官网。AI 通过追问帮助用户把产品说清楚：它解决什么问题、适合谁、在什么场景下被使用、和现有替代方案有什么不同。系统会把用户的自然语言描述整理成更具体的产品语境，为后续的情境关键词派生和 Reddit 检索提供基础。",
+              title: "帖子去重",
+              body: "不同查询可能命中同一条帖子。系统以帖子为单位去重，避免重复内容放大某一方向的权重。",
             },
             {
-              title: "Growth Research：从产品语境倒推出真实需求场景",
-              body: "系统从产品描述中派生情境关键词，在 Reddit 全平台寻找真实帖子，并对结果按相关性、时效性、需求强度和互动活跃度进行排序。最终产出潜在的获客社区列表和机会帖子列表。",
+              title: "查询命中聚合",
+              body: "如果同一帖子被多个查询命中，系统不会简单删除重复结果，而是将这些搜索路径合并为匹配查询。多路径命中可以作为一个弱相关性信号增加权重。",
             },
             {
-              title: "Action Workspace：把机会转化成可执行的互动动作",
-              body: "基于机会帖子生成回复角度、发帖草稿或可模仿内容结构承接用户。",
-            },
-            {
-              title: "Dashboard / Audience：把 Reddit 运营沉淀成可复盘资产",
-              body: "追踪账号发布表现、社区表现、评论者线索和潜在用户画像，沉淀为可复盘的增长资产。",
+              title: "证据池构建",
+              body: "系统结合查询命中情况、发布时间和互动数据，对候选结果进行初步排序，并控制最终证据池的规模，再交给后续 AI 分析。",
             },
           ],
+        },
+        {
+          type: "image",
+          src: "/images/reddit-growth-os-reddit-evidence.png",
+          alt: "Reddit Evidence 界面：证据池中的 Reddit 帖子列表",
+          caption: "[Reddit 证据池]",
+          width: 1024,
+          height: 832,
+        },
+        {
+          type: "heading",
+          text: "03｜评估 — 基于证据判断机会",
+        },
+        {
+          type: "paragraph",
+          text: "最后对证据池做基于证据的机会分析。每个候选机会主要从四个层面判断：",
+        },
+        {
+          type: "numbered",
+          items: [
+            {
+              title: "需求相关性",
+              body: "帖子表达的问题、目标或情绪，是否真正对应产品能够提供的体验。",
+            },
+            {
+              title: "需求强度",
+              body: "区分泛泛讨论与更强的需求信号，例如主动抱怨现状、寻找推荐、比较替代方案、询问解决办法，或表现出购买／尝试意图。",
+            },
+            {
+              title: "社区适配度",
+              body: "不仅判断帖子本身是否相关，还要判断这一需求是否与子版块的讨论语境一致。单条偶然出现的相关帖子，不应自动被解释为整个社区都是潜在获客渠道。",
+            },
+            {
+              title: "行动价值",
+              body: "结合发布时间、评论活跃度和讨论状态判断机会是否仍然值得介入。高度相关但已经沉寂很久的帖子，与正在形成讨论的新帖子具有不同的行动优先级。",
+            },
+          ],
+        },
+        {
+          type: "paragraph",
+          text: "模型综合四个维度生成匹配分数，并按照机会优先级形成排序列表，帮助用户快速判断哪些帖子最值得进一步参与。每个机会保留对应的原始帖子、评分依据和推荐理由，并结合具体讨论语境生成针对性的回复话术。",
+        },
+        {
+          type: "image",
+          src: "/images/reddit-growth-os-opportunity-map.jpg",
+          alt: "Opportunity Map 界面：机会卡片、匹配分数与证据帖子",
+          caption: "[机会地图]",
+          width: 1024,
+          height: 948,
+        },
+      ],
+    },
+    {
+      id: "growth-learning",
+      level: 2,
+      number: "7.2",
+      title: "增长学习 — 让每一次运营成为下一次判断的依据",
+      blocks: [
+        {
+          type: "paragraph",
+          text: "第二个闭环解决的是：做完之后，我怎么知道什么真的有效，以及谁真正对产品产生了兴趣？",
+        },
+        {
+          type: "paragraph",
+          text: "相比只记录浏览量、点赞或评论这些从 Reddit 平台直观看到的数据，我希望系统进一步理解这些互动背后的用户态度和需求信号。因此，增长学习被拆成三个层次：",
+        },
+        {
+          type: "heading",
+          text: "01｜表现 — 哪些内容真正有效？",
+        },
+        {
+          type: "paragraph",
+          text: "系统持续同步账号发布的帖子及互动数据，并通过仪表盘将分散在不同子版块中的运营结果统一起来。除了浏览量、点赞、评论等基础指标，系统进一步综合帖子的互动热度和回复表现，让用户快速识别高表现内容，并横向比较：",
+        },
+        {
+          type: "bullets",
+          items: [
+            "哪些帖子获得了更高关注？",
+            "哪些社区产生了更多有效互动？",
+            "哪些内容角度更容易引发讨论？",
+          ],
+        },
+        {
+          type: "image",
+          src: "/images/reddit-growth-os-dashboard.png",
+          alt: "Reddit Growth OS 仪表盘：帖子表现与社区分布",
+          caption: "[增长仪表盘]",
+          width: 1024,
+          height: 529,
+        },
+        {
+          type: "heading",
+          text: "02｜评论洞察 — 从“有多少回复”到“谁在回复”",
+        },
+        {
+          type: "paragraph",
+          text: "高互动并不一定意味着高质量增长。因此，在帖子表现之外，系统进一步通过 AI 对评论区进行语义分析，从两个维度理解真实反馈：",
+        },
+        {
+          type: "numbered",
+          items: [
+            {
+              title: "情绪｜用户怎么看？",
+              body: "识别评论中的正向、负向和中性态度，观察社区对帖子和产品概念的整体接受程度。",
+            },
+            {
+              title: "潜在匹配｜这个人是不是潜在用户？",
+              body: "相比单纯判断情绪，系统进一步分析评论中表达的需求、使用场景、兴趣和尝试意愿，判断互动者是否与产品可能服务的用户相匹配。",
+            },
+          ],
+        },
+        {
+          type: "image",
+          src: "/images/reddit-growth-os-comment-intelligence.png",
+          alt: "Comment Intelligence：评论情绪分布与高分评论",
+          caption: "[评论洞察]",
+          width: 1024,
+          height: 535,
+        },
+        {
+          type: "image",
+          src: "/images/reddit-growth-os-audience-intelligence.png",
+          alt: "Audience：从评论中识别高意图与潜在用户",
+          caption: "[受众识别]",
+          width: 1024,
+          height: 274,
+        },
+        {
+          type: "heading",
+          text: "03｜受众发现 — 从高意图评论者反向扩展用户画像",
+        },
+        {
+          type: "paragraph",
+          text: "当系统识别出潜在的高意图用户后，这些用户会进入受众池。",
+        },
+        {
+          type: "paragraph",
+          text: "在用户公开信息允许的范围内，系统可以进一步读取其 Reddit 主页中的公开活动，分析其经常参与的社区、讨论主题和内容方向，并逐渐形成更具体的受众信号。",
+        },
+        {
+          type: "paragraph",
+          text: "这些信息有两个用途：",
+        },
+        {
+          type: "bullets",
+          items: [
+            "帮助团队从真实用户行为中修正最初的用户假设——真正对产品产生兴趣的人是谁，他们还关心什么？",
+            "高意图用户反复出现的兴趣主题和社区可以进入下一轮增长研究，成为新的搜索方向和内容素材。",
+          ],
+        },
+        {
+          type: "paragraph",
+          text: "因此，增长学习本身形成了一个小的反馈闭环：",
+        },
+        {
+          type: "quote",
+          plain: true,
+          text: "帖子表现 → 评论分析 → 潜在用户 → 主页信号 → 受众池 → 新社区／主题",
+        },
+        {
+          type: "paragraph",
+          text: "系统不再只根据团队预设的用户画像寻找用户，而是开始从真实产生互动的人身上反向学习用户画像。随着运营数据逐渐积累，系统还可以进一步生成日报／周报，将内容表现、社区反馈、受众信号和新的增长机会自动整理为周期性复盘。",
+        },
+        {
+          type: "image",
+          src: "/images/reddit-growth-os-engager-intelligence.png",
+          alt: "Engager Intelligence：高意图互动者与新发现社区",
+          caption: "[受众发现]",
+          width: 1024,
+          height: 525,
+        },
+      ],
+    },
+    {
+      id: "closing-the-loop",
+      level: 2,
+      number: "7.3",
+      title: "闭合闭环 — 从发现机会到积累增长认知",
+      blocks: [
+        {
+          type: "paragraph",
+          text: "两个工作流最终形成一条持续迭代的增长闭环：",
+        },
+        {
+          type: "quote",
+          plain: true,
+          spaced: true,
+          text: "假设 → 研究 → 证据 → 行动 → 反馈 → 受众学习 → 更好的假设",
+        },
+        {
+          type: "paragraph",
+          text: "机会发现从使用场景和需求假设出发，寻找可能的用户与社区；增长学习则从真实发布后的互动数据出发，识别真正产生兴趣的人，并从他们的公开行为中发现新的用户特征、社区和内容方向，从而更精准地找到用户、实现增长目标。",
+        },
+        {
+          type: "paragraph",
+          text: "项目链接：https://github.com/xiangc-rvz/rdit_tracking",
         },
       ],
     },
@@ -203,7 +703,7 @@ const redditGrowthOsEn: ProjectCopy = {
   title: "Reddit Growth OS",
   description:
     "Turn demand expressions on Reddit into executable acquisition actions",
-  tags: ["AI Product", "0-to-1 Growth", "Vibecoding"],
+  tags: ["Product Design", "AI Workflow Design", "Full-stack Development"],
   sections: [
     {
       id: "product-definition",
@@ -213,7 +713,7 @@ const redditGrowthOsEn: ProjectCopy = {
       blocks: [
         {
           type: "paragraph",
-          text: "Reddit Growth OS is a Reddit acquisition research and retro workstation for 0→1 products. It helps users start from a fuzzy product description, automatically derive situational expressions of potential users, find real demand posts across Reddit, and turn opportunities into executable interactions, posts, and reviewable assets.",
+          text: "Reddit Growth OS is an AI growth research tool grounded in real Reddit content evidence. I abstracted my own Reddit cold-start working method into an AI-enhanced workflow that helps early-stage products start from a fuzzy product idea, discover scenes where potential users are already expressing demand, and turn those signals into executable, reviewable growth actions.",
         },
       ],
     },
@@ -221,85 +721,572 @@ const redditGrowthOsEn: ProjectCopy = {
       id: "project-background",
       level: 1,
       number: "2.",
-      title: "Project Background",
+      title: "Project Background: It started from a real Reddit growth practice",
       blocks: [
         {
           type: "paragraph",
-          text: "While doing Reddit growth at a U.S. AI startup, I once brought in 200+ users and 30K+ organic traffic in a week through operations. That experience made something clear: Reddit matters a lot for overseas product cold starts, but it is especially hard for 0→1 products. The platform is made of millions of interest communities, each with its own language, rules, and unspoken boundaries. The real difficulty for operators is not “posting.” It is two things:",
+          text: "While doing Reddit growth at a U.S. AI startup, I once brought in 200+ users and 30K+ organic traffic in a week through operations. What I realized was that the time I spent most was not writing posts — it was constantly judging: where should I go to find people who might actually need this product? And after doing the work, how do I know what truly worked? Reddit growth logic is very different from traditional channels. Users are scattered across highly autonomous communities, and each subreddit has its own language, rules, and tolerance for promotional content. For 0→1 products whose user portraits are still unstable, two problems keep recurring.",
         },
         {
           type: "numbered",
           items: [
             {
-              title: "Finding the right people",
+              title:
+                "Finding a “relevant community” is not the same as finding people with demand",
               body: "Early products rarely have a clear user portrait. Teams often search communities from product category first, and end up in subreddits that look relevant but convert poorly.",
             },
             {
-              title: "Growth actions that cannot compound",
+              title: "Growth actions cannot compound",
               body: "Which community, what angle, what content, and what results — these usually live in spreadsheets and personal memory. It becomes hard to review what actually worked.",
             },
           ],
         },
         {
           type: "paragraph",
-          text: "So I split the problem into two layers: first, how to find where real demand happens; then, how to turn Reddit operations into reviewable assets.",
+          text: "So I split the problem into two loops.",
+        },
+        {
+          type: "quote",
+          text: "Discovery — Starting from an immature product idea, how do you find where real demand might be happening?",
+        },
+        {
+          type: "quote",
+          text: "Learning — How do you turn every Reddit operation into evidence the next growth decision can reuse?",
+        },
+      ],
+    },
+    {
+      id: "competitive-analysis",
+      level: 1,
+      number: "3.",
+      title: "Competitive Analysis",
+      blocks: [
+        {
+          type: "paragraph",
+          text: "I analyzed mainstream Reddit acquisition / listening tools by their matching logic.",
+        },
+        {
+          type: "table",
+          headers: [
+            "Product",
+            "Existing method",
+            "Starts from",
+            "Best for",
+            "Limit for 0→1",
+          ],
+          rows: [
+            [
+              "F5Bot",
+              "Keyword Monitoring",
+              "Known keywords",
+              "Brand listening / SEO",
+              "You must already know what to search",
+            ],
+            [
+              "Syften",
+              "Community Research",
+              "Known subreddits",
+              "User research",
+              "You must already know where users are",
+            ],
+            [
+              "ReplyGuy / Devi AI",
+              "AI Outreach",
+              "Brand + keywords",
+              "Scaled engagement",
+              "Easy to create low-relevance replies and platform risk",
+            ],
+          ],
+        },
+        {
+          type: "paragraph",
+          text: "Each of these products has its strengths. The real issue is not that Reddit lacks search tools — it is that existing tools all start from known answers. They ask operators to already know keywords, competitors, or target communities, then help expand the search. My own growth practice happened precisely when those answers did not yet exist. So instead of optimizing “how to search more,” I redesigned the step that happens before search.",
         },
       ],
     },
     {
       id: "core-insight",
       level: 1,
-      number: "3.",
-      title: "Core Insight",
+      number: "4.",
+      title:
+        "Core Insight: Don't start with the product. Start with the moment.",
       blocks: [
         {
-          type: "bullets",
+          type: "paragraph",
+          text: "For mature products, we can start from categories, competitors, and keywords to find users. But 0→1 builders often still don't have answers to “who is my core user” or “what is the biggest selling point.” Compared with an abstract product definition, a concrete use situation is often easier to describe. I also found that real users rarely describe their problems in the categories product teams invent — they describe the situation they are living through. For example, if an AI companion product starts from product category:",
+        },
+        {
+          type: "quote",
+          text: "AI Companion → AI → Chatbot → AI Tools → AI Girlfriend",
+        },
+        {
+          type: "paragraph",
+          text: "It can easily land in many technical communities that look related but have weak real demand. Meanwhile, a real potential user may be somewhere completely different saying: “Playing games alone is getting less and less fun.” They never searched “AI companion,” and may never have thought they needed an AI product. But they have already expressed the need the product solves.",
+        },
+        {
+          type: "paragraph",
+          text: "So I redefined the old search logic:",
+        },
+        {
+          type: "quote",
+          text: "Product → Category → Keywords → Communities",
+        },
+        {
+          type: "paragraph",
+          text: "as:",
+        },
+        {
+          type: "quote",
+          text: "Product → User Situation → Need Expression → Reddit Evidence",
+        },
+      ],
+    },
+    {
+      id: "method-seed-to-tree",
+      level: 1,
+      number: "5.",
+      title: "Method｜Seed-to-Tree",
+      blocks: [
+        {
+          type: "paragraph",
+          text: "I call this method of expanding a fuzzy idea layer by layer into real demand evidence Seed-to-Tree. The system does not require users to first define a complete target user, product category, or core selling point. One concrete use situation can become the seed of search.",
+        },
+        {
+          type: "paragraph",
+          text: "For example:",
+        },
+        {
+          type: "heading",
+          text: "Seed — Experience Moment",
+        },
+        {
+          type: "paragraph",
+          text: "“On Saturday morning, 22-year-old Mary sits on the sofa and opens this game. She wants to relax and quietly pass the weekend.”",
+        },
+        {
+          type: "paragraph",
+          text: "→ ① Experience Signals",
+        },
+        {
+          type: "paragraph",
+          text: "AI first identifies signals from the scene that may shape demand:",
+        },
+        {
+          type: "numbered",
           items: [
-            "Most existing Reddit acquisition tools rely on keyword, competitor, or SEO matching: input a product and competitors, and the system finds similar communities and similar posts. That works for mature products with clear categories, competitors, and keywords.",
-            "But 0→1 products face a different problem. Early products often start from a fuzzy idea, and the user portrait itself is still unstable. More importantly, real users are not always concentrated in category communities — they are scattered across situational communities where demand actually occurs.",
-            "Take an AI companion product. Conventional tools recommend AI or chatbot subreddits, but conversion is weak. Real demand shows up in seemingly unrelated places — for example, gamers saying they feel empty playing alone and wish someone were there. That signal cannot be found through “product category → subreddit.” It has to be reverse-engineered through “user situation → demand expression.”",
+            {
+              title: "Context",
+              body: "Weekend / morning / at home",
+            },
+            {
+              title: "Emotion",
+              body: "Relaxation / cozy / low pressure",
+            },
+            {
+              title: "Motivation",
+              body: "Passing time / escape / recharge",
+            },
+            {
+              title: "Behavior",
+              body: "Casual gaming / scrolling / solo activity",
+            },
           ],
         },
         {
           type: "paragraph",
-          text: "So the design starting point of the system is:",
+          text: "→ ② Need Expressions",
         },
         {
-          type: "quote",
-          text: "From product matching to situational reverse engineering",
+          type: "paragraph",
+          text: "Then, instead of expanding around the product name, it infers how these people might express their state on Reddit:",
+        },
+        {
+          type: "bullets",
+          items: [
+            "“looking for something relaxing to play”",
+            "“games I can play while lying on the couch”",
+            "“what do you guys do on a lazy weekend?”",
+            "“cozy games that don't require much thinking”",
+          ],
+        },
+        {
+          type: "paragraph",
+          text: "→ ③ Reddit-native Queries",
+        },
+        {
+          type: "paragraph",
+          text: "The system combines and expands these expressions into different search directions.",
+        },
+        {
+          type: "paragraph",
+          text: "→ ④ Real Reddit Evidence",
+        },
+        {
+          type: "paragraph",
+          text: "Search real discussions across subreddits.",
+        },
+        {
+          type: "paragraph",
+          text: "→ ⑤ Opportunity Map",
+        },
+        {
+          type: "paragraph",
+          text: "Only then do we reverse from real posts to answer:",
+        },
+        {
+          type: "numbered",
+          items: [
+            {
+              title: "Who",
+              body: "Who is expressing similar needs?",
+            },
+            {
+              title: "Where",
+              body: "Which communities host these discussions?",
+            },
+            {
+              title: "Why",
+              body: "Which needs relate most to the product experience?",
+            },
+            {
+              title: "How",
+              body: "Should we comment, post, or keep observing?",
+            },
+          ],
+        },
+        {
+          type: "seedTree",
+          caption: "[Seed-to-Tree]",
+          root: "User Moment",
+          midLeft: "Need Expressions",
+          midCenter: "Emotion Signals",
+          midRight: "Behavior Signals",
+          queriesLabel: "Queries",
+          top: "Real Reddit Posts",
+        },
+      ],
+    },
+    {
+      id: "workflow-ai-enhanced",
+      level: 1,
+      number: "6.",
+      title: "Workflow｜Turning the Method into an AI-enhanced Workflow",
+      blocks: [
+        {
+          type: "paragraph",
+          text: "In the past, these judgments lived mostly in my personal experience: understanding the product, imagining user situations, trying search queries, browsing countless posts, then deciding which ones were worth engaging with. I broke that process into an AI + real-data workflow:",
+        },
+        {
+          type: "workflowStrip",
+          caption: "[AI-enhanced workflow]",
+          steps: [
+            {
+              title: "Understand",
+              body: "Through follow-up questions, AI turns a vague product description into researchable product context.",
+            },
+            {
+              title: "Expand",
+              body: "From product features outward, derive user situations, emotional states, and natural need expressions.",
+            },
+            {
+              title: "Retrieve",
+              body: "Translate those expressions into Reddit-native queries and retrieve real posts across communities.",
+            },
+            {
+              title: "Rank",
+              body: "Rank evidence posts by relevance, demand intensity, recency, and engagement activity.",
+            },
+            {
+              title: "Act",
+              body: "Using post content and community context, generate reply angles, content structure, or a draft.",
+            },
+            {
+              title: "Learn",
+              body: "Log publish performance, community response, and engaged users so real results reshape the next round of growth judgment.",
+            },
+          ],
         },
       ],
     },
     {
       id: "product-architecture",
       level: 1,
-      number: "4.",
+      number: "7.",
       title: "Product Architecture",
       blocks: [
         {
           type: "paragraph",
-          text: "The product is organized into four modules:",
+          text: "The product ultimately forms two interconnected working loops: Opportunity Discovery finds potential demand from fuzzy usage situations, while Growth Learning records real operating results and turns them into evidence for the next round of growth judgment.",
+        },
+        {
+          type: "image",
+          src: "/images/reddit-growth-os-architecture.jpg",
+          alt: "Reddit Growth OS product architecture: Growth Research and Growth Learning loops",
+          caption: "[Product Architecture]",
+          width: 1024,
+          height: 512,
+        },
+      ],
+    },
+    {
+      id: "opportunity-discovery",
+      level: 2,
+      number: "7.1",
+      title: "Opportunity Discovery — Finding where demand is already happening",
+      blocks: [
+        {
+          type: "paragraph",
+          text: "The first loop answers: where might my potential users be, and how should I approach them? The method was described earlier; in implementation, Growth Research is split into three mutually constrained stages: Plan → Retrieve → Evaluate.",
+        },
+        {
+          type: "heading",
+          text: "01｜Plan — Turn a fuzzy description into search hypotheses",
+        },
+        {
+          type: "paragraph",
+          text: "After the user provides a product description, the system first calls AI to generate a Query Plan. It organizes the input into a product summary, potential target users, need expressions, and competitor hypotheses, allows limited semantic association, and then filters searchQueries for Reddit validation. To keep semantic expansion from drifting endlessly, candidate directions must satisfy two conditions at once: preserve the core need from the original scene, and map to concrete situations real users might naturally express. Directions that are too broad, that change the nature of the original need, or that only describe a product category are filtered out.",
+        },
+        {
+          type: "image",
+          src: "/images/reddit-growth-os-product-brief.png",
+          alt: "Product Brief input: product description and build research plan",
+          caption: "[Product Brief input]",
+          width: 1024,
+          height: 705,
+        },
+        {
+          type: "image",
+          src: "/images/reddit-growth-os-research-plan.jpg",
+          alt: "Research Plan: target users, pain points, search queries, and competitor hypotheses",
+          caption: "[Research Plan]",
+          width: 643,
+          height: 1024,
+          layout: "medium",
+        },
+        {
+          type: "heading",
+          text: "02｜Retrieve — Let real Reddit content validate the search hypotheses",
+        },
+        {
+          type: "paragraph",
+          text: "Once the Query Plan is ready, the system runs query fan-out on the filtered searchQueries: up to 8 different search directions in parallel, each returning a set of candidate posts. Multiple semantically adjacent but differently worded queries are kept on purpose, because the same need can appear on Reddit in completely different language.",
+        },
+        {
+          type: "paragraph",
+          text: "Retrieval results then go through three layers of convergence:",
         },
         {
           type: "numbered",
           items: [
             {
-              title: "Product Brief: turn a fuzzy idea into a researchable product context",
-              body: "Users input a product description, target users, competitors, or a website. Through follow-up questions, AI helps them articulate the product clearly: what problem it solves, who it is for, in what situations it is used, and how it differs from existing alternatives. The system turns natural-language descriptions into a more concrete product context, which then grounds situational keyword derivation and Reddit search.",
+              title: "Post Deduplication",
+              body: "Different queries may hit the same post. The system deduplicates by post so repeated content does not inflate any one direction’s weight.",
             },
             {
-              title: "Growth Research: reverse-engineer real demand scenes from product context",
-              body: "The system derives situational keywords from the product description, searches real posts across Reddit, and ranks results by relevance, recency, demand intensity, and engagement activity. The output is a list of potential acquisition communities and opportunity posts.",
+              title: "Query-hit Aggregation",
+              body: "If the same post is hit by multiple queries, duplicates are not simply deleted. Those search paths are merged into matchedQueries. Multi-path hits can act as a weak relevance signal and raise weight.",
             },
             {
-              title: "Action Workspace: turn opportunities into executable interaction actions",
-              body: "Based on opportunity posts, it generates reply angles, post drafts, or imitable content structures to engage users.",
-            },
-            {
-              title: "Dashboard / Audience: turn Reddit operations into reviewable assets",
-              body: "It tracks account publishing performance, community performance, commenter leads, and potential user portraits, and consolidates them into reviewable growth assets.",
+              title: "Evidence Pool Construction",
+              body: "Combining query hits, publish time, and engagement data, the system does an initial ranking, controls the size of the final evidence pool, and then hands it to later AI analysis.",
             },
           ],
+        },
+        {
+          type: "image",
+          src: "/images/reddit-growth-os-reddit-evidence.png",
+          alt: "Reddit Evidence: evidence pool of Reddit posts",
+          caption: "[Reddit Evidence]",
+          width: 1024,
+          height: 832,
+        },
+        {
+          type: "heading",
+          text: "03｜Evaluate — Judge opportunities from evidence",
+        },
+        {
+          type: "paragraph",
+          text: "Finally, the Evidence Pool goes through evidence-grounded opportunity analysis. Each candidate opportunity is judged mainly on four dimensions:",
+        },
+        {
+          type: "numbered",
+          items: [
+            {
+              title: "Need Relevance",
+              body: "Whether the problem, goal, or emotion expressed in the post truly maps to the experience the product can provide.",
+            },
+            {
+              title: "Intent Strength",
+              body: "Separating casual discussion from stronger demand signals — actively complaining about the status quo, asking for recommendations, comparing alternatives, seeking solutions, or showing purchase / trial intent.",
+            },
+            {
+              title: "Community Fit",
+              body: "Judging not only whether the post itself is relevant, but whether the need fits the subreddit’s discussion context. A single coincidental related post should not automatically mean the whole community is an acquisition channel.",
+            },
+            {
+              title: "Opportunity Timing",
+              body: "Using publish time, comment activity, and discussion state to judge whether the opportunity is still worth entering. A highly relevant but long-dormant post has a different action priority from a new post whose discussion is still forming.",
+            },
+          ],
+        },
+        {
+          type: "paragraph",
+          text: "The model combines the four dimensions into a fitScore and produces a priority-ranked list so users can quickly see which posts are most worth engaging. Each opportunity keeps the original post, scoring rationale, and recommendation reason, and generates targeted reply language grounded in the specific discussion context.",
+        },
+        {
+          type: "image",
+          src: "/images/reddit-growth-os-opportunity-map.jpg",
+          alt: "Opportunity Map: opportunity card, fit score, and evidence posts",
+          caption: "[Opportunity Map]",
+          width: 1024,
+          height: 948,
+        },
+      ],
+    },
+    {
+      id: "growth-learning",
+      level: 2,
+      number: "7.2",
+      title: "Growth Learning — Make every operation fuel the next judgment",
+      blocks: [
+        {
+          type: "paragraph",
+          text: "The second loop answers: after acting, how do I know what actually worked — and who truly became interested in the product?",
+        },
+        {
+          type: "paragraph",
+          text: "Rather than only logging views, upvotes, or comments visible on Reddit, I want the system to understand the attitudes and demand signals behind those interactions. Growth Learning is therefore split into three layers:",
+        },
+        {
+          type: "heading",
+          text: "01｜Performance — Which content actually works?",
+        },
+        {
+          type: "paragraph",
+          text: "The system continuously syncs the account’s published posts and engagement data, and uses a Dashboard to unify results scattered across subreddits. Beyond basic metrics like views, upvotes, and comments, it also combines interaction heat and reply performance so users can quickly spot high-performing content and compare across dimensions:",
+        },
+        {
+          type: "bullets",
+          items: [
+            "Which posts earned more attention?",
+            "Which communities produced more effective interactions?",
+            "Which content angles more easily spark discussion?",
+          ],
+        },
+        {
+          type: "image",
+          src: "/images/reddit-growth-os-dashboard.png",
+          alt: "Reddit Growth OS dashboard: post performance and community distribution",
+          caption: "[Growth Dashboard]",
+          width: 1024,
+          height: 529,
+        },
+        {
+          type: "heading",
+          text: "02｜Comment Intelligence — From “how many replies” to “who is replying”",
+        },
+        {
+          type: "paragraph",
+          text: "High engagement does not automatically mean high-quality growth. Beyond post performance, the system uses AI to analyze comment threads semantically along two dimensions:",
+        },
+        {
+          type: "numbered",
+          items: [
+            {
+              title: "Sentiment — How do people feel?",
+              body: "Identify positive, negative, and neutral attitudes in comments, and observe the community’s overall acceptance of the post and product concept.",
+            },
+            {
+              title: "Potential Fit — Is this person a potential user?",
+              body: "Beyond sentiment alone, analyze needs, usage scenes, interests, and willingness to try expressed in comments, and judge whether the commenter matches users the product may serve.",
+            },
+          ],
+        },
+        {
+          type: "image",
+          src: "/images/reddit-growth-os-comment-intelligence.png",
+          alt: "Comment Intelligence: sentiment breakdown and top comments",
+          caption: "[Comment Intelligence]",
+          width: 1024,
+          height: 535,
+        },
+        {
+          type: "image",
+          src: "/images/reddit-growth-os-audience-intelligence.png",
+          alt: "Audience: identify strong-interest and potential commenters",
+          caption: "[Audience Identification]",
+          width: 1024,
+          height: 274,
+        },
+        {
+          type: "heading",
+          text: "03｜Audience Discovery — Expand portraits from high-intent commenters",
+        },
+        {
+          type: "paragraph",
+          text: "Once potential high-intent users are identified, they enter the Audience Pool.",
+        },
+        {
+          type: "paragraph",
+          text: "Within what public information allows, the system can further read public activity on a Reddit profile, analyze communities they often join, topics they discuss, and content directions they follow, and gradually form more concrete audience signals.",
+        },
+        {
+          type: "paragraph",
+          text: "These signals serve two purposes:",
+        },
+        {
+          type: "bullets",
+          items: [
+            "Help the team revise initial user hypotheses from real behavior — who actually became interested, and what else do they care about?",
+            "Interest themes and communities that recur among high-intent users can enter the next Growth Research cycle as new search directions and content material.",
+          ],
+        },
+        {
+          type: "paragraph",
+          text: "Growth Learning therefore forms a smaller feedback loop of its own:",
+        },
+        {
+          type: "quote",
+          plain: true,
+          text: "Post Performance → Comment Analysis → Potential Users → Profile Signals → Audience Pool → New Communities / Topics",
+        },
+        {
+          type: "paragraph",
+          text: "The system no longer searches only from a team-defined persona. It starts learning user portraits in reverse from people who actually interacted. As operating data accumulates, it can also generate daily / weekly reports that automatically organize content performance, community feedback, Audience Signals, and new growth opportunities into periodic reviews.",
+        },
+        {
+          type: "image",
+          src: "/images/reddit-growth-os-engager-intelligence.png",
+          alt: "Engager Intelligence: high-intent engagers and newly discovered communities",
+          caption: "[Audience Discovery]",
+          width: 1024,
+          height: 525,
+        },
+      ],
+    },
+    {
+      id: "closing-the-loop",
+      level: 2,
+      number: "7.3",
+      title: "Closing the Loop — From finding opportunities to accumulating growth knowledge",
+      blocks: [
+        {
+          type: "paragraph",
+          text: "The two workflows finally form one continuously iterating growth loop:",
+        },
+        {
+          type: "quote",
+          plain: true,
+          spaced: true,
+          text: "Hypothesis → Research → Evidence → Action → Response → Audience Learning → Better Hypothesis",
+        },
+        {
+          type: "paragraph",
+          text: "Opportunity Discovery starts from usage scenes and demand hypotheses to find possible users and communities. Growth Learning starts from post-publish interaction data to identify people who truly became interested, and from their public behavior discovers new user traits, communities, and content directions — so the next round can find users more precisely and hit growth goals.",
+        },
+        {
+          type: "paragraph",
+          text: "Project link: https://github.com/xiangc-rvz/rdit_tracking",
         },
       ],
     },
@@ -309,7 +1296,7 @@ const redditGrowthOsEn: ProjectCopy = {
 const fourthTrimesterHealthCn: ProjectCopy = {
   title: "Fourth Trimester Health",
   description: "为产后阶段开发可穿戴与环境传感系统。",
-  tags: ["AI Product", "Product Research", "Service Design"],
+  tags: ["AI 产品", "产品研究", "服务设计"],
   sections: [
     {
       id: "overview",
@@ -410,6 +1397,14 @@ const fourthTrimesterHealthCn: ProjectCopy = {
         {
           type: "paragraph",
           text: "产后监测最特殊的地方在于：基线本身一直在动。一位母亲产后第 3 天的「正常心率」，和第 6 周的「正常」完全不是一回事；因此任何一套固定阈值都可能导致误判。所以这个系统从数据、模型到语言，每一层都必须能跟着人一起变。",
+        },
+        {
+          type: "image",
+          src: "/images/fourth-trimester-health-ai-architecture.png",
+          alt: "Fourth Trimester Health 系统架构：穿戴设备、云端与智能模型闭环",
+          caption: "[自我进化的监测架构]",
+          width: 1024,
+          height: 538,
         },
       ],
     },
@@ -683,6 +1678,10 @@ const fourthTrimesterHealthCn: ProjectCopy = {
             },
           ],
         },
+        {
+          type: "paragraph",
+          text: "点击[这里](https://drive.google.com/file/d/1HCmKb6094ez2zuvMRHWf9DuFgXSA0Izm/view?usp=sharing)观看我们的最终汇报。",
+        },
       ],
     },
   ],
@@ -793,6 +1792,14 @@ const fourthTrimesterHealthEn: ProjectCopy = {
         {
           type: "paragraph",
           text: "What makes postpartum monitoring unusual is that the baseline itself keeps moving. A mother's \"normal heart rate\" on day 3 after birth is not the same \"normal\" at week 6; any fixed threshold can therefore misjudge. So from data to model to language, every layer of this system has to change with the person.",
+        },
+        {
+          type: "image",
+          src: "/images/fourth-trimester-health-ai-architecture.png",
+          alt: "Fourth Trimester Health architecture: wearables, cloud, and intelligence loop",
+          caption: "[Self-evolving monitoring architecture]",
+          width: 1024,
+          height: 538,
         },
       ],
     },
@@ -1065,6 +2072,10 @@ const fourthTrimesterHealthEn: ProjectCopy = {
               body: "After the demo, Honda noted that a substantial part of our approach could also apply to eldercare. That was an important signal for us: the architecture built around continuous post-discharge monitoring plus translating machine output into language people can act on has potential to transfer to other care populations.",
             },
           ],
+        },
+        {
+          type: "paragraph",
+          text: "Click [here](https://drive.google.com/file/d/1HCmKb6094ez2zuvMRHWf9DuFgXSA0Izm/view?usp=sharing) to watch our final presentation.",
         },
       ],
     },
@@ -2157,28 +3168,464 @@ export const projects: Project[] = [
       ],
     },
   },
+  (() => {
+    const adaptiveCopy = blankCopy(
+      "Adaptive AI",
+      "Coming soon",
+      "Adaptive AI",
+      "Coming soon",
+    );
+    return {
+      slug: "adaptive-ai",
+      image: "/images/article-3-classic-16-9@2x.png",
+      imageAlt: "Adaptive AI — coming soon",
+      en: adaptiveCopy.en,
+      cn: adaptiveCopy.cn,
+    };
+  })(),
   {
-    slug: "3-classic-icon-families",
-    image: "/images/article-3-classic-16-9@2x.png",
+    slug: "sellassis",
+    image: "/images/sellassis-cover.png",
     imageAlt:
-      "Examples of icons from the NYC Transit System, Olympic Games, and the original Macintosh computer",
-    ...blankCopy(
-      "3 Classic Icon Families",
-      "Celebrate the power of iconography through 3 achievements in modern design.",
-      "三个经典图标家族",
-      "通过三项现代设计成就，看见图标的力量。",
-    ),
-  },
-  {
-    slug: "icon-grids-keylines-demystified",
-    image: "/images/article-icon-grids-16-9@2x.png",
-    imageAlt: "A smiley-face icon placed on a grid illustrating its proportions",
-    ...blankCopy(
-      "Icon Grids & Keylines Demystified",
-      "A breakdown of icon grids — purpose, anatomy, and in-depth examples.",
-      "图标网格与关键线解析",
-      "拆解图标网格：用途、结构，以及深入案例。",
-    ),
+      "SellAssis cover — Facebook marketplace icon on a blue icon-grid and keyline background",
+    en: {
+      title: "SellAssis",
+      description:
+        "An AI Selling Agent that helps users complete secondhand deals — from listing products to talking with buyers.",
+      tags: ["AI Agent", "AI Product", "Agentic Workflow"],
+      sections: [
+        {
+          id: "overview",
+          level: 1,
+          number: "1.",
+          title: "Overview",
+          blocks: [
+            {
+              type: "paragraph",
+              text: "Facebook Marketplace is one of the main secondhand trading platforms in the U.S. Data shows that 56% of U.S. secondhand consumers have used Facebook Marketplace, keeping it in the top tier of online secondhand platforms for a long time.",
+            },
+            {
+              type: "paragraph",
+              text: "Selling a used item on Facebook Marketplace looks like “upload photos and post,” but it actually involves a chain of continuous, repetitive actions: organizing product photos, filling in details, judging price, generating a listing, operating the platform to publish, replying to buyers, negotiating, and finally closing the deal.",
+            },
+            {
+              type: "paragraph",
+              text: "Existing AI tools can already help generate titles or descriptions, but most of that capability stays at the level of a single task. Users still have to repeatedly supply information across steps, decide what comes next, and operate the platform by hand.",
+            },
+            {
+              type: "paragraph",
+              text: "Based on that pain point, I designed and built SellAssis — an AI Selling Agent that runs in the browser. Users only need to provide product photos and a basic selling intent; the Agent then gradually completes product understanding, listing generation and review, Marketplace page operations, and later buyer communication.",
+            },
+          ],
+        },
+        {
+          id: "product-architecture",
+          level: 1,
+          number: "2.",
+          title: "Product Architecture",
+          blocks: [
+            {
+              type: "paragraph",
+              text: "To let the Agent keep advancing a deal across multiple steps, I did not design each AI capability as an isolated tool. Instead, a Selling Agent sits at the center, and different capability modules work together to complete the task.",
+            },
+            {
+              type: "numbered",
+              items: [
+                {
+                  title: "Selling Agent",
+                  body: "Understands the user’s goals, judges the current deal state, and coordinates different capabilities to advance the workflow.",
+                },
+                {
+                  title: "Image Skill",
+                  body: "Analyzes and processes product photos uploaded by the user, preparing suitable visual assets for the listing and Marketplace publishing.",
+                },
+                {
+                  title: "Facebook Skill",
+                  body: "Acts as the operation layer between the Agent and Marketplace: recognizes the current page, reads listing status, and executes actions such as filling fields, navigating, and publishing.",
+                },
+                {
+                  title: "Message Agent",
+                  body: "Takes over buyer communication after the listing is published, generates replies based on product information, pricing strategy, and deal state, and flags situations that need the user to step in.",
+                },
+              ],
+            },
+            {
+              type: "paragraph",
+              text: "These modules share one Selling Context that continuously records product information, user preferences, pricing strategy, workflow state, and buyer context.",
+            },
+            {
+              type: "paragraph",
+              text: "As a result, Agents at different stages do not need to re-ask the user. They can keep acting based on what has already happened.",
+            },
+          ],
+        },
+        {
+          id: "agent-system",
+          level: 1,
+          number: "3.",
+          title: "Agent System",
+          blocks: [
+            {
+              type: "paragraph",
+              text: "SellAssis does not finish publishing in one shot from a preset script. Inside Facebook Marketplace — a continuously changing third-party environment — it repeatedly runs a cycle of Observe → Understand → Update State → Decide → Act → Observe Again. That way, no matter how environmental information changes, the Agent can respond accurately and in time.",
+            },
+            {
+              type: "heading",
+              text: "Observe｜Read the current environment",
+            },
+            {
+              type: "paragraph",
+              text: "First, collect the inputs the current task needs. During publishing, the Facebook Observer continuously reads third-party page state, for example:",
+            },
+            {
+              type: "bullets",
+              items: [
+                "Which Marketplace page or form stage it is on",
+                "Which fields are already filled",
+                "What content Meta AI generated",
+                "Whether images uploaded successfully",
+                "Whether errors, dialogs, or new executable actions appeared",
+              ],
+            },
+            {
+              type: "paragraph",
+              text: "These signals are not handed to the Agent as raw DOM or page text. They first go through an Adapter and become a unified structured page state.",
+            },
+            {
+              type: "heading",
+              text: "Understand｜Understand the product, the page, and human intent",
+            },
+            {
+              type: "paragraph",
+              text: "The Agent needs to understand three kinds of information at once:",
+            },
+            {
+              type: "numbered",
+              items: [
+                {
+                  title: "Product Understanding",
+                  body: "A vision model reads category, brand, model, color, condition, defects, accessories, and image quality from photos, and judges which images work better as the cover.",
+                },
+                {
+                  title: "Interface Understanding",
+                  body: "From Observer output, the system judges whether Facebook is in a page state such as draft editing, publish confirmation, or publish complete.",
+                },
+                {
+                  title: "Intent Understanding",
+                  body: "An LLM judges whether the user wants to “sell fast” or “sell as high as possible,” and later identifies a buyer’s main intent in messages — asking price, bargaining, pickup location, time, or item condition.",
+                },
+              ],
+            },
+            {
+              type: "heading",
+              text: "Update State｜Write observations into the current deal state",
+            },
+            {
+              type: "paragraph",
+              text: "The Agent updates state across four layers:",
+            },
+            {
+              type: "numbered",
+              items: [
+                {
+                  title: "SellingSessionState — where this publish run is",
+                  body: "Serves only this publishing flow, for example ANALYZING_IMAGES → GENERATING_DRAFT → REVIEWING_AI → COMPLETING_FORM → PUBLISHING. It records the current stage, finished steps, the action in progress, missing fields, and exceptions. When publishing ends, the session can close.",
+                },
+                {
+                  title: "ListingRecord — what is known long-term about this item",
+                  body: "Stores canonical facts for each listing: product information, asking price, minimum acceptable price, selling goal, listing status, and the listing URL after it goes live.",
+                },
+                {
+                  title: "ConversationState — progress with a given buyer",
+                  body: "Stores current offer, pickup time, conversation summary, and interaction history for each buyer conversation.",
+                },
+                {
+                  title: "UserSettings — longer-term user preferences",
+                  body: "Pickup location, pickup preference, and notification preference.",
+                },
+              ],
+            },
+            {
+              type: "heading",
+              text: "Decide｜Auto-continue, or hand off to the user",
+            },
+            {
+              type: "paragraph",
+              text: "For every step that needs a decision, the Agent rates the risk.",
+            },
+            {
+              type: "numbered",
+              items: [
+                {
+                  title: "Low Risk → Auto Continue",
+                  body: "Information is sufficient and the action is recoverable, so the Agent advances on its own.",
+                },
+                {
+                  title: "Decision / Commitment → User Confirm",
+                  body: "Real deal decisions — bargaining, exact address, pickup time, Hold, and similar — get an Agent recommendation, then wait for user confirmation before executing.",
+                },
+                {
+                  title: "Unknown / Conflict → Ask User",
+                  body: "When product details cannot be determined, Meta AI conflicts with system judgment, or something unknown appears, the Agent pauses and asks for more information.",
+                },
+              ],
+            },
+            {
+              type: "heading",
+              text: "Act｜Execute deterministic operations through Skills",
+            },
+            {
+              type: "paragraph",
+              text: "The Selling Agent decides “what should happen next,” then uses function calling to invoke deterministic operations inside concrete Skills.",
+            },
+            {
+              type: "numbered",
+              items: [
+                {
+                  title: "Image Skill",
+                  body: "Handles pre-publish visual understanding and image prep: product recognition, quality judgment, cover selection, ordering, and necessary resize. More aggressive edits such as background cleanup stay optional, so the authenticity of a used item is not altered casually.",
+                },
+                {
+                  title: "Facebook Skill",
+                  body: "The page-automation adapter between SellAssis and Marketplace, including Observer, Adapter, and Action. It maps internal product information onto Facebook forms and executes upload, fill, select, navigate, and publish.",
+                },
+                {
+                  title: "Message Skill",
+                  body: "Handles buyer communication after publishing. Low-risk questions with clear answers can be auto-replied — for example “is it still available,” known product facts, or a general pickup area. Questions that imply a real commitment first get a suggested reply for the user to confirm.",
+                },
+              ],
+            },
+            {
+              type: "heading",
+              text: "Observe Again｜Executed is not the same as completed",
+            },
+            {
+              type: "paragraph",
+              text: "In a browser Agent, Action executed ≠ Task completed. After every critical action, the Facebook Observer re-validates the page.",
+            },
+          ],
+        },
+      ],
+    },
+    cn: {
+      title: "智能二手交易 Agent",
+      description:
+        "从商品发布到买家沟通，协助用户完成二手交易流程的 AI Selling Agent。",
+      tags: ["AI Agent", "AI Product", "Agentic Workflow"],
+      sections: [
+        {
+          id: "overview",
+          level: 1,
+          number: "1.",
+          title: "概览",
+          blocks: [
+            {
+              type: "paragraph",
+              text: "Facebook Marketplace 是美国最主要的二手交易平台之一。数据显示，56% 的美国二手消费者使用过 Facebook Marketplace，使其长期处于美国线上二手交易平台的第一梯队。",
+            },
+            {
+              type: "paragraph",
+              text: "在 Facebook Marketplace 出售一件二手商品，看起来只是“上传图片并发布”，实际却包含了一系列连续而重复的操作：整理商品图片、填写信息、判断价格、生成 Listing、操作平台发布、回复买家、议价，并最终完成交易。",
+            },
+            {
+              type: "paragraph",
+              text: "现有 AI 工具已经能够帮助用户生成商品标题或描述，但这些能力大多停留在单个任务上。用户仍然需要在不同步骤之间反复提供信息、判断下一步并手动操作平台。",
+            },
+            {
+              type: "paragraph",
+              text: "基于这个痛点，我设计并开发了智能二手交易 Agent，一个运行在浏览器中的 AI Selling Agent。用户只需要提供商品图片和基本出售意图，Agent 会逐步完成商品信息理解、售卖 Listing 生成与检查、Marketplace 页面操作，以及后续的买家沟通。",
+            },
+          ],
+        },
+        {
+          id: "product-architecture",
+          level: 1,
+          number: "2.",
+          title: "产品架构",
+          blocks: [
+            {
+              type: "paragraph",
+              text: "为了让 Agent 能够跨越多个步骤持续推进交易，我没有将每个 AI 功能设计成独立工具，而是以 Selling Agent 作为核心，由不同能力模块共同完成任务。",
+            },
+            {
+              type: "numbered",
+              items: [
+                {
+                  title: "Selling Agent",
+                  body: "负责理解用户目标、判断当前交易状态，并协调不同能力推进工作流。",
+                },
+                {
+                  title: "Image Skill",
+                  body: "分析并处理用户上传的商品图片，为 Listing 和 Marketplace 发布准备合适的视觉素材。",
+                },
+                {
+                  title: "Facebook Skill",
+                  body: "作为 Agent 与 Marketplace 之间的操作层，负责识别当前页面、读取 Listing 状态，并执行填写、跳转和发布等操作。",
+                },
+                {
+                  title: "Message Agent",
+                  body: "在商品发布后接管买家沟通，根据商品信息、价格策略和交易状态生成回复，并识别需要用户介入的情况。",
+                },
+              ],
+            },
+            {
+              type: "paragraph",
+              text: "这些模块共享同一份 Selling Context，持续记录商品信息、用户偏好、价格策略、工作流状态和买家上下文。",
+            },
+            {
+              type: "paragraph",
+              text: "因此，不同阶段的 Agent 不需要重新询问用户，而是能够基于此前已经发生的事情继续行动。",
+            },
+          ],
+        },
+        {
+          id: "agent-system",
+          level: 1,
+          number: "3.",
+          title: "Agent 系统",
+          blocks: [
+            {
+              type: "paragraph",
+              text: "智能二手交易 Agent 并不是按照预设脚本一次性完成发布，而是在 Facebook Marketplace 这个持续变化的第三方环境中，反复经历一套 Observe → Understand → Update State → Decide → Act → Observe Again 的循环。这样无论环境信息怎么变化，Agent 都能进行准确及时的反应。",
+            },
+            {
+              type: "heading",
+              text: "Observe｜读取当前环境",
+            },
+            {
+              type: "paragraph",
+              text: "首先收集当前任务所需要的输入。在发布过程中，Facebook Observer 会持续读取第三方页面状态，例如：",
+            },
+            {
+              type: "bullets",
+              items: [
+                "当前处于哪个 Marketplace 页面或表单阶段",
+                "哪些字段已经填写",
+                "Meta AI 生成了什么内容",
+                "图片是否成功上传",
+                "是否出现错误、弹窗或新的可执行操作",
+              ],
+            },
+            {
+              type: "paragraph",
+              text: "这些信息不会直接以 DOM 或页面文本交给 Agent，而是先经过 Adapter 转换成统一的结构化页面状态。",
+            },
+            {
+              type: "heading",
+              text: "Understand｜理解商品、页面与人的意图",
+            },
+            {
+              type: "paragraph",
+              text: "Agent 需要同时理解三类信息：",
+            },
+            {
+              type: "numbered",
+              items: [
+                {
+                  title: "Product Understanding｜商品理解",
+                  body: "Vision Model 从图片中识别商品类别、品牌、型号、颜色、状态、瑕疵、配件以及图片质量，并判断哪些图片更适合作为主图。",
+                },
+                {
+                  title: "Interface Understanding｜界面理解",
+                  body: "系统根据 Observer 输出判断 Facebook 当前处于页面状态、发布确认还是发布完成等阶段。",
+                },
+                {
+                  title: "Intent Understanding｜意图理解",
+                  body: "LLM 判断用户希望“尽快出售”还是“尽可能卖高价”，并在后续消息中识别买家的主要意图，例如询价、议价、询问取货地点、时间或商品状态。",
+                },
+              ],
+            },
+            {
+              type: "heading",
+              text: "Update State｜把观察结果写入当前交易状态",
+            },
+            {
+              type: "paragraph",
+              text: "Agent 会进行四层级的状态更新：",
+            },
+            {
+              type: "numbered",
+              items: [
+                {
+                  title: "SellingSessionState — 当前发布进行到哪里",
+                  body: "只服务于这一次发布流程，例如 ANALYZING_IMAGES → GENERATING_DRAFT → REVIEWING_AI → COMPLETING_FORM → PUBLISHING。它会记录当前 stage、已经完成的步骤、正在执行的 action、缺失字段和异常信息。发布结束后，这一 Session 就可以结束。",
+                },
+                {
+                  title: "ListingRecord — 关于这件商品长期知道什么",
+                  body: "保存每个 Listing 的 canonical facts，例如商品信息、asking price、minimum acceptable price、selling goal、listing status，以及最终发布后的 listing URL。",
+                },
+                {
+                  title: "ConversationState — 与某个买家的交易进展",
+                  body: "保存每个 buyer conversation 中的 current offer、pickup time、conversation summary 和历史交互。",
+                },
+                {
+                  title: "UserSettings — 用户的长期偏好",
+                  body: "关于用户的 pickup location、pickup preference 和 notification preference。",
+                },
+              ],
+            },
+            {
+              type: "heading",
+              text: "Decide｜判断下一步自动执行，还是交给用户",
+            },
+            {
+              type: "paragraph",
+              text: "Agent 针对每次需要决策的步骤会进行评级。",
+            },
+            {
+              type: "numbered",
+              items: [
+                {
+                  title: "Low Risk → Auto Continue",
+                  body: "信息充分且操作可恢复，Agent 自主推进。",
+                },
+                {
+                  title: "Decision / Commitment → User Confirm",
+                  body: "涉及议价、精确地址、取货时间、Hold 等真实交易决策，由 Agent 提供建议，用户确认后执行。",
+                },
+                {
+                  title: "Unknown / Conflict → Ask User",
+                  body: "当商品信息无法确定、Meta AI 与系统判断冲突或出现未知情况时，Agent 暂停流程并请求补充信息。",
+                },
+              ],
+            },
+            {
+              type: "heading",
+              text: "Act｜通过 Skills 执行确定性的操作",
+            },
+            {
+              type: "paragraph",
+              text: "Selling Agent 负责判断“接下来应该做什么”，通过 Function Calling 调用具体 Skill 中的确定性操作。",
+            },
+            {
+              type: "numbered",
+              items: [
+                {
+                  title: "Image Skill",
+                  body: "负责发布前的视觉理解与图片准备，包括商品识别、图片质量判断、主图选择、排序和必要的 resize；背景优化等更激进的图像处理只作为可选能力，避免改变二手商品的真实性。",
+                },
+                {
+                  title: "Facebook Skill",
+                  body: "是智能二手交易 Agent 与 Marketplace 之间的页面自动化适配层，包含 Observer、Adapter 和 Action。它负责将内部商品信息映射到 Facebook 表单，并执行上传、填写、选择、跳转和发布等操作。",
+                },
+                {
+                  title: "Message Skill",
+                  body: "负责发布后的买家沟通。低风险且答案明确的问题可以自动回复，例如“是否还在售”、已有商品信息和大概取货区域；涉及真实承诺的问题则先生成建议，再由用户确认。",
+                },
+              ],
+            },
+            {
+              type: "heading",
+              text: "Observe Again｜执行不等于成功",
+            },
+            {
+              type: "paragraph",
+              text: "在浏览器 Agent 里：Action executed ≠ Task completed，所以每一个关键 Action 完成后，Facebook Observer 都会重新验证页面。",
+            },
+          ],
+        },
+      ],
+    },
   },
   {
     slug: "mwow-tunnel",
@@ -2933,7 +4380,16 @@ export const projects: Project[] = [
   },
 ];
 
-export const homeProjects = projects.filter((p) => p.showInHomeGrid !== false);
+const homeProjectOrder = [
+  "reddit-growth-os",
+  "sellassis",
+  "mwow-tunnel",
+  "adaptive-ai",
+] as const;
+
+export const homeProjects = homeProjectOrder
+  .map((slug) => projects.find((p) => p.slug === slug))
+  .filter((p): p is Project => p !== undefined);
 
 export function getProject(slug: string): Project | undefined {
   return projects.find((p) => p.slug === slug);

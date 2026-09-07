@@ -2,8 +2,9 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { HomeProjectTags } from "@/components/HomeProjectTags";
 import { useLang } from "@/lib/lang";
-import { projectHref } from "@/lib/projects";
+import { getProject, projectHref } from "@/lib/projects";
 
 type Shot =
   | {
@@ -77,6 +78,10 @@ export function DribbbleSection() {
           const href =
             shot.kind === "project" ? projectHref(lang, shot.slug) : shot.link;
           const cta = lang === "en" ? shot.ctaEn : shot.ctaCn;
+          const tags =
+            shot.kind === "project"
+              ? getProject(shot.slug)?.[lang].tags
+              : undefined;
 
           return (
             <article key={shot.title} className="column grayscale-hover">
@@ -106,6 +111,7 @@ export function DribbbleSection() {
                   <h3 className="article-title">{shot.title}</h3>
                 </>
               )}
+              <HomeProjectTags tags={tags} />
               <div className="external-link">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src="/icons/arrow-circle-up-right-fill.svg" alt="" className="icon-24" />
@@ -123,24 +129,6 @@ export function DribbbleSection() {
           );
         })}
       </div>
-
-      <hr className="double" />
-
-      <figure style={{ margin: "0 0 16px", lineHeight: 0 }}>
-        <a
-          href="https://play.google.com/store/apps/details?id=com.tobiasfried.phosphor.mercury"
-          className="grayscale-hover"
-          style={{ display: "block" }}
-        >
-          <Image
-            src="/images/phosphor-for-android-6-1@2x.png"
-            alt="Composition of black line-style icons on a yellow background, with the logo of Phosphor for Android"
-            width={1320}
-            height={220}
-            style={{ width: "100%", height: "auto", display: "block" }}
-          />
-        </a>
-      </figure>
     </section>
   );
 }

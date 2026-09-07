@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { HomeProjectTags } from "@/components/HomeProjectTags";
 import { useLang } from "@/lib/lang";
 import { homeProjects, projectHref } from "@/lib/projects";
 
@@ -36,6 +37,7 @@ export function ProjectSection() {
                 <h3 className="article-title">{copy.title}</h3>
                 <p style={{ marginBottom: 0 }}>{copy.description}</p>
               </Link>
+              <HomeProjectTags tags={copy.tags} />
               <div className="external-link">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src="/icons/arrow-circle-up-right-fill.svg" alt="" className="icon-24" />

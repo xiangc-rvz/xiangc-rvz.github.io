@@ -11,11 +11,52 @@ import {
   type ProjectSection,
 } from "@/lib/projects";
 import { ArchitectureFlowDiagram } from "@/components/ArchitectureFlowDiagram";
+import { SeedTreeDiagram } from "@/components/SeedTreeDiagram";
+import { WorkflowStripDiagram } from "@/components/WorkflowStripDiagram";
 
 type Props = {
   lang: ProjectLang;
   slug: string;
 };
+
+function linkifyText(text: string) {
+  const parts = text.split(/(\[[^\]]+\]\(https?:\/\/[^)\s]+\)|https?:\/\/[^\s)）】》」』\]]+)/g);
+  return parts.map((part, index) => {
+    const md = part.match(/^\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)$/);
+    if (md) {
+      return (
+        <a
+          key={index}
+          href={md[2]}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="highlight"
+        >
+          {md[1]}
+        </a>
+      );
+    }
+
+    if (/^https?:\/\//.test(part)) {
+      const trimmed = part.replace(/[),.;:!?]+$/u, "");
+      const trailing = part.slice(trimmed.length);
+      return (
+        <span key={index}>
+          <a
+            href={trimmed}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="highlight"
+          >
+            {trimmed}
+          </a>
+          {trailing}
+        </span>
+      );
+    }
+    return <span key={index}>{part}</span>;
+  });
+}
 
 function ContentBlocks({ blocks }: { blocks: ContentBlock[] }) {
   return (
@@ -24,7 +65,7 @@ function ContentBlocks({ blocks }: { blocks: ContentBlock[] }) {
         if (block.type === "paragraph") {
           return (
             <p key={i} className="project-body-text">
-              {block.text}
+              {linkifyText(block.text)}
             </p>
           );
         }
@@ -38,8 +79,15 @@ function ContentBlocks({ blocks }: { blocks: ContentBlock[] }) {
         }
 
         if (block.type === "quote") {
+          const className = [
+            "project-intro-quote",
+            block.plain ? "is-plain" : "",
+            block.spaced ? "is-spaced" : "",
+          ]
+            .filter(Boolean)
+            .join(" ");
           return (
-            <blockquote key={i} className="project-intro-quote">
+            <blockquote key={i} className={className}>
               <p>{block.text}</p>
             </blockquote>
           );
@@ -199,6 +247,14 @@ function ContentBlocks({ blocks }: { blocks: ContentBlock[] }) {
 
         if (block.type === "architectureFlow") {
           return <ArchitectureFlowDiagram key={i} block={block} />;
+        }
+
+        if (block.type === "seedTree") {
+          return <SeedTreeDiagram key={i} block={block} />;
+        }
+
+        if (block.type === "workflowStrip") {
+          return <WorkflowStripDiagram key={i} block={block} />;
         }
 
         return (
