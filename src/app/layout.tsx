@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import "./globals.css";
+
+/** Free GoatCounter site code — create this exact code at https://www.goatcounter.com */
+const GOATCOUNTER_CODE = "xiangc-rvz";
 
 export const metadata: Metadata = {
   title: "Xiang Chen",
@@ -23,7 +27,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        {children}
+        <Script
+          src="https://gc.zgo.at/count.js"
+          strategy="afterInteractive"
+          data-goatcounter={`https://${GOATCOUNTER_CODE}.goatcounter.com/count`}
+        />
+      </body>
     </html>
   );
 }

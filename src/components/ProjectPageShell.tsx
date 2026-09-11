@@ -346,10 +346,8 @@ export function ProjectPageShell({ lang, slug }: Props) {
 
       <header className="project-topbar">
         <Link
-          href={lang === "en" ? "/resume.pdf" : "/resume-cn.pdf"}
+          href={lang === "en" ? "/resume/" : "/resume-cn/"}
           className={`project-name-link${navVisible ? " is-collapsed" : ""}`}
-          target="_blank"
-          rel="noopener noreferrer"
         >
           {name}
         </Link>

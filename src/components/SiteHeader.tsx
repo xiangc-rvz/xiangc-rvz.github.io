@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { HomeTagNav } from "@/components/HomeTagNav";
 import { useLang, type Lang } from "@/lib/lang";
 
 const copy: Record<
@@ -11,7 +12,6 @@ const copy: Record<
     resumeLabel: string;
     social: { label: string; href: string };
     resume: string;
-    bio: React.ReactNode;
   }
 > = {
   en: {
@@ -19,32 +19,14 @@ const copy: Record<
     leaveNote: "Leave a note",
     resumeLabel: "Resume",
     social: { label: "GitHub", href: "https://github.com/xiangc-rvz" },
-    resume: "/resume.pdf",
-    bio: (
-      <>
-        Xiang is a product designer, builder and thinker who goes deep where
-        design meets AI. Trained in computational design at Carnegie Mellon,
-        Xiang designs and ships AI products end-to-end — the kind that actually
-        run in the real world. On a mission to make AI products that are
-        genuinely useful, quietly delightful, and worth building in the first
-        place.
-      </>
-    ),
+    resume: "/resume/",
   },
   cn: {
     name: "陈想",
     leaveNote: "留言",
     resumeLabel: "简历",
     social: { label: "GitHub", href: "https://github.com/xiangc-rvz" },
-    resume: "/resume-cn.pdf",
-    bio: (
-      <>
-        陈想是一位产品设计师、创造者与思考者，专注于设计与 AI
-        交汇的深水区。在卡内基梅隆大学接受计算设计训练，她端到端地设计并落地
-        AI 产品——那种真正能在现实世界跑起来的产品。使命是做出真正有用、克制而令人愉悦，以及值得被做出来的
-        AI 产品。
-      </>
-    ),
+    resume: "/resume-cn/",
   },
 };
 
@@ -136,8 +118,6 @@ export function SiteHeader() {
                 {" — "}
                 <a
                   href={t.resume}
-                  target="_blank"
-                  rel="noopener noreferrer"
                   style={{ ...btnBase, textDecoration: "none" }}
                   onMouseEnter={(e) => {
                     (e.currentTarget as HTMLAnchorElement).style.background = "white";
@@ -184,12 +164,41 @@ export function SiteHeader() {
             </div>
           </div>
 
-          {/* Bio */}
+          {/* Intro + tags */}
           <div
             className="column undivided"
-            style={{ padding: "0 0 0 12px", display: "flex", alignItems: "center" }}
+            style={{
+              padding: "0 0 0 12px",
+              display: "flex",
+              alignItems: "center",
+              minWidth: 0,
+              overflow: "hidden",
+            }}
           >
-            <p className="profile-text">{t.bio}</p>
+            <div className="profile-intro">
+              {lang === "en" ? (
+                <>
+                  <p className="profile-intro-text">
+                    CMU graduate at the intersection of AI, product, and
+                    computational design.
+                  </p>
+                  <p className="profile-intro-text">
+                    Consider these tags a map of how I think, build, and
+                    explore.
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p className="profile-intro-text">
+                    毕业于卡内基梅隆大学，关注 AI、产品与计算设计。
+                  </p>
+                  <p className="profile-intro-text">
+                    从这些标签——关于我如何思考、创造与探索的地图——认识我吧。
+                  </p>
+                </>
+              )}
+              <HomeTagNav />
+            </div>
           </div>
         </div>
       </article>

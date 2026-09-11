@@ -12,11 +12,18 @@ export default function GuestbookPage() {
     e.preventDefault();
     setStatus("sending");
     try {
-      // Replace YOUR_FORM_ID with your Formspree form ID (formspree.io/f/...)
-      const res = await fetch("https://formspree.io/f/YOUR_FORM_ID", {
+      const res = await fetch("https://formsubmit.co/ajax/xccxrvz@gmail.com", {
         method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({ name, message }),
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          message,
+          _subject: `Leave a note from ${name || "someone"}`,
+          _template: "table",
+        }),
       });
       if (res.ok) {
         setStatus("sent");

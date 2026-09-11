@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { HomeProjectTags } from "@/components/HomeProjectTags";
 import { useLang } from "@/lib/lang";
-import { getProject, projectHref } from "@/lib/projects";
+import { getProject, projectAnchorId, projectHref } from "@/lib/projects";
 
 type Shot =
   | {
@@ -84,7 +84,11 @@ export function DribbbleSection() {
               : undefined;
 
           return (
-            <article key={shot.title} className="column grayscale-hover">
+            <article
+              key={shot.title}
+              id={shot.kind === "project" ? projectAnchorId(shot.slug) : undefined}
+              className="column grayscale-hover"
+            >
               {shot.kind === "project" ? (
                 <Link
                   href={href}

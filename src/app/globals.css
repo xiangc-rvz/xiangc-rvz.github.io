@@ -100,6 +100,27 @@ hr.double {
   padding: 0 8px;
 }
 
+.profile-intro {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  min-width: 0;
+}
+
+.profile-intro-text {
+  margin: 0;
+  font-family: 'CooperBTLight', 'Cambria', serif;
+  font-size: 32px;
+  line-height: 40px;
+  font-weight: normal;
+  max-width: 42em;
+}
+
+.profile-intro .profile-tags {
+  margin-top: 6px;
+}
+
 /* ── Display heading (article titles) ── */
 .article-title {
   font-family: 'CooperBTLight', 'Cambria', serif;
@@ -211,6 +232,90 @@ article > .external-link {
 
 .home-project-tags {
   margin: 12px 0 0;
+}
+
+.profile-tags {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow: hidden; /* never spill into the avatar column */
+}
+
+.profile-tags-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 100%;
+}
+
+.profile-tags-row {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-start; /* always LTR — stagger via padding only */
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.profile-tags-row li {
+  flex: 0 0 auto;
+}
+
+/* Stagger rightward only — never overflow left over the avatar */
+.profile-tags-row.is-start {
+  padding-left: 0;
+}
+
+.profile-tags-row.is-end {
+  padding-left: clamp(24px, 10%, 72px);
+}
+
+.profile-tags-row.is-center {
+  padding-left: clamp(12px, 5%, 36px);
+}
+
+.profile-tag-button {
+  cursor: pointer;
+  border: none;
+  appearance: none;
+  background: black;
+  color: white;
+  white-space: nowrap;
+  transition: background 0.2s ease, color 0.2s ease, opacity 0.2s ease;
+}
+
+.profile-tags:hover .profile-tag-button.is-ai {
+  background: #e11d2e;
+  color: white;
+}
+
+.profile-tags:hover .profile-tag-button.is-research {
+  background: #f0c419;
+  color: black;
+}
+
+.profile-tags:hover .profile-tag-button.is-ux {
+  background: #1f4bb8;
+  color: white;
+}
+
+.profile-tag-button:hover {
+  opacity: 0.9;
+}
+
+.profile-tag-button:focus-visible {
+  outline: 2px solid black;
+  outline-offset: 2px;
+}
+
+[id^="home-project-"] {
+  scroll-margin-top: 24px;
 }
 
 .external-link a {
@@ -1427,4 +1532,66 @@ footer {
   .project-info-cards {
     grid-template-columns: 1fr;
   }
+}
+
+/* ── Resume viewer (page images — more reliable than PDF iframe) ── */
+.resume-viewer-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: #f3f3f3;
+}
+
+.resume-viewer-bar {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid black;
+  background: white;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.resume-viewer-bar > :first-child {
+  justify-self: start;
+}
+
+.resume-viewer-bar > :last-child {
+  justify-self: end;
+}
+
+.resume-viewer-title {
+  margin: 0;
+  font-family: 'CooperBTLight', 'Cambria', serif;
+  font-size: 24px;
+  line-height: 28px;
+  letter-spacing: -0.3px;
+  font-weight: normal;
+  white-space: nowrap;
+}
+
+.resume-viewer-pages {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+}
+
+.resume-viewer-page-figure {
+  margin: 0;
+  width: min(100%, 820px);
+  background: white;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+}
+
+.resume-viewer-page-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  user-select: none;
+  -webkit-user-drag: none;
 }

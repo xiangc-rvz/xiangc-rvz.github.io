@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { HomeProjectTags } from "@/components/HomeProjectTags";
 import { useLang } from "@/lib/lang";
-import { homeProjects, projectHref } from "@/lib/projects";
+import { homeProjects, projectAnchorId, projectHref } from "@/lib/projects";
 
 export function ProjectSection() {
   const { lang } = useLang();
@@ -25,7 +25,11 @@ export function ProjectSection() {
           const copy = project[lang];
           const href = projectHref(lang, project.slug);
           return (
-            <article key={project.slug} className="column grayscale-hover">
+            <article
+              key={project.slug}
+              id={projectAnchorId(project.slug)}
+              className="column grayscale-hover"
+            >
               <Link href={href} style={{ display: "block", color: "inherit", textDecoration: "none" }}>
                 <Image
                   src={project.image}

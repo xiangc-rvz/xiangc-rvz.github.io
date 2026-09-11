@@ -111,7 +111,7 @@ export type Project = {
 const redditGrowthOsCn: ProjectCopy = {
   title: "Reddit Growth OS",
   description: "把 Reddit 上的需求表达转化为可执行的获客动作",
-  tags: ["产品设计", "AI 工作流设计", "全栈开发"],
+  tags: ["产品设计", "AI 工作流设计", "原型设计"],
   sections: [
     {
       id: "product-definition",
@@ -703,7 +703,7 @@ const redditGrowthOsEn: ProjectCopy = {
   title: "Reddit Growth OS",
   description:
     "Turn demand expressions on Reddit into executable acquisition actions",
-  tags: ["Product Design", "AI Workflow Design", "Full-stack Development"],
+  tags: ["Product Design", "AI Workflow Design", "Prototyping"],
   sections: [
     {
       id: "product-definition",
@@ -1296,7 +1296,7 @@ const redditGrowthOsEn: ProjectCopy = {
 const fourthTrimesterHealthCn: ProjectCopy = {
   title: "Fourth Trimester Health",
   description: "为产后阶段开发可穿戴与环境传感系统。",
-  tags: ["AI 产品", "产品研究", "服务设计"],
+  tags: ["AI 产品", "用户研究", "服务设计"],
   sections: [
     {
       id: "overview",
@@ -1691,7 +1691,7 @@ const fourthTrimesterHealthEn: ProjectCopy = {
   title: "Fourth Trimester Health",
   description:
     "Developing a wearable and environmental sensor system for the postpartum period.",
-  tags: ["AI Product", "Product Research", "Service Design"],
+  tags: ["AI Product", "User Research", "Service Design"],
   sections: [
     {
       id: "overview",
@@ -2163,7 +2163,7 @@ export const projects: Project[] = [
     en: {
       title: "VR Chord",
       description: "Reimagining typing in virtual reality",
-      tags: ["XR / VR", "Interaction Design", "Rapid Prototyping"],
+      tags: ["XR", "Interaction Design", "Rapid Prototyping"],
       sections: [
         {
           id: "overview",
@@ -2345,7 +2345,7 @@ export const projects: Project[] = [
     cn: {
       title: "VR Chord",
       description: "重新设计 VR 里的打字方式",
-      tags: ["XR / VR", "交互设计", "快速原型"],
+      tags: ["XR", "交互设计", "快速原型"],
       sections: [
         {
           id: "overview",
@@ -3169,18 +3169,24 @@ export const projects: Project[] = [
     },
   },
   (() => {
-    const adaptiveCopy = blankCopy(
-      "Adaptive AI",
-      "Coming soon",
-      "Adaptive AI",
-      "Coming soon",
+    const branchableCopy = blankCopy(
+      "Branchable AI",
+      "Rethinking AI conversations from linear message history into explorable, composable information.",
+      "Branchable AI",
+      "重新思考 AI 对话：从线性消息历史，走向可探索、可组合的信息结构。",
     );
     return {
-      slug: "adaptive-ai",
+      slug: "branchable-ai",
       image: "/images/article-3-classic-16-9@2x.png",
-      imageAlt: "Adaptive AI — coming soon",
-      en: adaptiveCopy.en,
-      cn: adaptiveCopy.cn,
+      imageAlt: "Branchable AI — coming soon",
+      en: {
+        ...branchableCopy.en,
+        tags: ["AI Product", "Context Engineering", "Conversational UX"],
+      },
+      cn: {
+        ...branchableCopy.cn,
+        tags: ["AI 产品", "上下文工程", "对话式 UX"],
+      },
     };
   })(),
   {
@@ -3192,7 +3198,7 @@ export const projects: Project[] = [
       title: "SellAssis",
       description:
         "An AI Selling Agent that helps users complete secondhand deals — from listing products to talking with buyers.",
-      tags: ["AI Agent", "AI Product", "Agentic Workflow"],
+      tags: ["AI Agent", "AI Product"],
       sections: [
         {
           id: "overview",
@@ -3411,7 +3417,7 @@ export const projects: Project[] = [
       title: "智能二手交易 Agent",
       description:
         "从商品发布到买家沟通，协助用户完成二手交易流程的 AI Selling Agent。",
-      tags: ["AI Agent", "AI Product", "Agentic Workflow"],
+      tags: ["AI Agent", "AI Product"],
       sections: [
         {
           id: "overview",
@@ -3639,7 +3645,7 @@ export const projects: Project[] = [
       tags: [
         "Computational Design",
         "Product Design",
-        "Physical Prototyping",
+        "Physical Computing",
       ],
       timeline: [
         "2022 · Undergraduate entrepreneurship project",
@@ -4015,7 +4021,7 @@ export const projects: Project[] = [
       title: "喵喵塔",
       description:
         "一套模块化产品系统，把房间尺寸、结构规则与猫咪行为转化为可配置的家具。",
-      tags: ["计算设计", "产品设计", "实体原型"],
+      tags: ["计算设计", "产品设计", "物理计算"],
       timeline: [
         "2022 年 · 本科生创业项目",
         "2026 年 · 人工智能回顾性探索",
@@ -4384,12 +4390,48 @@ const homeProjectOrder = [
   "reddit-growth-os",
   "sellassis",
   "mwow-tunnel",
-  "adaptive-ai",
+  "branchable-ai",
 ] as const;
 
 export const homeProjects = homeProjectOrder
   .map((slug) => projects.find((p) => p.slug === slug))
   .filter((p): p is Project => p !== undefined);
+
+/** Slugs shown on the homepage (project + research + creative). */
+const homeTaggedSlugs = [
+  ...homeProjectOrder,
+  "fourth-trimester-health",
+  "vr-chord",
+  "pass-that-there",
+  "crazy-baby-alarm",
+] as const;
+
+export function projectAnchorId(slug: string): string {
+  return `home-project-${slug}`;
+}
+
+/** Unique homepage tags → matching project slugs (for jump-to-project). */
+export function getHomeTagIndex(
+  lang: ProjectLang,
+): { tag: string; slugs: string[] }[] {
+  const map = new Map<string, string[]>();
+
+  for (const slug of homeTaggedSlugs) {
+    const project = projects.find((p) => p.slug === slug);
+    const tags = project?.[lang].tags;
+    if (!tags) continue;
+    for (const tag of tags) {
+      const existing = map.get(tag);
+      if (existing) {
+        if (!existing.includes(slug)) existing.push(slug);
+      } else {
+        map.set(tag, [slug]);
+      }
+    }
+  }
+
+  return Array.from(map.entries()).map(([tag, slugs]) => ({ tag, slugs }));
+}
 
 export function getProject(slug: string): Project | undefined {
   return projects.find((p) => p.slug === slug);
