@@ -219,6 +219,137 @@ a::selection {
   filter: grayscale(0%);
 }
 
+/* ── Creative Practice carousel ── */
+.creative-carousel-heading {
+  justify-content: flex-start;
+}
+
+.creative-carousel-heading h2 {
+  flex: 1;
+}
+
+.creative-carousel-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+}
+
+.creative-carousel-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 22px;
+  padding: 0;
+  border: 1px solid black;
+  background: black;
+  color: white;
+  font-family: inherit;
+  font-size: inherit;
+  letter-spacing: -0.2px;
+  line-height: 1;
+  cursor: pointer;
+  border-radius: 0;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.creative-carousel-btn:hover:not(:disabled) {
+  background: white;
+  color: black;
+}
+
+.creative-carousel-btn:disabled {
+  opacity: 0.25;
+  cursor: default;
+}
+
+.creative-carousel {
+  margin: 0 0 24px;
+}
+
+.creative-carousel-viewport {
+  overflow: hidden;
+  width: 100%;
+}
+
+.creative-carousel-track {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  transition: transform 0.4s ease;
+  will-change: transform;
+}
+
+.creative-carousel-item {
+  flex: 0 0 33.333333%;
+  width: 33.333333%;
+  max-width: 33.333333%;
+  min-width: 0;
+  padding: 0 12px;
+  box-sizing: border-box;
+}
+
+.creative-carousel-item:first-child {
+  padding-left: 0;
+}
+
+.creative-carousel-item:last-child {
+  padding-right: 0;
+}
+
+@media (min-width: 849px) {
+  .creative-carousel-item:not(:last-child) {
+    border-right: 1px solid black;
+  }
+}
+
+.creative-placeholder-cover {
+  aspect-ratio: 648 / 365;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f2f2f2;
+  border: 1px dashed #bbb;
+  color: #888;
+  font-family: inherit;
+  letter-spacing: -0.2px;
+}
+
+.creative-placeholder-cta {
+  text-decoration: underline;
+  color: inherit;
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+@media (max-width: 848px) {
+  .creative-carousel-nav {
+    display: none;
+  }
+
+  .creative-carousel-track {
+    flex-direction: column;
+    transform: none !important;
+  }
+
+  .creative-carousel-item,
+  .creative-carousel-item:first-child,
+  .creative-carousel-item:last-child {
+    flex: 0 0 auto;
+    max-width: 100%;
+    width: 100%;
+    padding: 0;
+    margin-bottom: 24px;
+    border-right: none;
+  }
+
+  .creative-carousel-item:last-child {
+    margin-bottom: 0;
+  }
+}
+
 /* ── External link row ── */
 .external-link {
   display: flex;
@@ -1387,6 +1518,10 @@ footer {
   line-height: 24px;
   margin: 0 0 18px;
   color: rgba(0, 0, 0, 0.72);
+}
+
+.project-body-text.is-spaced-top {
+  margin-top: 32px;
 }
 
 .project-body-text:last-child {

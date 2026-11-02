@@ -1,7 +1,7 @@
 export type ProjectLang = "en" | "cn";
 
 export type ContentBlock =
-  | { type: "paragraph"; text: string }
+  | { type: "paragraph"; text: string; spacedTop?: boolean }
   | { type: "heading"; text: string }
   | { type: "quote"; text: string; plain?: boolean; spaced?: boolean }
   | {
@@ -122,6 +122,19 @@ const redditGrowthOsCn: ProjectCopy = {
         {
           type: "paragraph",
           text: "Reddit Growth OS 是一个基于真实 Reddit 内容证据的 AI 增长研究工具。我将自己在 Reddit 冷启动中的工作方法抽象成一套 AI 增强工作流，帮助早期产品从模糊的产品想法出发，发现潜在用户正在表达需求的场景，并将这些信号转化为可执行、可复盘的增长行动。",
+        },
+        {
+          type: "heading",
+          text: "产品 Demo",
+        },
+        {
+          type: "image",
+          src: "/videos/reddit-growth-os-demo.mp4",
+          alt: "Reddit Growth OS 产品演示视频",
+          width: 1806,
+          height: 1080,
+          controls: true,
+          loop: false,
         },
       ],
     },
@@ -714,6 +727,19 @@ const redditGrowthOsEn: ProjectCopy = {
         {
           type: "paragraph",
           text: "Reddit Growth OS is an AI growth research tool grounded in real Reddit content evidence. I abstracted my own Reddit cold-start working method into an AI-enhanced workflow that helps early-stage products start from a fuzzy product idea, discover scenes where potential users are already expressing demand, and turn those signals into executable, reviewable growth actions.",
+        },
+        {
+          type: "heading",
+          text: "Product Demo",
+        },
+        {
+          type: "image",
+          src: "/videos/reddit-growth-os-demo.mp4",
+          alt: "Reddit Growth OS product demo video",
+          width: 1806,
+          height: 1080,
+          controls: true,
+          loop: false,
         },
       ],
     },
@@ -3168,6 +3194,493 @@ export const projects: Project[] = [
       ],
     },
   },
+  {
+    slug: "artiverse",
+    image: "/images/artiverse-cover.png",
+    imageAlt:
+      "Artiverse cover — diverse creators looking up at linked landscape and painting windows on a pink ground",
+    showInHomeGrid: false,
+    en: {
+      title: "Artiverse",
+      description: "A Location-Based Creative Community",
+      tags: ["UX Design", "Design Hackathon"],
+      timeline: ["CMU · UXA Hackathon · 8 hours"],
+      sections: [
+        {
+          id: "overview",
+          level: 1,
+          number: "1.",
+          title: "Overview",
+          blocks: [
+            {
+              type: "paragraph",
+              text: 'Artiverse was created during an 8-hour UX Design Hackathon at CMU themed “Bringing People Closer.” Focused on how digital products can foster more meaningful human connection, we turned to photographers and painters — two communities with different creative mediums who nonetheless share visual inspiration and creative contexts.',
+            },
+            {
+              type: "paragraph",
+              text: "Based on their shared needs around location discovery, sourcing creative references, and exchanging work, we designed Artiverse — a cross-medium art community centered on geographic place. Users can discover real locations and their associated photography and painting through a map, and build connections through work citation, creative linking, and notification feedback — turning a simple spark of inspiration into ongoing creative interaction.",
+            },
+            {
+              type: "image",
+              src: "/videos/artiverse-demo.mp4",
+              alt: "Artiverse demo video",
+              width: 1908,
+              height: 1080,
+              controls: true,
+              loop: false,
+            },
+          ],
+        },
+        {
+          id: "design-challenge",
+          level: 1,
+          number: "2.",
+          title: "Design Challenge",
+          blocks: [
+            {
+              type: "quote",
+              text: "How Might We Connect Different Creative Communities Through Shared Locations?",
+            },
+            {
+              type: "image",
+              src: "/images/artiverse-target-landscape-artist.png",
+              alt: "Target audience — Landscape Artist persona: Risa, workflow, challenges, and reference visuals",
+              width: 1024,
+              height: 551,
+            },
+            {
+              type: "image",
+              src: "/images/artiverse-target-photographer.png",
+              alt: "Target audience — Photographer persona: Bryan, workflow, challenges, and location photography",
+              width: 1024,
+              height: 550,
+            },
+            {
+              type: "image",
+              src: "/images/artiverse-overlapping-pain-points.png",
+              alt: "The situation — overlapping pain points across creative cross-pollination, discovery, community feedback, and attribution",
+              width: 1024,
+              height: 549,
+            },
+            {
+              type: "paragraph",
+              spacedTop: true,
+              text: "Photographers and painters use different artistic mediums, but share common needs in the creative process:",
+            },
+            {
+              type: "bullets",
+              items: [
+                "Discover: Finding real places worth photographing, painting, or exploring.",
+                "Create: Getting reliable visual references and drawing inspiration from other creators’ work.",
+                "Connect: Wanting their work to be understood, cited, and built upon — not just liked.",
+              ],
+            },
+            {
+              type: "paragraph",
+              text: "Yet existing products scatter these needs across different platforms.",
+            },
+            {
+              type: "paragraph",
+              text: "Map tools help people find places, but lack artistic content. Social media can showcase work, but rarely ties exploration to geographic place. Art communities usually lack location-based discovery. That pointed us to a design opportunity:",
+            },
+            {
+              type: "quote",
+              plain: true,
+              text: "Can we turn a place from a mere geographic coordinate into a shared space for creative exploration and collaboration?",
+            },
+          ],
+        },
+        {
+          id: "design-solution",
+          level: 1,
+          number: "3.",
+          title: "Design Solution",
+          blocks: [
+            {
+              type: "heading",
+              text: "From Location Discovery to Creative Collaboration",
+            },
+            {
+              type: "paragraph",
+              text: "Artiverse uses the map as the primary interaction entry point, and builds a complete creative experience through three interconnected features.",
+            },
+            {
+              type: "numbered",
+              items: [
+                {
+                  title: "Explore Through Maps",
+                  body: "Users can explore nearby photography and painting on a map, see the real places behind each work, and discover how different creators interpret the same scene.",
+                },
+                {
+                  title: "Connect Creative Works",
+                  body: "Painters can select existing photographs as references and cite the original photo when uploading new work, creating a link between photography and painting.",
+                },
+                {
+                  title: "Encourage Meaningful Interactions",
+                  body: "When a work is cited, the original photographer receives a notification and can see new creations derived from their photograph.",
+                },
+              ],
+            },
+            {
+              type: "paragraph",
+              text: "Through these links between works, Artiverse turns one-way content browsing into ongoing creative interaction.",
+            },
+            {
+              type: "mediaRow",
+              items: [
+                {
+                  src: "/images/artiverse-whats-missing.png",
+                  alt: "What's missing from existing apps — Instagram, Google Maps, and ArtStation",
+                  width: 1024,
+                  height: 575,
+                },
+                {
+                  src: "/images/artiverse-proposition.png",
+                  alt: "Our proposition — Artiverse at the intersection of Community, Map, and Art Showcase",
+                  width: 1024,
+                  height: 569,
+                },
+              ],
+            },
+          ],
+        },
+        {
+          id: "interaction-design",
+          level: 1,
+          number: "4.",
+          title: "Interaction Design",
+          blocks: [
+            {
+              type: "heading",
+              text: "Designing a Two-Sided Creative Experience",
+            },
+            {
+              type: "paragraph",
+              text: "Around the different needs of photographers and painters, we designed two core user journeys that connect to each other.",
+            },
+            {
+              type: "heading",
+              text: "Photographer Journey",
+            },
+            {
+              type: "paragraph",
+              text: "Photographers upload work and tag the shooting location. The work then appears on the community map. When other creators cite the photo in a painting, the photographer receives a notification and learns how their work inspired new creation.",
+            },
+            {
+              type: "image",
+              src: "/images/artiverse-photographer-flow.png",
+              alt: "Photographer journey flow — upload works, select medium, tag location, and notify when cited",
+              width: 1024,
+              height: 317,
+            },
+            {
+              type: "heading",
+              text: "Artist Journey",
+            },
+            {
+              type: "paragraph",
+              text: "Painters discover photographs through the map, choose a suitable visual reference for their own work, and link back to the original photograph when publishing.",
+            },
+            {
+              type: "image",
+              src: "/images/artiverse-artist-flow.png",
+              alt: "Artist journey flow — explore the community map, find artworks, download inspiration, and visit locations",
+              width: 1024,
+              height: 318,
+            },
+            {
+              type: "heading",
+              text: "Interaction Highlight — Closing the Creative Loop",
+            },
+            {
+              type: "paragraph",
+              text: "These two paths are not independent feature flows — they are connected through work citation and notifications.",
+            },
+            {
+              type: "image",
+              src: "/images/artiverse-creative-loop.png",
+              alt: "Closing the creative loop — photographer and painter journeys connected through map discovery and citation notifications",
+              width: 1024,
+              height: 365,
+            },
+            {
+              type: "paragraph",
+              text: "Through this interaction loop, users can not only discover and share art, but also see the relationships between different creations.",
+            },
+          ],
+        },
+        {
+          id: "future-possibilities",
+          level: 1,
+          number: "5.",
+          title: "Future Possibilities",
+          blocks: [
+            {
+              type: "heading",
+              text: "Beyond Photography and Painting",
+            },
+            {
+              type: "paragraph",
+              text: "Artiverse began by focusing on collaboration between photography and landscape painting, but location-based creative discovery can extend to more art forms, including:",
+            },
+            {
+              type: "bullets",
+              items: [
+                "Digital Art & Illustration",
+                "Film & Animation",
+                "Music & Sound Design",
+                "Poetry & Writing",
+              ],
+            },
+            {
+              type: "paragraph",
+              text: "In the future, Artiverse can grow into a cross-medium creative community anchored in real places — letting different art forms connect around shared space, memory, and experience.",
+            },
+          ],
+        },
+      ],
+    },
+    cn: {
+      title: "Artiverse",
+      description: "一个基于地理位置的创意社区",
+      tags: ["UX 设计", "设计黑客松"],
+      timeline: ["CMU · UXA 黑客松 · 8 小时"],
+      sections: [
+        {
+          id: "overview",
+          level: 1,
+          number: "1.",
+          title: "概述",
+          blocks: [
+            {
+              type: "paragraph",
+              text: "Artiverse 创作于 CMU 举行的以 “Bringing People Closer” 为主题的 8 小时 UX Design Hackathon。围绕如何通过数字产品促进人与人之间更有意义的连接，我们将目光投向了摄影师与绘画创作者这两个创作方式不同、却共享视觉灵感与创作场景的群体。",
+            },
+            {
+              type: "paragraph",
+              text: "基于双方在地点探索、创作素材获取与作品交流方面的共同需求，我们设计了 Artiverse——一个以地理位置为核心的跨媒介艺术社区。用户可以通过地图发现真实地点及其关联的摄影、绘画作品，并通过作品引用、创作关联与通知反馈建立联系，让一次简单的灵感获取延伸为持续的创作互动。",
+            },
+            {
+              type: "image",
+              src: "/videos/artiverse-demo.mp4",
+              alt: "Artiverse 演示视频",
+              width: 1908,
+              height: 1080,
+              controls: true,
+              loop: false,
+            },
+          ],
+        },
+        {
+          id: "design-challenge",
+          level: 1,
+          number: "2.",
+          title: "设计挑战",
+          blocks: [
+            {
+              type: "quote",
+              text: "我们如何通过共享地点，连接不同的创作社群？",
+            },
+            {
+              type: "image",
+              src: "/images/artiverse-target-landscape-artist.png",
+              alt: "目标用户——风景画家人设：Risa、工作流、挑战与参考视觉",
+              width: 1024,
+              height: 551,
+            },
+            {
+              type: "image",
+              src: "/images/artiverse-target-photographer.png",
+              alt: "目标用户——摄影师人设：Bryan、工作流、挑战与地点摄影",
+              width: 1024,
+              height: 550,
+            },
+            {
+              type: "image",
+              src: "/images/artiverse-overlapping-pain-points.png",
+              alt: "现状——重叠痛点：创作交叉启发、发现、社区反馈与署名归属",
+              width: 1024,
+              height: 549,
+            },
+            {
+              type: "paragraph",
+              spacedTop: true,
+              text: "摄影师与绘画创作者虽然使用不同的艺术媒介，但在创作过程中存在共同需求：",
+            },
+            {
+              type: "bullets",
+              items: [
+                "Discover：寻找值得拍摄、绘画或探索的真实地点。",
+                "Create：获取可靠的视觉参考，并从其他创作者的作品中获得灵感。",
+                "Connect：希望自己的作品被理解、引用和进一步创作，而不仅仅是获得点赞。",
+              ],
+            },
+            {
+              type: "paragraph",
+              text: "然而，现有产品往往将这些需求分散在不同平台中。",
+            },
+            {
+              type: "paragraph",
+              text: "地图工具能够帮助用户寻找地点，却缺少艺术创作内容；社交媒体能够展示作品，却难以建立作品与地理位置之间的探索关系；艺术社区则通常缺少基于地点的发现机制。因此我们发现了一个设计机会：",
+            },
+            {
+              type: "quote",
+              plain: true,
+              text: "我们能否将一个地点从单纯的地理坐标，转变为一个用于创意探索与协作的共享空间？",
+            },
+          ],
+        },
+        {
+          id: "design-solution",
+          level: 1,
+          number: "3.",
+          title: "设计方案",
+          blocks: [
+            {
+              type: "heading",
+              text: "从地点发现到创作协作",
+            },
+            {
+              type: "paragraph",
+              text: "Artiverse 以地图作为主要交互入口，通过三个相互关联的功能构建完整的创作体验。",
+            },
+            {
+              type: "numbered",
+              items: [
+                {
+                  title: "通过地图探索",
+                  body: "用户可以通过地图探索附近的摄影和绘画作品，查看作品对应的真实地点，并发现不同创作者对同一场景的艺术表达。",
+                },
+                {
+                  title: "连接创作作品",
+                  body: "绘画创作者可以选择已有摄影作品作为参考，在上传新作品时引用原始照片，建立摄影与绘画之间的关联关系。",
+                },
+                {
+                  title: "鼓励有意义的互动",
+                  body: "当作品被引用时，原摄影师会收到通知，并能够查看由自己的摄影作品衍生出的新创作。",
+                },
+              ],
+            },
+            {
+              type: "paragraph",
+              text: "通过作品之间的关联，Artiverse 将传统的单向内容浏览转变为持续的创作互动。",
+            },
+            {
+              type: "mediaRow",
+              items: [
+                {
+                  src: "/images/artiverse-whats-missing.png",
+                  alt: "现有应用缺什么——Instagram、Google Maps 与 ArtStation",
+                  width: 1024,
+                  height: 575,
+                },
+                {
+                  src: "/images/artiverse-proposition.png",
+                  alt: "我们的主张——Artiverse 位于社区、地图与艺术展示的交汇处",
+                  width: 1024,
+                  height: 569,
+                },
+              ],
+            },
+          ],
+        },
+        {
+          id: "interaction-design",
+          level: 1,
+          number: "4.",
+          title: "交互设计",
+          blocks: [
+            {
+              type: "heading",
+              text: "设计双边创作体验",
+            },
+            {
+              type: "paragraph",
+              text: "围绕摄影师与绘画创作者的不同需求，我们设计了两条相互连接的核心用户流程。",
+            },
+            {
+              type: "heading",
+              text: "摄影师旅程",
+            },
+            {
+              type: "paragraph",
+              text: "摄影师上传作品并标记拍摄地点，作品随后展示在社区地图中。当其他创作者引用照片完成绘画时，摄影师会收到通知，了解自己的作品如何启发新的创作。",
+            },
+            {
+              type: "image",
+              src: "/images/artiverse-photographer-flow.png",
+              alt: "摄影师旅程流程——上传作品、选择媒介、标记地点，并在被引用时收到通知",
+              width: 1024,
+              height: 317,
+            },
+            {
+              type: "heading",
+              text: "绘画创作者旅程",
+            },
+            {
+              type: "paragraph",
+              text: "绘画创作者通过地图发现摄影作品，选择合适的视觉参考进行创作，并在发布时关联原摄影作品。",
+            },
+            {
+              type: "image",
+              src: "/images/artiverse-artist-flow.png",
+              alt: "绘画创作者旅程流程——探索社区地图、发现作品、下载灵感并前往地点",
+              width: 1024,
+              height: 318,
+            },
+            {
+              type: "heading",
+              text: "交互亮点——闭合创作闭环",
+            },
+            {
+              type: "paragraph",
+              text: "这两条用户路径并不是独立的功能流程，而是通过作品引用与通知机制连接起来。",
+            },
+            {
+              type: "image",
+              src: "/images/artiverse-creative-loop.png",
+              alt: "闭合创作闭环——摄影师与绘画创作者旅程通过地图发现与引用通知相连",
+              width: 1024,
+              height: 365,
+            },
+            {
+              type: "paragraph",
+              text: "通过这一交互闭环，用户不仅能够发现和分享艺术作品，也能够看到不同创作之间的联系。",
+            },
+          ],
+        },
+        {
+          id: "future-possibilities",
+          level: 1,
+          number: "5.",
+          title: "未来可能",
+          blocks: [
+            {
+              type: "heading",
+              text: "超越摄影与绘画",
+            },
+            {
+              type: "paragraph",
+              text: "Artiverse 最初聚焦于摄影与风景绘画之间的协作，但基于地理位置的创作发现机制也可以扩展至更多艺术形式，包括：",
+            },
+            {
+              type: "bullets",
+              items: [
+                "Digital Art & Illustration",
+                "Film & Animation",
+                "Music & Sound Design",
+                "Poetry & Writing",
+              ],
+            },
+            {
+              type: "paragraph",
+              text: "未来，Artiverse 可以进一步发展为一个以真实地点为连接点的跨媒介创作社区，让不同艺术形式围绕共同的空间、记忆与体验产生联系。",
+            },
+          ],
+        },
+      ],
+    },
+  },
   (() => {
     const branchableCopy = blankCopy(
       "Branchable AI",
@@ -3221,6 +3734,10 @@ export const projects: Project[] = [
             {
               type: "paragraph",
               text: "Based on that pain point, I designed and built SellAssis — an AI Selling Agent that runs in the browser. Users only need to provide product photos and a basic selling intent; the Agent then gradually completes product understanding, listing generation and review, Marketplace page operations, and later buyer communication.",
+            },
+            {
+              type: "heading",
+              text: "Product Demo",
             },
           ],
         },
@@ -3440,6 +3957,10 @@ export const projects: Project[] = [
             {
               type: "paragraph",
               text: "基于这个痛点，我设计并开发了智能二手交易 Agent，一个运行在浏览器中的 AI Selling Agent。用户只需要提供商品图片和基本出售意图，Agent 会逐步完成商品信息理解、售卖 Listing 生成与检查、Marketplace 页面操作，以及后续的买家沟通。",
+            },
+            {
+              type: "heading",
+              text: "产品 Demo",
             },
           ],
         },
@@ -4401,6 +4922,7 @@ export const homeProjects = homeProjectOrder
 const homeTaggedSlugs = [
   ...homeProjectOrder,
   "fourth-trimester-health",
+  "artiverse",
   "vr-chord",
   "pass-that-there",
   "crazy-baby-alarm",

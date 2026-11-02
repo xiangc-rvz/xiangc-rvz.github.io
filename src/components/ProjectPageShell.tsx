@@ -64,7 +64,15 @@ function ContentBlocks({ blocks }: { blocks: ContentBlock[] }) {
       {blocks.map((block, i) => {
         if (block.type === "paragraph") {
           return (
-            <p key={i} className="project-body-text">
+            <p
+              key={i}
+              className={[
+                "project-body-text",
+                block.spacedTop ? "is-spaced-top" : "",
+              ]
+                .filter(Boolean)
+                .join(" ")}
+            >
               {linkifyText(block.text)}
             </p>
           );

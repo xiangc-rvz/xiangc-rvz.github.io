@@ -29,11 +29,13 @@ export default function RootLayout({
     <html lang="en">
       <body>
         {children}
-        <Script
-          src="https://gc.zgo.at/count.js"
-          strategy="afterInteractive"
-          data-goatcounter={`https://${GOATCOUNTER_CODE}.goatcounter.com/count`}
-        />
+        {process.env.NEXT_PUBLIC_OFFLINE === "1" ? null : (
+          <Script
+            src="https://gc.zgo.at/count.js"
+            strategy="afterInteractive"
+            data-goatcounter={`https://${GOATCOUNTER_CODE}.goatcounter.com/count`}
+          />
+        )}
       </body>
     </html>
   );

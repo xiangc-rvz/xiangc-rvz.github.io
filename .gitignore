@@ -8,6 +8,8 @@ node_modules/
 out/
 build/
 dist/
+offline-dist/
+Xiang_Chen_Portfolio_Offline.zip
 
 # Environment
 .env
