@@ -3681,27 +3681,729 @@ export const projects: Project[] = [
       ],
     },
   },
-  (() => {
-    const branchableCopy = blankCopy(
-      "Branchable AI",
-      "Rethinking AI conversations from linear message history into explorable, composable information.",
-      "Branchable AI",
-      "重新思考 AI 对话：从线性消息历史，走向可探索、可组合的信息结构。",
-    );
-    return {
-      slug: "branchable-ai",
-      image: "/images/article-3-classic-16-9@2x.png",
-      imageAlt: "Branchable AI — coming soon",
-      en: {
-        ...branchableCopy.en,
-        tags: ["AI Product", "Context Engineering", "Conversational UX"],
-      },
-      cn: {
-        ...branchableCopy.cn,
-        tags: ["AI 产品", "上下文工程", "对话式 UX"],
-      },
-    };
-  })(),
+  {
+    slug: "branchable-ai",
+    image: "/images/branchable-ai-cover.png",
+    imageAlt:
+      "Branchable AI cover — overlapping speech bubbles on a yellow-orange ground",
+    showInHomeGrid: true,
+    en: {
+      title: "Branchable AI",
+      description:
+        "Rethinking AI conversations from linear message history into explorable, composable information.",
+      tags: ["AI Product", "Context Engineering", "Conversational UX"],
+      sections: [
+        {
+          id: "overview",
+          level: 1,
+          number: "1.",
+          title: "Overview",
+          blocks: [
+            {
+              type: "paragraph",
+              text: "Branchable AI is a nonlinear AI conversation interface currently in development. It explores how users can organize, explore, and reuse AI-generated information more flexibly.",
+            },
+            {
+              type: "paragraph",
+              text: "Traditional AI chat treats continuous messages as the basic unit of interaction. As a discussion deepens, users often have to dig through long transcripts for key points, or restate past ideas to bring them back into the current conversation.",
+            },
+            {
+              type: "paragraph",
+              text: "This project tries a different interaction structure: breaking a full answer into independently operable Information Units, so users can explore around a specific piece of information, create branches, and freely compose content from different discussion paths.",
+            },
+            {
+              type: "paragraph",
+              text: "By combining nonlinear information organization with Context Engineering, Branchable AI aims to move users from passively receiving AI answers toward actively shaping the reasoning context AI uses next.",
+            },
+            {
+              type: "heading",
+              text: "Current Demo (in development)",
+            },
+            {
+              type: "image",
+              src: "/videos/branchable-ai-demo.mp4",
+              alt: "Branchable AI current demo — work in progress",
+              caption:
+                "Branchable AI builds upon the open-source GitChat project by DrustZ.",
+              width: 1920,
+              height: 1080,
+              controls: true,
+              loop: false,
+            },
+          ],
+        },
+        {
+          id: "design-challenge",
+          level: 1,
+          number: "2.",
+          title: "Design Challenge",
+          blocks: [
+            {
+              type: "heading",
+              text: "The Problem Is Not Conversation Length, but Context Control",
+            },
+            {
+              type: "paragraph",
+              text: "As AI shifts from a simple Q&A tool into a partner for learning, research, and complex work, the limits of the traditional linear chat interface become clearer.",
+            },
+            {
+              type: "heading",
+              text: "01 / Linear Conversations Fragment Complex Thinking",
+            },
+            {
+              type: "paragraph",
+              text: "Complex problems usually contain multiple related directions that can still be explored independently.",
+            },
+            {
+              type: "paragraph",
+              text: "For example, when a user asks how to start a Unity VR project from scratch, the AI may cover everything from environment setup and project configuration to interaction development.",
+            },
+            {
+              type: "paragraph",
+              text: "But if the user only wants to go deeper into XR Configuration, traditional chat often requires a new message — and that follow-up is then appended to the same timeline.",
+            },
+            {
+              type: "paragraph",
+              text: "As exploration continues, different topics intertwine, and a once-clear task structure is gradually replaced by linear message order.",
+            },
+            {
+              type: "heading",
+              text: "02 / Information Is Difficult to Reuse Across Conversations",
+            },
+            {
+              type: "paragraph",
+              text: "Valuable information in AI answers is often scattered across messages and discussion branches.",
+            },
+            {
+              type: "paragraph",
+              text: "A user may want to combine a technical approach from one branch, constraints from another, and design goals from a third for further analysis.",
+            },
+            {
+              type: "paragraph",
+              text: "Traditional chat interfaces lack a direct way to select and compose that information. Users usually copy by hand, restate it, or hope the model recovers it from history.",
+            },
+            {
+              type: "heading",
+              text: "03 / Users Have Limited Visibility into Context Construction",
+            },
+            {
+              type: "paragraph",
+              text: "In long conversations, users often cannot tell which past information the model is actually using for the next answer.",
+            },
+            {
+              type: "paragraph",
+              text: "Even when the model can use conversation context, users lack an interface for organizing and specifying that information.",
+            },
+            {
+              type: "paragraph",
+              text: "So the core question is not how to make AI answers shorter. It is:",
+            },
+            {
+              type: "quote",
+              text: "How might we enable users to actively structure, explore, and compose the information that AI reasons with?",
+            },
+            {
+              type: "paragraph",
+              text: "How can users actively organize, explore, and compose information so they can control more precisely the context that shapes the AI’s next response?",
+            },
+          ],
+        },
+        {
+          id: "product-insight",
+          level: 1,
+          number: "3.",
+          title: "Product Insight",
+          blocks: [
+            {
+              type: "heading",
+              text: "Information Units as a New Interaction Primitive",
+            },
+            {
+              type: "paragraph",
+              text: "Traditional AI chat treats the Message as the basic unit of presentation and interaction.",
+            },
+            {
+              type: "paragraph",
+              text: "Even when one answer contains multiple independent concepts, steps, or arguments, they usually stay locked inside a single message container.",
+            },
+            {
+              type: "paragraph",
+              text: "Branchable AI proposes a different design idea:",
+            },
+            {
+              type: "quote",
+              text: "What if the smallest actionable element in an AI conversation were not a message, but an information unit?",
+            },
+            {
+              type: "paragraph",
+              text: "What happens if the smallest operable element in an AI conversation is no longer a whole message, but a semantically independent information unit inside it?",
+            },
+            {
+              type: "paragraph",
+              text: "In this design, AI answers first go through Semantic Decomposition and are organized into relatively independent Information Units.",
+            },
+            {
+              type: "paragraph",
+              text: "Each Information Unit carries content, and also has its own identity, provenance, and interaction capabilities.",
+            },
+            {
+              type: "paragraph",
+              text: "Users can:",
+            },
+            {
+              type: "bullets",
+              items: [
+                "Explore — keep asking around one information unit and open an independent exploration path.",
+                "Branch — organize different discussion directions into a nonlinear conversation structure.",
+                "Connect — create relationships between information nodes on the canvas.",
+                "Select — pick valuable information from different exploration branches.",
+                "Compose — reorganize selected information into the context for the next round of AI reasoning.",
+              ],
+            },
+            {
+              type: "paragraph",
+              text: "This turns AI answers from static text output into information structures that can be continually explored and recomposed.",
+            },
+          ],
+        },
+        {
+          id: "interaction-design",
+          level: 1,
+          number: "4.",
+          title: "Interaction Design",
+          blocks: [
+            {
+              type: "heading",
+              text: "From Reading Responses to Navigating Information",
+            },
+            {
+              type: "paragraph",
+              text: "The core interaction loop of Branchable AI is:",
+            },
+            {
+              type: "quote",
+              plain: true,
+              text: "Ask → Decompose → Explore → Select → Compose → Ask Again",
+            },
+            {
+              type: "heading",
+              text: "01 / Semantic Decomposition",
+            },
+            {
+              type: "heading",
+              text: "Transforming AI Responses into Actionable Information Units",
+            },
+            {
+              type: "paragraph",
+              text: "After a user asks a question, the system no longer presents the answer only as one text block. It splits the response into multiple Information Units based on semantic structure.",
+            },
+            {
+              type: "paragraph",
+              text: "The number of units is not fixed — it changes with problem complexity, content structure, and task needs. Each node keeps its own title, content, unique ID, and provenance so it can take part in later interactions independently.",
+            },
+            {
+              type: "heading",
+              text: "02 / Unit-Level Exploration",
+            },
+            {
+              type: "heading",
+              text: "Exploring One Idea Without Losing the Others",
+            },
+            {
+              type: "paragraph",
+              text: "Users can select any Information Unit and ask follow-up questions around that content.",
+            },
+            {
+              type: "paragraph",
+              text: "The new answer becomes an independent exploration branch and is decomposed into Information Units again.",
+            },
+            {
+              type: "paragraph",
+              text: "That means users can go deep on one specific question without appending every discussion to the same linear chat log.",
+            },
+            {
+              type: "paragraph",
+              text: "Meanwhile, other information nodes stay in place, so users can return or continue exploring at any time.",
+            },
+            {
+              type: "paragraph",
+              text: "Besides system-generated units, users can also select specific text in an answer and use it as the starting point for further questions.",
+            },
+            {
+              type: "heading",
+              text: "03 / Non-linear Information Canvas",
+            },
+            {
+              type: "heading",
+              text: "Making Conversation Structure Visible and Manipulable",
+            },
+            {
+              type: "paragraph",
+              text: "Branchable AI organizes AI conversation on an infinite canvas.",
+            },
+            {
+              type: "paragraph",
+              text: "Information Units appear as independent nodes that can be dragged, connected, and spatially arranged.",
+            },
+            {
+              type: "paragraph",
+              text: "Unlike a traditional mind map, the canvas is not only for showing relationships between concepts. It also shows how users explore information and how different answers relate to their sources.",
+            },
+            {
+              type: "paragraph",
+              text: "Users can organize discussion directions in space instead of depending entirely on the chronological order of messages.",
+            },
+            {
+              type: "heading",
+              text: "04 / Context Selection & Composition",
+            },
+            {
+              type: "heading",
+              text: "Letting Users Decide What the AI Should Reason With Next",
+            },
+            {
+              type: "paragraph",
+              text: "This is the core interaction mechanism of Branchable AI.",
+            },
+            {
+              type: "paragraph",
+              text: "Users can select multiple Information Units from different exploration branches and add them to Selected Context.",
+            },
+            {
+              type: "paragraph",
+              text: "The system combines the selected content with necessary provenance, the original question, and contextual relationships to build a new Context Payload.",
+            },
+            {
+              type: "paragraph",
+              text: "When the user asks a new question, the AI answers based on these explicitly chosen pieces of information — not only on the full linear chat history.",
+            },
+            {
+              type: "paragraph",
+              text: "For example, a user can separately explore technical implementation, user needs, and product constraints, then compose key conclusions from all three branches and ask the AI for a new design proposal.",
+            },
+            {
+              type: "paragraph",
+              text: "Context is no longer only a history record maintained by the system. It becomes a design object users can operate directly.",
+            },
+          ],
+        },
+        {
+          id: "system-architecture",
+          level: 1,
+          number: "5.",
+          title: "System Architecture",
+          blocks: [
+            {
+              type: "heading",
+              text: "Separating Information, Interaction, and Context",
+            },
+            {
+              type: "paragraph",
+              text: "To support information-level exploration and context recomposition, Branchable AI divides system logic into three related layers.",
+            },
+            {
+              type: "heading",
+              text: "Information Layer",
+            },
+            {
+              type: "paragraph",
+              text: "Structured Information Units store AI-generated units and their provenance. Each Information Unit has its own ID, content, parent answer, and related context identifiers, so information can leave the original message container and be referenced or reused independently.",
+            },
+            {
+              type: "heading",
+              text: "Interaction Layer",
+            },
+            {
+              type: "paragraph",
+              text: "The Non-linear Graph Interface maps Information Units onto interactive canvas nodes. Users can drag, connect, select, and create branches to organize information. This layer manages visualization and user actions; it is not the same as the model’s reasoning context.",
+            },
+            {
+              type: "heading",
+              text: "Context Layer",
+            },
+            {
+              type: "paragraph",
+              text: "User-directed Context Composition turns selected information into model input. The Context Composer extracts the corresponding content and necessary provenance from selected Information Units, then builds a new reasoning context together with the current question. This mechanism converts user operations on information into explicit control over the conditions of the AI’s next answer.",
+            },
+          ],
+        },
+        {
+          id: "current-progress",
+          level: 1,
+          number: "6.",
+          title: "Current Progress",
+          blocks: [
+            {
+              type: "heading",
+              text: "Building and Validating the Core Interaction Loop",
+            },
+            {
+              type: "paragraph",
+              text: "Branchable AI is still in MVP development and iteration.",
+            },
+          ],
+        },
+      ],
+    },
+    cn: {
+      title: "Branchable AI",
+      description:
+        "重新思考 AI 对话：从线性消息历史，走向可探索、可组合的信息结构。",
+      tags: ["AI 产品", "上下文工程", "对话式 UX"],
+      sections: [
+        {
+          id: "overview",
+          level: 1,
+          number: "1.",
+          title: "Overview",
+          blocks: [
+            {
+              type: "paragraph",
+              text: "Branchable AI 是一个正在开发中的非线性 AI 对话界面，旨在探索用户如何更灵活地组织、探索和复用 AI 生成的信息。",
+            },
+            {
+              type: "paragraph",
+              text: "传统 AI Chat 以连续的消息（Message）作为基本交互单位。随着讨论不断深入，用户往往需要在冗长的聊天记录中寻找关键信息，或通过重复描述将过去的观点重新引入当前对话。",
+            },
+            {
+              type: "paragraph",
+              text: "这一项目尝试改变 AI 对话的基本交互结构：将完整回答拆解为可独立操作的 Information Units（信息单元），使用户能够围绕特定信息展开探索、创建分支，并自由组合来自不同讨论路径的内容。",
+            },
+            {
+              type: "paragraph",
+              text: "通过将非线性信息组织与 Context Engineering 相结合，Branchable AI 希望让用户从被动接收 AI 回答，转向主动参与 AI 推理上下文的构建。",
+            },
+            {
+              type: "heading",
+              text: "Current Demo（开发中）",
+            },
+            {
+              type: "image",
+              src: "/videos/branchable-ai-demo.mp4",
+              alt: "Branchable AI 当前演示——仍在开发中",
+              caption:
+                "Branchable AI builds upon the open-source GitChat project by DrustZ.",
+              width: 1920,
+              height: 1080,
+              controls: true,
+              loop: false,
+            },
+          ],
+        },
+        {
+          id: "design-challenge",
+          level: 1,
+          number: "2.",
+          title: "Design Challenge",
+          blocks: [
+            {
+              type: "heading",
+              text: "The Problem Is Not Conversation Length, but Context Control",
+            },
+            {
+              type: "paragraph",
+              text: "随着 AI 从简单的问答工具逐渐成为学习、研究和复杂任务中的协作伙伴，传统线性聊天界面的局限也开始显现。",
+            },
+            {
+              type: "heading",
+              text: "01 / Linear Conversations Fragment Complex Thinking",
+            },
+            {
+              type: "paragraph",
+              text: "复杂问题通常包含多个相互关联但可以独立探索的方向。",
+            },
+            {
+              type: "paragraph",
+              text: "例如，当用户询问如何从零开始创建 Unity VR 项目时，AI 可能提供从环境安装、项目配置到交互开发的完整流程。",
+            },
+            {
+              type: "paragraph",
+              text: "但如果用户只想进一步理解其中的 XR Configuration，传统对话往往需要开启新的消息，而后续讨论又会被不断追加到同一条时间线上。",
+            },
+            {
+              type: "paragraph",
+              text: "随着探索深入，不同主题交织在一起，原本清晰的任务结构逐渐被线性的消息顺序取代。",
+            },
+            {
+              type: "heading",
+              text: "02 / Information Is Difficult to Reuse Across Conversations",
+            },
+            {
+              type: "paragraph",
+              text: "AI 回答中有价值的信息往往分散在不同消息和讨论分支中。",
+            },
+            {
+              type: "paragraph",
+              text: "用户可能希望结合一个分支中的技术方案、另一个分支中的限制条件，以及第三个分支中的设计目标，继续进行综合分析。",
+            },
+            {
+              type: "paragraph",
+              text: "然而，传统聊天界面缺少直接选择和组合这些信息的交互机制。用户通常需要手动复制、重新描述，或者依赖模型从历史记录中提取相关内容。",
+            },
+            {
+              type: "heading",
+              text: "03 / Users Have Limited Visibility into Context Construction",
+            },
+            {
+              type: "paragraph",
+              text: "在长对话中，用户通常难以明确判断模型下一轮回答究竟参考了哪些历史信息。",
+            },
+            {
+              type: "paragraph",
+              text: "虽然模型能够利用对话上下文，但用户缺少一个直观的界面来组织和指定这些信息。",
+            },
+            {
+              type: "paragraph",
+              text: "因此，这个项目关注的核心问题并不是如何让 AI 生成更短的回答，而是：",
+            },
+            {
+              type: "quote",
+              text: "How might we enable users to actively structure, explore, and compose the information that AI reasons with?",
+            },
+            {
+              type: "paragraph",
+              text: "我们如何让用户主动组织、探索和组合信息，从而更精细地控制 AI 后续回答所依据的上下文？",
+            },
+          ],
+        },
+        {
+          id: "product-insight",
+          level: 1,
+          number: "3.",
+          title: "Product Insight",
+          blocks: [
+            {
+              type: "heading",
+              text: "Information Units as a New Interaction Primitive",
+            },
+            {
+              type: "paragraph",
+              text: "传统 AI Chat 将 Message 作为信息呈现与交互的基本单位。",
+            },
+            {
+              type: "paragraph",
+              text: "即使一条回答包含多个独立的概念、步骤或论点，它们通常仍然被封装在同一个消息容器中。",
+            },
+            {
+              type: "paragraph",
+              text: "Branchable AI 提出一个不同的设计思路：",
+            },
+            {
+              type: "quote",
+              text: "What if the smallest actionable element in an AI conversation were not a message, but an information unit?",
+            },
+            {
+              type: "paragraph",
+              text: "如果 AI 对话中最小的可操作元素不再是一整条消息，而是其中具有独立语义的信息单元，会发生什么？",
+            },
+            {
+              type: "paragraph",
+              text: "在这一设计中，AI 生成的回答首先经过 Semantic Decomposition（语义拆解），被组织为多个相对独立的 Information Units。",
+            },
+            {
+              type: "paragraph",
+              text: "每个 Information Unit 不仅承载内容，还拥有独立的身份、来源关系和交互能力。",
+            },
+            {
+              type: "paragraph",
+              text: "用户可以：",
+            },
+            {
+              type: "bullets",
+              items: [
+                "Explore — 围绕某个信息单元继续提问，展开独立的探索路径。",
+                "Branch — 将不同讨论方向组织为非线性对话结构。",
+                "Connect — 在画布中建立不同信息节点之间的关系。",
+                "Select — 从不同探索分支中选择有价值的信息。",
+                "Compose — 将选中的信息重新组织为下一轮 AI 推理的上下文。",
+              ],
+            },
+            {
+              type: "paragraph",
+              text: "这一设计使 AI 回答从静态的文本输出，转变为可持续探索和重新组合的信息结构。",
+            },
+          ],
+        },
+        {
+          id: "interaction-design",
+          level: 1,
+          number: "4.",
+          title: "Interaction Design",
+          blocks: [
+            {
+              type: "heading",
+              text: "From Reading Responses to Navigating Information",
+            },
+            {
+              type: "paragraph",
+              text: "Branchable AI 的核心交互围绕一个循环展开：",
+            },
+            {
+              type: "quote",
+              plain: true,
+              text: "Ask → Decompose → Explore → Select → Compose → Ask Again",
+            },
+            {
+              type: "heading",
+              text: "01 / Semantic Decomposition",
+            },
+            {
+              type: "heading",
+              text: "Transforming AI Responses into Actionable Information Units",
+            },
+            {
+              type: "paragraph",
+              text: "当用户提出问题后，系统不再仅以单一文本块呈现回答，而是根据内容的语义结构，将其拆分为多个 Information Units。",
+            },
+            {
+              type: "paragraph",
+              text: "拆分数量不固定，而是根据问题的复杂度、内容结构和任务需求动态确定。每个节点保留自身的标题、内容、唯一标识及来源信息，使其能够独立参与后续交互。",
+            },
+            {
+              type: "heading",
+              text: "02 / Unit-Level Exploration",
+            },
+            {
+              type: "heading",
+              text: "Exploring One Idea Without Losing the Others",
+            },
+            {
+              type: "paragraph",
+              text: "用户可以选择任意 Information Unit，围绕其中的内容进一步提问。",
+            },
+            {
+              type: "paragraph",
+              text: "新的回答会形成独立的探索分支，并再次被拆解为 Information Units。",
+            },
+            {
+              type: "paragraph",
+              text: "这意味着用户可以深入研究某个具体问题，而不必将所有讨论追加到同一条线性聊天记录中。",
+            },
+            {
+              type: "paragraph",
+              text: "与此同时，其他信息节点仍然保留在原有结构中，用户可以随时返回或继续探索。",
+            },
+            {
+              type: "paragraph",
+              text: "除了系统生成的信息单元，用户也可以选中回答中的特定文本，将其作为进一步提问的起点。",
+            },
+            {
+              type: "heading",
+              text: "03 / Non-linear Information Canvas",
+            },
+            {
+              type: "heading",
+              text: "Making Conversation Structure Visible and Manipulable",
+            },
+            {
+              type: "paragraph",
+              text: "Branchable AI 使用无限画布组织 AI 对话。",
+            },
+            {
+              type: "paragraph",
+              text: "Information Units 以独立节点的形式呈现，支持拖动、连接与空间组织。",
+            },
+            {
+              type: "paragraph",
+              text: "与传统思维导图不同，画布不仅用于展示概念之间的关系，也用于呈现用户探索信息的过程，以及不同回答之间的来源关系。",
+            },
+            {
+              type: "paragraph",
+              text: "用户可以在空间中组织讨论方向，而不必完全依赖消息产生的时间顺序。",
+            },
+            {
+              type: "heading",
+              text: "04 / Context Selection & Composition",
+            },
+            {
+              type: "heading",
+              text: "Letting Users Decide What the AI Should Reason With Next",
+            },
+            {
+              type: "paragraph",
+              text: "这是 Branchable AI 最核心的交互机制。",
+            },
+            {
+              type: "paragraph",
+              text: "用户可以从不同探索分支中选择多个 Information Units，将它们加入 Selected Context。",
+            },
+            {
+              type: "paragraph",
+              text: "系统将选中的内容与必要的来源信息、原始问题和上下文关系组合，构建新的 Context Payload。",
+            },
+            {
+              type: "paragraph",
+              text: "当用户提出新的问题时，AI 将基于这些明确选择的信息生成回答，而不是仅仅依赖完整的线性聊天历史。",
+            },
+            {
+              type: "paragraph",
+              text: "例如，用户可以分别探索技术实现、用户需求与产品限制，再将三个分支中的关键结论组合起来，要求 AI 提出新的设计方案。",
+            },
+            {
+              type: "paragraph",
+              text: "Context 不再只是系统自动维护的历史记录，而成为用户能够直接操作的设计对象。",
+            },
+          ],
+        },
+        {
+          id: "system-architecture",
+          level: 1,
+          number: "5.",
+          title: "System Architecture",
+          blocks: [
+            {
+              type: "heading",
+              text: "Separating Information, Interaction, and Context",
+            },
+            {
+              type: "paragraph",
+              text: "为了支持信息级别的探索与上下文重组，Branchable AI 将系统逻辑划分为三个相互关联的层次。",
+            },
+            {
+              type: "heading",
+              text: "Information Layer",
+            },
+            {
+              type: "paragraph",
+              text: "Structured Information Units 负责存储 AI 生成的信息单元及其来源关系。每个 Information Unit 拥有独立 ID、内容、所属回答及相关上下文标识，使信息能够脱离原始消息容器，被独立引用和复用。",
+            },
+            {
+              type: "heading",
+              text: "Interaction Layer",
+            },
+            {
+              type: "paragraph",
+              text: "Non-linear Graph Interface 负责将 Information Units 映射为可交互的画布节点。用户可以通过拖动、连接、选择和创建分支来组织信息。这一层主要管理信息的可视化呈现与用户操作，不直接等同于模型的推理上下文。",
+            },
+            {
+              type: "heading",
+              text: "Context Layer",
+            },
+            {
+              type: "paragraph",
+              text: "User-directed Context Composition 负责将用户选择的信息转换为模型输入。Context Composer 根据选中的 Information Units，提取对应内容及必要的来源信息，并结合当前问题构建新的推理上下文。这一机制将用户对信息的操作转化为对 AI 后续回答条件的显式控制。",
+            },
+          ],
+        },
+        {
+          id: "current-progress",
+          level: 1,
+          number: "6.",
+          title: "Current Progress",
+          blocks: [
+            {
+              type: "heading",
+              text: "Building and Validating the Core Interaction Loop",
+            },
+            {
+              type: "paragraph",
+              text: "Branchable AI 目前仍处于 MVP 开发与迭代阶段。",
+            },
+          ],
+        },
+      ],
+    },
+  },
   {
     slug: "sellassis",
     image: "/images/sellassis-cover.png",
@@ -3739,6 +4441,15 @@ export const projects: Project[] = [
               type: "heading",
               text: "Product Demo",
             },
+            {
+              type: "image",
+              src: "/videos/sellassis-demo.mp4",
+              alt: "SellAssis product demo video",
+              width: 1870,
+              height: 1080,
+              controls: true,
+              loop: false,
+            },
           ],
         },
         {
@@ -3749,182 +4460,310 @@ export const projects: Project[] = [
           blocks: [
             {
               type: "paragraph",
-              text: "To let the Agent keep advancing a deal across multiple steps, I did not design each AI capability as an isolated tool. Instead, a Selling Agent sits at the center, and different capability modules work together to complete the task.",
-            },
-            {
-              type: "numbered",
-              items: [
-                {
-                  title: "Selling Agent",
-                  body: "Understands the user’s goals, judges the current deal state, and coordinates different capabilities to advance the workflow.",
-                },
-                {
-                  title: "Image Skill",
-                  body: "Analyzes and processes product photos uploaded by the user, preparing suitable visual assets for the listing and Marketplace publishing.",
-                },
-                {
-                  title: "Facebook Skill",
-                  body: "Acts as the operation layer between the Agent and Marketplace: recognizes the current page, reads listing status, and executes actions such as filling fields, navigating, and publishing.",
-                },
-                {
-                  title: "Message Agent",
-                  body: "Takes over buyer communication after the listing is published, generates replies based on product information, pricing strategy, and deal state, and flags situations that need the user to step in.",
-                },
-              ],
+              text: "SellAssis is designed around two core secondhand-trading scenarios, with a connected Listing Workflow and Message Agent.",
             },
             {
               type: "paragraph",
-              text: "These modules share one Selling Context that continuously records product information, user preferences, pricing strategy, workflow state, and buyer context.",
+              text: "In the listing stage, the system combines multimodal product recognition, listing content optimization, similar-product retrieval, and browser automation to turn user input into a publishable Marketplace listing. In the messaging stage, the Message Agent uses seller preferences, product information, and conversation history to recognize buyer intent and generate replies that fit the deal conditions.",
             },
             {
               type: "paragraph",
-              text: "As a result, Agents at different stages do not need to re-ask the user. They can keep acting based on what has already happened.",
+              text: "The two workflows share context through structured product information and persistent memory, so the Agent can extend from one-shot content generation into ongoing deal assistance.",
+            },
+            {
+              type: "image",
+              src: "/images/sellassis-architecture.png",
+              alt: "SellAssis product architecture — Listing Workflow and Message Agent",
+              width: 954,
+              height: 828,
+            },
+            {
+              type: "heading",
+              text: "Listing Workflow｜Multimodal understanding and automated publishing",
+            },
+            {
+              type: "paragraph",
+              text: "Users upload product photos and describe their selling goal in natural language — for example, “I want to sell this quickly.”",
+            },
+            {
+              type: "paragraph",
+              text: "SellAssis first uses a vision model to extract category, brand, appearance, and other recognizable product features, then combines that with user intent to generate an initial listing draft. After that, Listing Skill and Image Skill process product content and visual assets in parallel:",
+            },
+            {
+              type: "heading",
+              text: "Listing Skill｜Content generation and quality evaluation",
+            },
+            {
+              type: "paragraph",
+              text: "Based on product information and the selling goal, it generates a title, description, and price suggestion, then checks listing quality across authenticity, completeness, natural expression, and attractiveness — avoiding overselling, templated wording, or unsupported product claims.",
+            },
+            {
+              type: "heading",
+              text: "Image Skill｜Product retrieval and visual optimization",
+            },
+            {
+              type: "paragraph",
+              text: "It retrieves original product images and similar-item references through feature matching to help identify the model and verify information. It also supports AI background optimization that improves presentation while preserving the real product, appearance, and defects.",
+            },
+            {
+              type: "image",
+              src: "/images/sellassis-image-skill.jpg",
+              alt: "Image Skill prototype — photo cleanup and lifestyle scene editing beside Facebook Marketplace",
+              caption: "[Prototype screenshot]",
+              width: 1024,
+              height: 579,
+            },
+            {
+              type: "heading",
+              text: "Facebook Skill｜Page awareness and automated execution",
+            },
+            {
+              type: "paragraph",
+              text: "After product prep is ready, Facebook Skill uses an Observer to read the current Marketplace page state, maps product fields onto the form, and executes image upload, form filling, and page actions.",
+            },
+            {
+              type: "paragraph",
+              text: "After key actions, the system re-validates page state and reviews Facebook Meta AI’s generated results for necessary corrections. When product information is uncertain or publishing confirmation is needed, control returns to the user.",
             },
           ],
         },
         {
-          id: "agent-system",
+          id: "message-agent",
           level: 1,
           number: "3.",
-          title: "Agent System",
+          title: "Message Agent",
           blocks: [
             {
+              type: "heading",
+              text: "Message Agent｜Intent recognition and reply decisions grounded in layered memory",
+            },
+            {
               type: "paragraph",
-              text: "SellAssis does not finish publishing in one shot from a preset script. Inside Facebook Marketplace — a continuously changing third-party environment — it repeatedly runs a cycle of Observe → Understand → Update State → Decide → Act → Observe Again. That way, no matter how environmental information changes, the Agent can respond accurately and in time.",
+              text: "After a listing is published, SellAssis uses a dedicated Message Agent to handle high-frequency, repetitive buyer questions on Marketplace — including item availability, price negotiation, pickup location, and scheduling. I designed Message Agent as an intelligent communication system with context awareness, deal-intent recognition, and tiered decision-making, built around three core mechanisms:",
+            },
+            {
+              type: "image",
+              src: "/images/sellassis-message-agent-flow.png",
+              alt: "Message Agent flow — intent analysis, hierarchical memory retrieval, response plan, rule evaluation, and memory update",
+              width: 928,
+              height: 1024,
             },
             {
               type: "heading",
-              text: "Observe｜Read the current environment",
+              text: "01｜Intent Understanding — multi-intent recognition and structured extraction",
             },
             {
               type: "paragraph",
-              text: "First, collect the inputs the current task needs. During publishing, the Facebook Observer continuously reads third-party page state, for example:",
+              text: "Using an LLM, it recognizes deal intents in buyer messages — asking price, bargaining, product questions, pickup arrangements — and extracts key entities such as offered amount, time, and place, turning unstructured chat into deal requests the system can evaluate.",
+            },
+            {
+              type: "heading",
+              text: "02｜Hierarchical Memory — layered memory and dynamic context assembly",
+            },
+            {
+              type: "paragraph",
+              text: "It builds three memory layers — Seller Preference, Product Memory, and Conversation Memory — to manage long-term seller preferences, product facts and price boundaries, and each buyer’s conversation history and negotiation progress.",
+            },
+            {
+              type: "paragraph",
+              text: "Based on the current intent, the system retrieves only the relevant context instead of resending the full history every turn. It also keeps updating offers, appointment status, and conversation summaries so different deal stages share consistent information.",
+            },
+            {
+              type: "heading",
+              text: "Memory Architecture — layered memory and context management",
+            },
+            {
+              type: "table",
+              headers: ["Memory Layer", "Stored Content", "Data Scope", "Lifecycle"],
+              rows: [
+                [
+                  "Seller Preference",
+                  "Default pickup area, trading preferences, reply preferences",
+                  "User-level",
+                  "Persisted across listings",
+                ],
+                [
+                  "Product Memory",
+                  "Product facts, asking price, minimum price, listing status",
+                  "Listing-level",
+                  "Stored per listing",
+                ],
+                [
+                  "Conversation Memory",
+                  "Message history, offers, pickup plans, conversation summaries",
+                  "Buyer-level",
+                  "Stored per buyer conversation",
+                ],
+              ],
+            },
+            {
+              type: "paragraph",
+              text: "Table 1: Memory Structure",
+            },
+            {
+              type: "heading",
+              text: "Memory Storage — how information is stored and updated",
+            },
+            {
+              type: "table",
+              headers: ["Data Object", "Key Fields", "Update Timing"],
+              rows: [
+                [
+                  "UserSettings",
+                  "pickup_area, pickup_preference, reply_preference",
+                  "When the user edits personal preferences",
+                ],
+                [
+                  "ListingRecord",
+                  "product_facts, asking_price, minimum_price, listing_status",
+                  "When a listing is created, edited, or sold",
+                ],
+                [
+                  "ConversationState",
+                  "buyer_id, current_offer, pickup_time, conversation_summary",
+                  "After a message arrives or a deal arrangement is confirmed",
+                ],
+              ],
+            },
+            {
+              type: "paragraph",
+              text: "Table 2: Memory Storage Design",
+            },
+            {
+              type: "paragraph",
+              text: "Suppose a buyer sends:",
+            },
+            {
+              type: "quote",
+              text: "Can you do $20? I can pick it up tomorrow.",
+            },
+            {
+              type: "heading",
+              text: "Step 1 — Intent Extraction",
+            },
+            {
+              type: "code",
+              text: `{
+  "intents": [
+    "PRICE_NEGOTIATION",
+    "PICKUP_SCHEDULING"
+  ],
+  "entities": {
+    "offer_price": 20,
+    "proposed_pickup": "tomorrow"
+  }
+}`,
+            },
+            {
+              type: "heading",
+              text: "Step 2 — Context Assembly",
+            },
+            {
+              type: "paragraph",
+              text: "The system reads:",
             },
             {
               type: "bullets",
               items: [
-                "Which Marketplace page or form stage it is on",
-                "Which fields are already filled",
-                "What content Meta AI generated",
-                "Whether images uploaded successfully",
-                "Whether errors, dialogs, or new executable actions appeared",
+                "Product Memory — Asking Price: $35; Minimum Price: $25; Selling Goal: Sell Fast",
+                "Seller Preference — Pickup Only; General Area: Squirrel Hill",
+                "Conversation Memory — Previous Offer: None; Pickup Status: Not Confirmed",
               ],
             },
             {
+              type: "heading",
+              text: "Step 3 — Response Planning",
+            },
+            {
               type: "paragraph",
-              text: "These signals are not handed to the Agent as raw DOM or page text. They first go through an Adapter and become a unified structured page state.",
+              text: "The LLM judges that the buyer’s offer is below the minimum acceptable price, generates a counter-offer suggestion, and recognizes that the pickup time still needs user confirmation.",
             },
             {
               type: "heading",
-              text: "Understand｜Understand the product, the page, and human intent",
+              text: "Step 4 — Rule Evaluation",
             },
             {
               type: "paragraph",
-              text: "The Agent needs to understand three kinds of information at once:",
+              text: "Because price and a concrete pickup arrangement are involved, the system does not send the reply directly — it asks the seller to confirm first.",
+            },
+            {
+              type: "heading",
+              text: "Step 5 — Memory Update",
+            },
+            {
+              type: "paragraph",
+              text: "It stores the buyer’s $20 offer and the request to pick up tomorrow.",
+            },
+            {
+              type: "image",
+              src: "/images/sellassis-message-decision-pipeline.png",
+              alt: "Message Agent decision pipeline — from buyer message through intent, context, response, rules, approval, and state update",
+              width: 664,
+              height: 906,
             },
             {
               type: "numbered",
               items: [
                 {
-                  title: "Product Understanding",
-                  body: "A vision model reads category, brand, model, color, condition, defects, accessories, and image quality from photos, and judges which images work better as the cover.",
+                  title: "01｜Scope Isolation",
+                  body: "Deal context for different listings and different buyers is managed independently to prevent cross-contamination.",
                 },
                 {
-                  title: "Interface Understanding",
-                  body: "From Observer output, the system judges whether Facebook is in a page state such as draft editing, publish confirmation, or publish complete.",
+                  title: "02｜Selective Retrieval",
+                  body: "Relevant memory is loaded on demand from the current message intent, instead of loading the full history every turn.",
                 },
                 {
-                  title: "Intent Understanding",
-                  body: "An LLM judges whether the user wants to “sell fast” or “sell as high as possible,” and later identifies a buyer’s main intent in messages — asking price, bargaining, pickup location, time, or item condition.",
+                  title: "03｜Verified Updates",
+                  body: "Buyer requests, Agent suggestions, and seller-confirmed commitments are kept distinct so incorrect information does not enter long-term memory.",
                 },
               ],
             },
             {
               type: "heading",
-              text: "Update State｜Write observations into the current deal state",
+              text: "03｜Policy-based Decision — autonomy guided by deal risk",
             },
             {
               type: "paragraph",
-              text: "The Agent updates state across four layers:",
+              text: "Language understanding from the LLM is separated from execution authority. A rule layer evaluates information completeness, the user’s authorization scope, and deal risk.",
             },
             {
-              type: "numbered",
-              items: [
-                {
-                  title: "SellingSessionState — where this publish run is",
-                  body: "Serves only this publishing flow, for example ANALYZING_IMAGES → GENERATING_DRAFT → REVIEWING_AI → COMPLETING_FORM → PUBLISHING. It records the current stage, finished steps, the action in progress, missing fields, and exceptions. When publishing ends, the session can close.",
-                },
-                {
-                  title: "ListingRecord — what is known long-term about this item",
-                  body: "Stores canonical facts for each listing: product information, asking price, minimum acceptable price, selling goal, listing status, and the listing URL after it goes live.",
-                },
-                {
-                  title: "ConversationState — progress with a given buyer",
-                  body: "Stores current offer, pickup time, conversation summary, and interaction history for each buyer conversation.",
-                },
-                {
-                  title: "UserSettings — longer-term user preferences",
-                  body: "Pickup location, pickup preference, and notification preference.",
-                },
+              type: "table",
+              headers: ["Condition", "Decision Logic", "System Behavior"],
+              rows: [
+                [
+                  "Known product facts, no deal commitment",
+                  "Clear information, low risk",
+                  "Auto Reply",
+                ],
+                [
+                  "Offer or price negotiation",
+                  "Requires a pricing decision",
+                  "Draft + User Approval",
+                ],
+                [
+                  "Exact address or specific pickup time",
+                  "Involves personal info or a deal commitment",
+                  "User Approval",
+                ],
+                [
+                  "Missing or conflicting product information",
+                  "Lacks a trustworthy basis",
+                  "Ask Seller",
+                ],
+                [
+                  "Outside authorized deal scope",
+                  "Execution permission not met",
+                  "Pause Automation",
+                ],
               ],
             },
             {
-              type: "heading",
-              text: "Decide｜Auto-continue, or hand off to the user",
+              type: "paragraph",
+              text: "Table 3: Agent Decision Policy",
             },
             {
               type: "paragraph",
-              text: "For every step that needs a decision, the Agent rates the risk.",
-            },
-            {
-              type: "numbered",
-              items: [
-                {
-                  title: "Low Risk → Auto Continue",
-                  body: "Information is sufficient and the action is recoverable, so the Agent advances on its own.",
-                },
-                {
-                  title: "Decision / Commitment → User Confirm",
-                  body: "Real deal decisions — bargaining, exact address, pickup time, Hold, and similar — get an Agent recommendation, then wait for user confirmation before executing.",
-                },
-                {
-                  title: "Unknown / Conflict → Ask User",
-                  body: "When product details cannot be determined, Meta AI conflicts with system judgment, or something unknown appears, the Agent pauses and asks for more information.",
-                },
-              ],
-            },
-            {
-              type: "heading",
-              text: "Act｜Execute deterministic operations through Skills",
-            },
-            {
-              type: "paragraph",
-              text: "The Selling Agent decides “what should happen next,” then uses function calling to invoke deterministic operations inside concrete Skills.",
-            },
-            {
-              type: "numbered",
-              items: [
-                {
-                  title: "Image Skill",
-                  body: "Handles pre-publish visual understanding and image prep: product recognition, quality judgment, cover selection, ordering, and necessary resize. More aggressive edits such as background cleanup stay optional, so the authenticity of a used item is not altered casually.",
-                },
-                {
-                  title: "Facebook Skill",
-                  body: "The page-automation adapter between SellAssis and Marketplace, including Observer, Adapter, and Action. It maps internal product information onto Facebook forms and executes upload, fill, select, navigate, and publish.",
-                },
-                {
-                  title: "Message Skill",
-                  body: "Handles buyer communication after publishing. Low-risk questions with clear answers can be auto-replied — for example “is it still available,” known product facts, or a general pickup area. Questions that imply a real commitment first get a suggested reply for the user to confirm.",
-                },
-              ],
-            },
-            {
-              type: "heading",
-              text: "Observe Again｜Executed is not the same as completed",
-            },
-            {
-              type: "paragraph",
-              text: "In a browser Agent, Action executed ≠ Task completed. After every critical action, the Facebook Observer re-validates the page.",
+              text: "Through the decision chain Intent Recognition → Context Assembly → Response Generation → Rule Evaluation → Human Approval / Auto Reply, Message Agent not only reduces repetitive communication, but also keeps deal context continuous while ensuring critical decisions stay under user control.",
             },
           ],
         },
@@ -3962,6 +4801,15 @@ export const projects: Project[] = [
               type: "heading",
               text: "产品 Demo",
             },
+            {
+              type: "image",
+              src: "/videos/sellassis-demo.mp4",
+              alt: "智能二手交易 Agent 产品演示视频",
+              width: 1870,
+              height: 1080,
+              controls: true,
+              loop: false,
+            },
           ],
         },
         {
@@ -3972,182 +4820,310 @@ export const projects: Project[] = [
           blocks: [
             {
               type: "paragraph",
-              text: "为了让 Agent 能够跨越多个步骤持续推进交易，我没有将每个 AI 功能设计成独立工具，而是以 Selling Agent 作为核心，由不同能力模块共同完成任务。",
-            },
-            {
-              type: "numbered",
-              items: [
-                {
-                  title: "Selling Agent",
-                  body: "负责理解用户目标、判断当前交易状态，并协调不同能力推进工作流。",
-                },
-                {
-                  title: "Image Skill",
-                  body: "分析并处理用户上传的商品图片，为 Listing 和 Marketplace 发布准备合适的视觉素材。",
-                },
-                {
-                  title: "Facebook Skill",
-                  body: "作为 Agent 与 Marketplace 之间的操作层，负责识别当前页面、读取 Listing 状态，并执行填写、跳转和发布等操作。",
-                },
-                {
-                  title: "Message Agent",
-                  body: "在商品发布后接管买家沟通，根据商品信息、价格策略和交易状态生成回复，并识别需要用户介入的情况。",
-                },
-              ],
+              text: "SellAssis 围绕二手交易中的两个核心场景，设计了相互衔接的 Listing Workflow 与 Message Agent。",
             },
             {
               type: "paragraph",
-              text: "这些模块共享同一份 Selling Context，持续记录商品信息、用户偏好、价格策略、工作流状态和买家上下文。",
+              text: "在发布阶段，系统结合多模态商品识别、Listing 内容优化、相似商品检索与浏览器自动化，将用户输入转化为可发布的 Marketplace Listing；在沟通阶段，Message Agent 基于卖家偏好、商品信息和历史对话，识别买家意图并生成符合交易条件的回复。",
             },
             {
               type: "paragraph",
-              text: "因此，不同阶段的 Agent 不需要重新询问用户，而是能够基于此前已经发生的事情继续行动。",
+              text: "两个工作流通过结构化商品信息与持久化 Memory 共享上下文，使 Agent 能够从一次性内容生成延伸到持续的交易协助。",
+            },
+            {
+              type: "image",
+              src: "/images/sellassis-architecture.png",
+              alt: "SellAssis 产品架构——Listing Workflow 与 Message Agent",
+              width: 954,
+              height: 828,
+            },
+            {
+              type: "heading",
+              text: "Listing Workflow｜多模态理解与自动化发布",
+            },
+            {
+              type: "paragraph",
+              text: "用户上传商品图片，并通过自然语言描述出售目标，例如“希望尽快卖掉”。",
+            },
+            {
+              type: "paragraph",
+              text: "SellAssis 首先通过 Vision Model 提取商品类别、品牌、外观及可识别的商品特征，结合用户意图生成初始 Listing Draft。随后，Listing Skill 与 Image Skill 并行处理商品内容与视觉素材：",
+            },
+            {
+              type: "heading",
+              text: "Listing Skill｜内容生成与质量评估",
+            },
+            {
+              type: "paragraph",
+              text: "基于商品信息与出售目标生成标题、描述和价格建议，并从真实性、信息完整度、表达自然度及吸引力等维度检查 Listing 质量，避免过度营销、模板化表达或缺乏依据的商品描述。",
+            },
+            {
+              type: "heading",
+              text: "Image Skill｜商品检索与视觉优化",
+            },
+            {
+              type: "paragraph",
+              text: "通过商品特征匹配检索原始商品图及相似商品参考图，辅助商品型号识别与信息核对；同时支持 AI 背景优化，在保留真实商品主体、外观及瑕疵的前提下改善图片展示效果。",
+            },
+            {
+              type: "image",
+              src: "/images/sellassis-image-skill.jpg",
+              alt: "Image Skill 原型——在 Facebook Marketplace 旁进行照片清理与场景编辑",
+              caption: "[原型截图]",
+              width: 1024,
+              height: 579,
+            },
+            {
+              type: "heading",
+              text: "Facebook Skill｜页面感知与自动化执行",
+            },
+            {
+              type: "paragraph",
+              text: "完成商品准备后，Facebook Skill 通过 Observer 读取 Marketplace 当前页面状态，将商品信息映射至对应表单字段，并执行图片上传、信息填写与页面操作。",
+            },
+            {
+              type: "paragraph",
+              text: "系统在关键操作后重新验证页面状态，并结合 Facebook Meta AI 的生成结果进行内容检查与必要修正。当商品信息不确定或涉及发布确认时，将控制权交还用户。",
             },
           ],
         },
         {
-          id: "agent-system",
+          id: "message-agent",
           level: 1,
           number: "3.",
-          title: "Agent 系统",
+          title: "Message Agent",
           blocks: [
             {
+              type: "heading",
+              text: "Message Agent｜基于多层记忆的意图识别与回复决策",
+            },
+            {
               type: "paragraph",
-              text: "智能二手交易 Agent 并不是按照预设脚本一次性完成发布，而是在 Facebook Marketplace 这个持续变化的第三方环境中，反复经历一套 Observe → Understand → Update State → Decide → Act → Observe Again 的循环。这样无论环境信息怎么变化，Agent 都能进行准确及时的反应。",
+              text: "商品发布后，SellAssis 通过独立的 Message Agent 处理 Marketplace 中高频、重复的买家询问，包括商品状态、价格协商、取货地点与时间安排。我将 Message Agent 设计为一个具备上下文感知、交易意图识别与分级决策能力的智能沟通系统，通过以下三个核心机制实现：",
+            },
+            {
+              type: "image",
+              src: "/images/sellassis-message-agent-flow.png",
+              alt: "Message Agent 流程——意图分析、分层记忆检索、回复规划、规则评估与记忆更新",
+              width: 928,
+              height: 1024,
             },
             {
               type: "heading",
-              text: "Observe｜读取当前环境",
+              text: "01｜Intent Understanding — 多意图识别与结构化信息提取",
             },
             {
               type: "paragraph",
-              text: "首先收集当前任务所需要的输入。在发布过程中，Facebook Observer 会持续读取第三方页面状态，例如：",
+              text: "基于 LLM 识别买家消息中的询价、议价、商品咨询、取货安排等交易意图，并提取报价金额、时间、地点等关键实体，将非结构化对话转换为可供系统判断的交易请求。",
+            },
+            {
+              type: "heading",
+              text: "02｜Hierarchical Memory — 分层记忆与动态上下文组装",
+            },
+            {
+              type: "paragraph",
+              text: "建立 Seller Preference、Product Memory 和 Conversation Memory 三层记忆结构，分别管理卖家长期偏好、商品事实与价格边界，以及不同买家的历史对话和协商进度。",
+            },
+            {
+              type: "paragraph",
+              text: "系统根据当前意图按需检索相关上下文，而非重复传入全部历史信息；同时持续更新报价、预约状态与对话摘要，使不同交易阶段能够共享一致的信息。",
+            },
+            {
+              type: "heading",
+              text: "Memory Architecture — 分层记忆与上下文管理",
+            },
+            {
+              type: "table",
+              headers: ["Memory Layer", "存储内容", "数据范围", "生命周期"],
+              rows: [
+                [
+                  "Seller Preference",
+                  "默认取货区域、交易方式、回复偏好",
+                  "User-level",
+                  "跨商品长期保存",
+                ],
+                [
+                  "Product Memory",
+                  "商品信息、挂牌价、最低售价、商品状态",
+                  "Listing-level",
+                  "每件商品独立保存",
+                ],
+                [
+                  "Conversation Memory",
+                  "历史消息、报价、取货安排、对话摘要",
+                  "Buyer-level",
+                  "每段买家对话独立保存",
+                ],
+              ],
+            },
+            {
+              type: "paragraph",
+              text: "表格 1：Memory Structure",
+            },
+            {
+              type: "heading",
+              text: "Memory Storage — 信息如何存储与更新",
+            },
+            {
+              type: "table",
+              headers: ["数据对象", "关键字段", "更新时机"],
+              rows: [
+                [
+                  "UserSettings",
+                  "pickup_area, pickup_preference, reply_preference",
+                  "用户修改个人偏好时",
+                ],
+                [
+                  "ListingRecord",
+                  "product_facts, asking_price, minimum_price, listing_status",
+                  "创建、修改或出售商品时",
+                ],
+                [
+                  "ConversationState",
+                  "buyer_id, current_offer, pickup_time, conversation_summary",
+                  "收到消息或确认交易安排后",
+                ],
+              ],
+            },
+            {
+              type: "paragraph",
+              text: "表格 2：Memory Storage Design",
+            },
+            {
+              type: "paragraph",
+              text: "假设某个买家发送：",
+            },
+            {
+              type: "quote",
+              text: "Can you do $20? I can pick it up tomorrow.",
+            },
+            {
+              type: "heading",
+              text: "Step 1 — Intent Extraction",
+            },
+            {
+              type: "code",
+              text: `{
+  "intents": [
+    "PRICE_NEGOTIATION",
+    "PICKUP_SCHEDULING"
+  ],
+  "entities": {
+    "offer_price": 20,
+    "proposed_pickup": "tomorrow"
+  }
+}`,
+            },
+            {
+              type: "heading",
+              text: "Step 2 — Context Assembly",
+            },
+            {
+              type: "paragraph",
+              text: "系统读取：",
             },
             {
               type: "bullets",
               items: [
-                "当前处于哪个 Marketplace 页面或表单阶段",
-                "哪些字段已经填写",
-                "Meta AI 生成了什么内容",
-                "图片是否成功上传",
-                "是否出现错误、弹窗或新的可执行操作",
+                "Product Memory — Asking Price: $35；Minimum Price: $25；Selling Goal: Sell Fast",
+                "Seller Preference — Pickup Only；General Area: Squirrel Hill",
+                "Conversation Memory — Previous Offer: None；Pickup Status: Not Confirmed",
               ],
             },
             {
+              type: "heading",
+              text: "Step 3 — Response Planning",
+            },
+            {
               type: "paragraph",
-              text: "这些信息不会直接以 DOM 或页面文本交给 Agent，而是先经过 Adapter 转换成统一的结构化页面状态。",
+              text: "LLM 判断买家报价低于最低接受价格，生成还价建议，并识别出取货时间需要用户确认。",
             },
             {
               type: "heading",
-              text: "Understand｜理解商品、页面与人的意图",
+              text: "Step 4 — Rule Evaluation",
             },
             {
               type: "paragraph",
-              text: "Agent 需要同时理解三类信息：",
+              text: "因为涉及价格和具体取货安排，系统不直接发送回复，而是请求卖家确认。",
+            },
+            {
+              type: "heading",
+              text: "Step 5 — Memory Update",
+            },
+            {
+              type: "paragraph",
+              text: "保存买家提出的 $20 报价及明天取货的请求。",
+            },
+            {
+              type: "image",
+              src: "/images/sellassis-message-decision-pipeline.png",
+              alt: "Message Agent 决策链路——从买家消息到意图、上下文、回复、规则、审批与状态更新",
+              width: 664,
+              height: 906,
             },
             {
               type: "numbered",
               items: [
                 {
-                  title: "Product Understanding｜商品理解",
-                  body: "Vision Model 从图片中识别商品类别、品牌、型号、颜色、状态、瑕疵、配件以及图片质量，并判断哪些图片更适合作为主图。",
+                  title: "01｜Scope Isolation",
+                  body: "不同商品、不同买家的交易上下文独立管理，防止信息串联。",
                 },
                 {
-                  title: "Interface Understanding｜界面理解",
-                  body: "系统根据 Observer 输出判断 Facebook 当前处于页面状态、发布确认还是发布完成等阶段。",
+                  title: "02｜Selective Retrieval",
+                  body: "根据当前消息意图按需读取相关记忆，而不是每轮都加载完整历史。",
                 },
                 {
-                  title: "Intent Understanding｜意图理解",
-                  body: "LLM 判断用户希望“尽快出售”还是“尽可能卖高价”，并在后续消息中识别买家的主要意图，例如询价、议价、询问取货地点、时间或商品状态。",
+                  title: "03｜Verified Updates",
+                  body: "区分买家提出的请求、Agent 生成的建议和卖家已经确认的交易承诺，避免错误信息进入长期记忆。",
                 },
               ],
             },
             {
               type: "heading",
-              text: "Update State｜把观察结果写入当前交易状态",
+              text: "03｜Policy-based Decision — 基于交易风险的自主决策",
             },
             {
               type: "paragraph",
-              text: "Agent 会进行四层级的状态更新：",
+              text: "将 LLM 的语言理解与交易执行权限分离，通过规则层评估信息完整度、用户授权范围和交易风险。",
             },
             {
-              type: "numbered",
-              items: [
-                {
-                  title: "SellingSessionState — 当前发布进行到哪里",
-                  body: "只服务于这一次发布流程，例如 ANALYZING_IMAGES → GENERATING_DRAFT → REVIEWING_AI → COMPLETING_FORM → PUBLISHING。它会记录当前 stage、已经完成的步骤、正在执行的 action、缺失字段和异常信息。发布结束后，这一 Session 就可以结束。",
-                },
-                {
-                  title: "ListingRecord — 关于这件商品长期知道什么",
-                  body: "保存每个 Listing 的 canonical facts，例如商品信息、asking price、minimum acceptable price、selling goal、listing status，以及最终发布后的 listing URL。",
-                },
-                {
-                  title: "ConversationState — 与某个买家的交易进展",
-                  body: "保存每个 buyer conversation 中的 current offer、pickup time、conversation summary 和历史交互。",
-                },
-                {
-                  title: "UserSettings — 用户的长期偏好",
-                  body: "关于用户的 pickup location、pickup preference 和 notification preference。",
-                },
+              type: "table",
+              headers: ["判断条件", "Decision Logic", "系统行为"],
+              rows: [
+                [
+                  "已有商品事实，无交易承诺",
+                  "信息明确、低风险",
+                  "Auto Reply",
+                ],
+                [
+                  "报价或议价",
+                  "涉及价格决策",
+                  "Draft + User Approval",
+                ],
+                [
+                  "精确地址或具体取货时间",
+                  "涉及个人信息或交易承诺",
+                  "User Approval",
+                ],
+                [
+                  "商品信息缺失或冲突",
+                  "缺少可信依据",
+                  "Ask Seller",
+                ],
+                [
+                  "超出授权的交易范围",
+                  "不满足执行权限",
+                  "Pause Automation",
+                ],
               ],
             },
             {
-              type: "heading",
-              text: "Decide｜判断下一步自动执行，还是交给用户",
+              type: "paragraph",
+              text: "表格 3：Agent Decision Policy",
             },
             {
               type: "paragraph",
-              text: "Agent 针对每次需要决策的步骤会进行评级。",
-            },
-            {
-              type: "numbered",
-              items: [
-                {
-                  title: "Low Risk → Auto Continue",
-                  body: "信息充分且操作可恢复，Agent 自主推进。",
-                },
-                {
-                  title: "Decision / Commitment → User Confirm",
-                  body: "涉及议价、精确地址、取货时间、Hold 等真实交易决策，由 Agent 提供建议，用户确认后执行。",
-                },
-                {
-                  title: "Unknown / Conflict → Ask User",
-                  body: "当商品信息无法确定、Meta AI 与系统判断冲突或出现未知情况时，Agent 暂停流程并请求补充信息。",
-                },
-              ],
-            },
-            {
-              type: "heading",
-              text: "Act｜通过 Skills 执行确定性的操作",
-            },
-            {
-              type: "paragraph",
-              text: "Selling Agent 负责判断“接下来应该做什么”，通过 Function Calling 调用具体 Skill 中的确定性操作。",
-            },
-            {
-              type: "numbered",
-              items: [
-                {
-                  title: "Image Skill",
-                  body: "负责发布前的视觉理解与图片准备，包括商品识别、图片质量判断、主图选择、排序和必要的 resize；背景优化等更激进的图像处理只作为可选能力，避免改变二手商品的真实性。",
-                },
-                {
-                  title: "Facebook Skill",
-                  body: "是智能二手交易 Agent 与 Marketplace 之间的页面自动化适配层，包含 Observer、Adapter 和 Action。它负责将内部商品信息映射到 Facebook 表单，并执行上传、填写、选择、跳转和发布等操作。",
-                },
-                {
-                  title: "Message Skill",
-                  body: "负责发布后的买家沟通。低风险且答案明确的问题可以自动回复，例如“是否还在售”、已有商品信息和大概取货区域；涉及真实承诺的问题则先生成建议，再由用户确认。",
-                },
-              ],
-            },
-            {
-              type: "heading",
-              text: "Observe Again｜执行不等于成功",
-            },
-            {
-              type: "paragraph",
-              text: "在浏览器 Agent 里：Action executed ≠ Task completed，所以每一个关键 Action 完成后，Facebook Observer 都会重新验证页面。",
+              text: "通过 Intent Recognition → Context Assembly → Response Generation → Rule Evaluation → Human Approval / Auto Reply 的决策链路，Message Agent 不仅能够减少重复沟通，还能够在保持交易上下文连续性的同时，确保关键决策始终处于用户控制之下。",
             },
           ],
         },
